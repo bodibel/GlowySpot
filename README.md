@@ -152,6 +152,77 @@ npm run preview
 npm run lint
 ```
 
+## 🌐 Deployment (GitHubon való futtatás)
+
+### Opció 1: Vercel (Ajánlott - Legegyszerűbb) ⭐
+
+1. Menj a [vercel.com](https://vercel.com) oldalra
+2. "Sign up with GitHub" - Jelentkezz be GitHub fiókkal
+3. "Import Project" - Válaszd ki a Beautygram repót
+4. **Environment Variables** - Add hozzá:
+   ```
+   VITE_FIREBASE_API_KEY=your-api-key
+   VITE_FIREBASE_AUTH_DOMAIN=your-auth-domain
+   VITE_FIREBASE_PROJECT_ID=your-project-id
+   VITE_FIREBASE_STORAGE_BUCKET=your-storage-bucket
+   VITE_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
+   VITE_FIREBASE_APP_ID=your-app-id
+   ```
+5. Deploy! - Automatikusan kapsz egy URL-t (pl. `beautygram.vercel.app`)
+
+**Előnyök:**
+- Automatikus deployment minden push után
+- Preview URL minden PR-hez
+- Ingyenes SSL
+- CDN globálisan
+
+### Opció 2: Netlify
+
+1. [netlify.com](https://netlify.com) - Sign up GitHub-bal
+2. "Add new site" → "Import from Git"
+3. Válaszd ki a repót
+4. **Build settings:**
+   - Build command: `npm run build`
+   - Publish directory: `dist`
+5. Environment variables - Firebase config
+6. Deploy!
+
+### Opció 3: Firebase Hosting (GitHub Actions)
+
+A projekt már tartalmaz GitHub Actions workflow-t az automatikus Firebase Hosting deploymenthez.
+
+**Beállítás:**
+
+1. **Firebase projekt létrehozása:**
+   ```bash
+   firebase login
+   firebase init hosting
+   ```
+
+2. **GitHub Secrets beállítása:**
+   - Menj a GitHub repó Settings → Secrets → Actions
+   - Add hozzá:
+     - `VITE_FIREBASE_API_KEY`
+     - `VITE_FIREBASE_AUTH_DOMAIN`
+     - `VITE_FIREBASE_PROJECT_ID`
+     - `VITE_FIREBASE_STORAGE_BUCKET`
+     - `VITE_FIREBASE_MESSAGING_SENDER_ID`
+     - `VITE_FIREBASE_APP_ID`
+     - `FIREBASE_SERVICE_ACCOUNT` (Firebase Console → Project Settings → Service Accounts)
+
+3. **Push a main/master branch-re:**
+   ```bash
+   git push origin main
+   ```
+
+A GitHub Actions automatikusan buildeli és deployolja az appot!
+
+**Manuális Firebase deploy:**
+```bash
+npm run build
+firebase deploy --only hosting
+```
+
 ## 📝 Következő Lépések
 
 A projekt jelenleg az alapvető struktúrával és funkcionalitással rendelkezik. További fejlesztési lehetőségek:
