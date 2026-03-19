@@ -1,0 +1,727 @@
+"use server"
+
+
+import { revalidatePath } from "next/cache"
+import prisma from "@/lib/db"
+import { Salon, Service, OpeningHour, ClosedDate, Post } from "@/lib/salon-types"
+import { requireSession } from "@/lib/auth-utils"
+
+async function requireSalonOwner(salonId: string): Promise<string> {
+    const sessionUserId = await requireSession()
+    const salon = await prisma.salon.findUnique({
+        where: { id: salonId },
+        select: { ownerId: true }
+    })
+    if (!salon) throw new Error("A szalon nem található.")
+    if (salon.ownerId !== sessionUserId) throw new Error("Nincs jogosultságod ehhez a szalonhoz.")
+    return sessionUserId
+}
+
+async function requirePostOwner(postId: string): Promise<void> {
+    const sessionUserId = await requireSession()
+    const post = await prisma.post.findUnique({
+        where: { id: postId },
+        select: { salon: { select: { ownerId: true } } }
+    })
+    if (!post) throw new Error("A bejegyzés nem található.")
+    if (post.salon.ownerId !== sessionUserId) throw new Error("Nincs jogosultságod ehhez a bejegyzéshez.")
+}
+
+async function requireServiceOwner(serviceId: string): Promise<void> {
+    const sessionUserId = await requireSession()
+    const service = await prisma.service.findUnique({
+        where: { id: serviceId },
+        select: { salon: { select: { ownerId: true } } }
+    })
+    if (!service) throw new Error("A szolgáltatás nem található.")
+    if (service.salon.ownerId !== sessionUserId) throw new Error("Nincs jogosultságod ehhez a szolgáltatáshoz.")
+}
+
+export async function getSalonData(salonId: string, userId: string) {
+    try {
+        const salon = await prisma.salon.findUnique({
+            where: { id: salonId },
+            include: {
+                services: true,
+                openingHours: true,
+                closedDates: true,
+                posts: {
+                    orderBy: { createdAt: 'desc' }
+                }
+            }
+        })
+
+        if (!salon || salon.ownerId !== userId) {
+            return null
+        }
+
+        return {
+            salon,
+            services: salon.services,
+            openingHours: salon.openingHours,
+            closedDates: salon.closedDates,
+            posts: salon.posts
+        }
+    } catch (error) {
+        console.error("Error fetching salon data from Prisma:", error)
+        throw error
+    }
+}
+
+export async function getSalonName(salonId: string) {
+    try {
+        return await prisma.salon.findUnique({
+            where: { id: salonId },
+            select: { name: true, profileImage: true, id: true }
+        })
+    } catch (error) {
+        console.error("Error fetching salon name:", error)
+        return null
+    }
+}
+
+export async function updateSalon(salonId: string, data: any) {
+    await requireSalonOwner(salonId)
+    const { teamMembers, ...salonData } = data;
+
+    try {
+        return await prisma.$transaction(async (tx) => {
+            // Update basic salon data
+            const updatedSalon = await tx.salon.update({
+                where: { id: salonId },
+                data: salonData
+            });
+
+            // Update team members if present in data
+            if (teamMembers && Array.isArray(teamMembers)) {
+                // Remove existing ones
+                await tx.teamMember.deleteMany({
+                    where: { salonId }
+                });
+
+                // Create new ones
+                if (teamMembers.length > 0) {
+                    await tx.teamMember.createMany({
+                        data: teamMembers.map((member: any, index: number) => ({
+                            salonId,
+                            name: member.name,
+                            role: member.role || null,
+                            description: member.description || null,
+                            image: member.image || null,
+                            order: index
+                        }))
+                    });
+                }
+            }
+
+            return updatedSalon;
+        });
+    } catch (error) {
+        console.error("Error updating salon with team members:", error)
+        throw error;
+    }
+}
+export async function getUserSalons(userId: string) {
+    try {
+        return await prisma.salon.findMany({
+            where: { ownerId: userId }
+        })
+    } catch (error) {
+        console.error("Error fetching user salons:", error)
+        throw error
+    }
+}
+
+// Favorites Actions
+export async function toggleFavorite(salonId: string, userId: string) {
+    const sessionUserId = await requireSession()
+    if (sessionUserId !== userId) throw new Error("Nincs jogosultságod ezt a műveletet elvégezni.")
+    if (!salonId || !userId) {
+        throw new Error("Missing salonId or userId")
+    }
+    try {
+        const existing = await prisma.favorite.findUnique({
+            where: {
+                userId_salonId: {
+                    userId,
+                    salonId,
+                }
+            }
+        })
+
+        if (existing) {
+            await prisma.favorite.delete({
+                where: { id: existing.id }
+            })
+            return { isFavorite: false }
+        } else {
+            await prisma.favorite.create({
+                data: {
+                    userId,
+                    salonId,
+                }
+            })
+            return { isFavorite: true }
+        }
+    } catch (error) {
+        console.error("Error toggling favorite:", error)
+        throw error
+    }
+}
+
+export async function isSalonFavorite(salonId: string, userId: string) {
+    if (!userId || !salonId) return false
+    try {
+        const favorite = await prisma.favorite.findUnique({
+            where: {
+                userId_salonId: {
+                    userId,
+                    salonId,
+                }
+            }
+        })
+        return !!favorite
+    } catch (error) {
+        console.error("Error checking favorite status:", error)
+        return false
+    }
+}
+
+export async function getUserFavorites(userId: string) {
+    try {
+        return await prisma.favorite.findMany({
+            where: { userId },
+            include: {
+                salon: {
+                    include: {
+                        services: {
+                            select: { price: true }
+                        }
+                    }
+                }
+            },
+            orderBy: { id: 'desc' }
+        })
+    } catch (error) {
+        console.error("Error fetching user favorites:", error)
+        throw error
+    }
+}
+export async function createSalon(data: any) {
+    const sessionUserId = await requireSession()
+    if (data.ownerId !== sessionUserId) throw new Error("Nincs jogosultságod más nevében szalont létrehozni.")
+    try {
+        return await (prisma as any).salon.create({
+            data: {
+                name: data.name,
+                country: data.country || "Magyarország",
+                city: data.city,
+                district: data.district || null,
+                street: data.street || null,
+                houseNumber: data.houseNumber || null,
+                floor: data.floor || null,
+                door: data.door || null,
+                zipCode: data.zipCode || null,
+                address: data.address,
+                currency: data.currency,
+                categories: data.categories,
+                ownerId: data.ownerId,
+                images: data.images || [],
+                profileImage: data.profileImage || null,
+                coverImage: data.coverImage || null,
+                rating: 0,
+                reviewCount: 0,
+                languages: data.languages || [],
+                lat: data.lat || null,
+                lng: data.lng || null,
+                phone: data.phone || null,
+                email: data.email || null,
+                allowMessages: data.allowMessages ?? true,
+                allowBookings: data.allowBookings ?? true,
+                showPhoneOnProfile: data.showPhoneOnProfile ?? true,
+                showEmailOnProfile: data.showEmailOnProfile ?? false,
+                notifyNewMessage: data.notifyNewMessage ?? true,
+                notifyNewBooking: data.notifyNewBooking ?? true,
+                notifyNewReview: data.notifyNewReview ?? true,
+                notifyNewFavorite: data.notifyNewFavorite ?? false,
+                notifyPostLike: data.notifyPostLike ?? false,
+                notifyPostComment: data.notifyPostComment ?? true,
+                notifyWeeklyStats: data.notifyWeeklyStats ?? true,
+                notifyMonthlyStats: data.notifyMonthlyStats ?? true,
+                ownerName: data.ownerName || null,
+                ownerImage: data.ownerImage || null,
+                aboutMe: data.aboutMe || null,
+                isTeam: data.isTeam ?? false,
+                teamMembers: data.teamMembers ? {
+                    create: data.teamMembers.map((member: any, index: number) => ({
+                        name: member.name,
+                        role: member.role,
+                        description: member.description,
+                        image: member.image,
+                        order: index
+                    }))
+                } : undefined
+            }
+        })
+    } catch (error) {
+        console.error("Error creating salon:", error)
+        throw error
+    }
+}
+export async function createService(data: any) {
+    await requireSalonOwner(data.salonId)
+    return await prisma.service.create({
+        data: {
+            name: data.name,
+            price: String(data.price),
+            duration: String(data.duration),
+            description: data.description,
+            salonId: data.salonId
+        }
+    })
+}
+
+export async function updateService(serviceId: string, data: any) {
+    await requireServiceOwner(serviceId)
+    return await prisma.service.update({
+        where: { id: serviceId },
+        data
+    })
+}
+
+export async function deleteService(serviceId: string) {
+    await requireServiceOwner(serviceId)
+    return await prisma.service.delete({
+        where: { id: serviceId }
+    })
+}
+
+export async function getAllSalons() {
+    try {
+        return await prisma.salon.findMany({
+            where: { isActive: true }
+        })
+    } catch (error) {
+        console.error("Error fetching all salons:", error)
+        return []
+    }
+}
+
+export async function getPublicSalonData(salonId: string) {
+    try {
+        const salon = await prisma.salon.findFirst({
+            where: {
+                id: salonId,
+                isActive: true
+            },
+            include: {
+                services: true,
+                openingHours: true,
+                posts: {
+                    where: { isActive: true },
+                    orderBy: { createdAt: 'desc' },
+                    include: {
+                        _count: {
+                            select: { likes: true, comments: true }
+                        }
+                    }
+                },
+                reviews: {
+                    orderBy: { createdAt: 'desc' },
+                    include: {
+                        user: { select: { name: true, image: true } }
+                    }
+                },
+                teamMembers: {
+                    orderBy: { order: 'asc' }
+                }
+            }
+        })
+
+        if (!salon) return null;
+
+        const s = salon as any;
+
+        // Serialize complex objects (Dates, Decimals) to plain JSON
+        return {
+            ...s,
+            openingHours: s.openingHours?.map((oh: any) => ({
+                ...oh,
+                open: oh.open,
+                close: oh.close
+            })) || [],
+            posts: s.posts?.map((p: any) => ({
+                id: p.id,
+                content: p.content,
+                images: p.images,
+                createdAt: p.createdAt instanceof Date ? p.createdAt.toISOString() : p.createdAt,
+                _count: p._count
+            })) || [],
+            reviews: s.reviews?.map((r: any) => ({
+                id: r.id,
+                rating: r.rating,
+                comment: r.comment,
+                createdAt: r.createdAt instanceof Date ? r.createdAt.toISOString() : r.createdAt,
+                user: r.user
+            })) || [],
+            teamMembers: s.teamMembers || []
+        }
+    } catch (error) {
+        console.error("Error fetching public salon data:", error)
+        return null
+    }
+}
+
+export async function getRecentPosts(page: number = 1, filters: {
+    lat?: number;
+    lng?: number;
+    radius?: number;
+    categories?: string[];
+} = {}, currentUserId?: string) {
+    try {
+        const where: any = { isActive: true }
+
+        if (filters) {
+            const salonConditions: any = {}
+
+            if (filters.lat && filters.lng && filters.radius) {
+                const radiusInDegrees = filters.radius / 111.32 // 1 degree is approx 111.32km
+                const latDelta = radiusInDegrees
+                const lngDelta = radiusInDegrees / Math.cos(filters.lat * Math.PI / 180)
+
+                salonConditions.lat = {
+                    gte: filters.lat - latDelta,
+                    lte: filters.lat + latDelta
+                }
+                salonConditions.lng = {
+                    gte: filters.lng - lngDelta,
+                    lte: filters.lng + lngDelta
+                }
+            }
+
+            if (filters.categories && filters.categories.length > 0) {
+                salonConditions.categories = {
+                    hasSome: filters.categories
+                }
+            }
+
+            if (Object.keys(salonConditions).length > 0) {
+                where.salon = salonConditions
+            }
+        }
+
+        const posts = await prisma.post.findMany({
+            where,
+            orderBy: { createdAt: 'desc' },
+            take: 20,
+            skip: (page - 1) * 20,
+            include: {
+                salon: {
+                    select: {
+                        id: true,
+                        name: true,
+                        ownerId: true,
+                        categories: true,
+                        images: true,
+                        currency: true,
+                        rating: true,
+                        reviewCount: true,
+                        services: {
+                            select: { price: true }
+                        },
+                        profileImage: true
+                    }
+                },
+                _count: {
+                    select: { likes: true, comments: true }
+                },
+                likes: currentUserId ? {
+                    where: { userId: currentUserId },
+                    select: { userId: true }
+                } : false
+            }
+        })
+        console.log(`Fetched ${posts.length} posts successfully`)
+
+        // Serialize to plain objects to avoid serialization issues
+        return posts.map(p => ({
+            id: p.id,
+            content: p.content,
+            images: p.images,
+            createdAt: p.createdAt instanceof Date ? p.createdAt.toISOString() : p.createdAt,
+            salon: p.salon,
+            layout: (p as any).layout || "grid",
+            _count: p._count,
+            isLiked: (p as any).likes?.length > 0
+        }))
+    } catch (error) {
+        console.error("Error fetching recent posts FULL DETAILS:", error)
+        return []
+    }
+}
+
+export async function saveOpeningHours(salonId: string, hours: any[]) {
+    await requireSalonOwner(salonId)
+    try {
+        await prisma.openingHour.deleteMany({ where: { salonId } })
+        await prisma.openingHour.createMany({
+            data: hours.map(h => ({
+                salonId,
+                day: h.day,
+                open: h.open || null,
+                close: h.close || null,
+                isOpen: h.isOpen
+            }))
+        })
+        return await prisma.openingHour.findMany({ where: { salonId } })
+    } catch (error) {
+        console.error("Error saving opening hours:", error)
+        throw error
+    }
+}
+
+export async function createClosedDate(data: any) {
+    await requireSalonOwner(data.salonId)
+    return await prisma.closedDate.create({
+        data: {
+            salonId: data.salonId,
+            date: data.date,
+            reason: data.reason
+        }
+    })
+}
+
+export async function deleteClosedDate(id: string) {
+    const sessionUserId = await requireSession()
+    const closedDate = await prisma.closedDate.findUnique({
+        where: { id },
+        select: { salon: { select: { ownerId: true } } }
+    })
+    if (!closedDate) throw new Error("A zárt nap nem található.")
+    if (closedDate.salon.ownerId !== sessionUserId) throw new Error("Nincs jogosultságod ehhez a szalonhoz.")
+    return await prisma.closedDate.delete({ where: { id } })
+}
+
+export async function createPost(data: any) {
+    await requireSalonOwner(data.salonId)
+    return await prisma.post.create({
+        data: {
+            salonId: data.salonId,
+            content: data.content,
+            images: data.images || [],
+            layout: data.layout || "grid"
+        } as any
+    })
+}
+
+export async function updatePost(postId: string, data: any) {
+    await requirePostOwner(postId)
+    return await prisma.post.update({
+        where: { id: postId },
+        data: {
+            content: data.content,
+            images: data.images,
+            layout: data.layout
+        } as any
+    })
+}
+
+export async function deletePost(postId: string) {
+    await requirePostOwner(postId)
+    return await prisma.post.delete({ where: { id: postId } })
+}
+
+// Messaging Actions
+export async function sendMessage(data: {
+    senderId: string;
+    receiverId: string;
+    content: string;
+    subject?: string;
+    salonId?: string;
+}) {
+    // 1. Verify Sender matches session
+    const sessionUserId = await requireSession()
+    if (data.senderId !== sessionUserId) {
+        throw new Error("Nem küldhetsz üzenetet más nevében.")
+    }
+
+    // 2. Prevent Self-Messaging
+    if (data.senderId === data.receiverId) {
+        throw new Error("Nem küldhetsz üzenetet magadnak!")
+    }
+
+    const message = await prisma.message.create({
+        data
+    })
+
+    revalidatePath("/dashboard/messages")
+    return message
+}
+export async function getUserMessages(userId: string) {
+    const sessionUserId = await requireSession()
+    if (sessionUserId !== userId) throw new Error("Nincs jogosultságod más felhasználó üzeneteit megtekinteni.")
+    return await prisma.message.findMany({
+        where: {
+            OR: [
+                { senderId: userId },
+                { receiverId: userId }
+            ]
+        },
+        include: {
+            sender: { select: { id: true, name: true, image: true } },
+            receiver: { select: { id: true, name: true, image: true } },
+            salon: { select: { id: true, name: true } }
+        },
+        orderBy: { createdAt: 'desc' }
+    })
+}
+
+export async function markMessageAsRead(messageId: string) {
+    const sessionUserId = await requireSession()
+    const message = await prisma.message.findUnique({
+        where: { id: messageId },
+        select: { receiverId: true }
+    })
+    if (!message) throw new Error("Az üzenet nem található.")
+    if (message.receiverId !== sessionUserId) throw new Error("Nincs jogosultságod ezt az üzenetet olvasottnak jelölni.")
+    const updated = await prisma.message.update({
+        where: { id: messageId },
+        data: { isRead: true }
+    })
+    revalidatePath("/dashboard/messages")
+    return updated
+}
+
+export async function getAdminUser() {
+    try {
+        return await prisma.user.findFirst({
+            where: { role: 'admin' },
+            select: { id: true, name: true, image: true }
+        })
+    } catch (error) {
+        console.error("Error fetching admin user:", error)
+        return null
+    }
+}
+export async function getUnreadMessageCount(userId: string) {
+    try {
+        const count = await prisma.message.count({
+            where: {
+                receiverId: userId,
+                isRead: false
+            }
+        });
+        return count;
+    } catch (error) {
+        console.error("Error getting unread message count:", error);
+        return 0;
+    }
+}
+
+
+// Social Actions (Likes/Comments)
+export async function toggleLike(postId: string, userId: string) {
+    const sessionUserId = await requireSession()
+    if (sessionUserId !== userId) throw new Error("Nincs jogosultságod ezt a műveletet elvégezni.")
+    const existingLike = await prisma.like.findUnique({
+        where: {
+            userId_postId: { userId, postId }
+        }
+    })
+
+    let result;
+    if (existingLike) {
+        result = await prisma.like.delete({
+            where: { id: existingLike.id }
+        })
+    } else {
+        result = await prisma.like.create({
+            data: { userId, postId }
+        })
+    }
+
+    revalidatePath("/")
+    revalidatePath("/profile/me")
+    return result
+}
+
+export async function addComment(postId: string, userId: string, content: string) {
+    const sessionUserId = await requireSession()
+    if (sessionUserId !== userId) throw new Error("Nincs jogosultságod kommentelni más nevében.")
+    const comment = await prisma.comment.create({
+        data: { postId, userId, content }
+    })
+    revalidatePath("/")
+    revalidatePath("/profile/me")
+    return comment
+}
+
+export async function getPostComments(postId: string) {
+    return await prisma.comment.findMany({
+        where: { postId },
+        include: {
+            user: { select: { id: true, name: true, image: true } }
+        },
+        orderBy: { createdAt: 'asc' }
+    })
+}
+
+// Booking Actions (Skeleton)
+export async function createBooking(data: any) {
+    const sessionUserId = await requireSession()
+    if (data.userId !== sessionUserId) throw new Error("Nincs jogosultságod más nevében foglalást létrehozni.")
+    // Backend only for now
+    return await prisma.booking.create({
+        data: {
+            date: new Date(data.date),
+            time: data.time,
+            userId: data.userId,
+            salonId: data.salonId,
+            serviceId: data.serviceId,
+            status: "pending"
+        }
+    })
+}
+export async function createReview(data: {
+    salonId: string;
+    userId: string;
+    rating: number;
+    comment: string;
+}) {
+    const sessionUserId = await requireSession()
+    if (data.userId !== sessionUserId) throw new Error("Nincs jogosultságod más nevében értékelést írni.")
+    try {
+        const review = await prisma.review.create({
+            data: {
+                salonId: data.salonId,
+                userId: data.userId,
+                rating: data.rating,
+                comment: data.comment,
+            },
+        })
+
+        // Update salon's average rating and review count
+        const allReviews = await prisma.review.findMany({
+            where: { salonId: data.salonId },
+            select: { rating: true }
+        })
+
+        const reviewCount = allReviews.length
+        const totalRating = allReviews.reduce((acc, curr) => acc + curr.rating, 0)
+        const averageRating = totalRating / reviewCount
+
+        await prisma.salon.update({
+            where: { id: data.salonId },
+            data: {
+                rating: averageRating,
+                reviewCount: reviewCount,
+            }
+        })
+
+        revalidatePath(`/profile/${data.salonId}`)
+        return review
+    } catch (error) {
+        console.error("Error creating review:", error)
+        throw error
+    }
+}

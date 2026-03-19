@@ -1,0 +1,16 @@
+services:
+  beautygram-db:
+    image: postgres:15-alpine
+    container_name: beautygram-db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${DB_PORT:-5434}:5432"
+    volumes:
+      - beautygram-glowyspot_data:/var/lib/postgresql/data
+
+volumes:
+  beautygram-glowyspot_data:

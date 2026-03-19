@@ -1,0 +1,21 @@
+/**
+ * Shared file upload utility
+ * Uploads a file to /api/upload and returns the URL
+ */
+export async function uploadFile(file: File): Promise<string> {
+    const formData = new FormData()
+    formData.append("file", file)
+
+    const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData
+    })
+
+    const data = await res.json()
+
+    if (!res.ok) {
+        throw new Error(data.error || "Upload failed")
+    }
+
+    return data.url
+}

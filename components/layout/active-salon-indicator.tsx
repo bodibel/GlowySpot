@@ -1,0 +1,70 @@
+"use client"
+
+import { useEffect, useState } from "react"
+import { useParams, usePathname } from "next/navigation"
+import Link from "next/link"
+import { Store, ChevronRight } from "lucide-react"
+import { getSalonName } from "@/lib/actions/salon"
+import { cn } from "@/lib/utils"
+
+export function ActiveSalonIndicator() {
+    const params = useParams()
+    const pathname = usePathname()
+    const [salonData, setSalonData] = useState<{ name: string; profileImage: string | null } | null>(null)
+    const salonId = params.id as string
+
+    useEffect(() => {
+        if (salonId) {
+            const fetchSalonName = async () => {
+                const data = await getSalonName(salonId)
+                if (data) {
+                    setSalonData({
+                        name: data.name,
+                        profileImage: data.profileImage
+                    })
+                }
+            }
+            fetchSalonName()
+        } else {
+            setSalonData(null)
+        }
+    }, [salonId])
+
+    // Only show if we are in a salon context and not just viewing the list
+    if (!salonId || !salonData) return null
+
+    return (
+        <div className="px-4 sm:px-6 lg:px-8 pt-4">
+            <div className="rounded-2xl bg-white/50 backdrop-blur-md border border-pink-100/50 p-3 shadow-sm flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                    <div className="h-10 w-10 rounded-xl bg-pink-50 flex items-center justify-center text-pink-600 shadow-inner">
+                        {salonData.profileImage ? (
+                            <img
+                                src={salonData.profileImage}
+                                alt={salonData.name}
+                                className="h-full w-full object-cover rounded-xl"
+                            />
+                        ) : (
+                            <Store className="h-5 w-5" />
+                        )}
+                    </div>
+                    <div>
+                        <div className="flex items-center gap-1.5">
+                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Szerkesztett szalon</span>
+                            <div className="h-1 w-1 rounded-full bg-pink-300" />
+                        </div>
+                        <h2 className="text-sm font-bold text-gray-900 leading-none mt-1">{salonData.name}</h2>
+                    </div>
+                </div>
+
+                <Link
+                    href={`/salon/${salonId}`}
+                    className="flex items-center gap-1 text-[11px] font-bold text-pink-600 hover:text-pink-700 transition-colors bg-white px-3 py-1.5 rounded-lg border border-pink-50 shadow-sm"
+                >
+                    Vezérlőpult
+                    <ChevronRight className="h-3 w-3" />
+                </Link>
+            </div>
+        </div>
+    )
+}
