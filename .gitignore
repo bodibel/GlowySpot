@@ -38,6 +38,10 @@ yarn-error.log*
 # uploaded files
 /public/uploads/
 
+# archive files
+*.tar.gz
+*.tar
+
 # AI agent configs
 .agent/
 .claude/
