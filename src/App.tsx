@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { ProtectedRoute } from './components/common/ProtectedRoute';
-import { Home, SalonProfile, Dashboard, ClientDashboard } from './pages';
+import { Home, SalonProfile, Dashboard, ClientDashboard, AdminDashboard } from './pages';
 
 function App() {
   return (
@@ -18,6 +18,16 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['provider', 'admin']}>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Admin Routes */}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminDashboard />
               </ProtectedRoute>
             }
           />

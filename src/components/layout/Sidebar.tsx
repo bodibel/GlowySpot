@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Home, User, Calendar, Heart, Settings, LogOut, LayoutDashboard } from 'lucide-react';
+import { Home, User, Calendar, Heart, Settings, LogOut, LayoutDashboard, Shield } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 export function Sidebar() {
@@ -9,7 +9,9 @@ export function Sidebar() {
     { name: 'Főoldal', href: '/', icon: Home },
     ...(user
       ? [
-          user.role === 'provider'
+          user.role === 'admin'
+            ? { name: 'Admin Panel', href: '/admin', icon: Shield }
+            : user.role === 'provider'
             ? { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard }
             : { name: 'Profil', href: '/client-dashboard', icon: User },
           { name: 'Foglalásaim', href: '/bookings', icon: Calendar },

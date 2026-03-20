@@ -108,8 +108,19 @@ export function Home() {
           {/* Demo Cards */}
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <Card key={i} hover className="overflow-hidden">
-              <div className="aspect-square bg-gradient-to-br from-rose-100 to-pink-100 flex items-center justify-center">
+              {/* Cover image with profile picture overlay */}
+              <div className="relative aspect-video bg-gradient-to-br from-rose-100 to-pink-100 flex items-center justify-center">
                 <p className="text-gray-400 text-lg">Demo kép {i}</p>
+                {/* Round profile picture */}
+                <div className="absolute bottom-3 left-3 w-12 h-12 rounded-full border-2 border-white shadow-md bg-gradient-to-br from-rose-200 to-pink-200 flex items-center justify-center overflow-hidden">
+                  <span className="text-rose-600 font-bold text-sm">{i}</span>
+                </div>
+                {/* Rating badge */}
+                <div className="absolute bottom-3 right-3 bg-white rounded-full px-2 py-1 flex items-center gap-1 shadow-md">
+                  <span className="text-yellow-400 text-xs">⭐</span>
+                  <span className="text-sm font-semibold text-gray-900">4.8</span>
+                  <span className="text-xs text-gray-500">(156)</span>
+                </div>
               </div>
               <div className="p-4">
                 <h3 className="text-lg font-bold text-gray-900 mb-1">
@@ -119,8 +130,6 @@ export function Home() {
                 <div className="flex items-center gap-2 text-sm text-gray-500">
                   <MapPin className="w-4 h-4" />
                   <span>2.5 km</span>
-                  <span>•</span>
-                  <span>⭐ 4.8 (156)</span>
                 </div>
               </div>
             </Card>

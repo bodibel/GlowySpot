@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Home, User, Calendar, Heart, LayoutDashboard } from 'lucide-react';
+import { Home, User, Calendar, Heart, LayoutDashboard, Shield } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 export function BottomNav() {
@@ -9,7 +9,9 @@ export function BottomNav() {
     { name: 'Főoldal', href: '/', icon: Home },
     ...(user
       ? [
-          user.role === 'provider'
+          user.role === 'admin'
+            ? { name: 'Admin', href: '/admin', icon: Shield }
+            : user.role === 'provider'
             ? { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard }
             : { name: 'Profil', href: '/client-dashboard', icon: User },
           { name: 'Foglalások', href: '/bookings', icon: Calendar },
