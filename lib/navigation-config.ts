@@ -57,11 +57,11 @@ export function getSalonLinks(salonId: string): NavLink[] {
 export function getNavLinks(
   role: string | undefined,
   isSalonContext: boolean,
-  salonId: string,
+  salonId: string | undefined,
   isLoggedIn: boolean,
   openFilters?: () => void
 ): NavLink[] {
-  if (isSalonContext) return getSalonLinks(salonId)
+  if (isSalonContext && salonId) return getSalonLinks(salonId)
   if (role === "admin") return [...visitorLinks, ...authLinks, ...adminLinks]
   if (role === "provider") return [...visitorLinks, ...authLinks, ...providerLinks]
   if (isLoggedIn) return [...visitorLinks, ...authLinks, ...loggedInVisitorLinks]
