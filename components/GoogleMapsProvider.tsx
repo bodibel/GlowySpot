@@ -3,7 +3,7 @@
 import { useLoadScript } from "@react-google-maps/api"
 import { ReactNode, useMemo } from "react"
 
-const MAP_LIBRARIES: ("places" | "geometry")[] = ["places", "geometry"]
+const MAP_LIBRARIES: ("places" | "geometry" | "marker")[] = ["places", "geometry", "marker"]
 
 export function GoogleMapsProvider({ children }: { children: ReactNode }) {
     const { isLoaded, loadError } = useLoadScript({

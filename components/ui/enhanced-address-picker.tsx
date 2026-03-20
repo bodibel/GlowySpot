@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useEffect, useCallback, useRef } from "react"
-import { GoogleMap, MarkerF, useLoadScript } from "@react-google-maps/api"
+import { GoogleMap, useLoadScript } from "@react-google-maps/api"
+import { AdvancedMarker } from "@/components/ui/advanced-marker"
 import usePlacesAutocompleteNew from "@/lib/hooks/usePlacesAutocompleteNew"
 import { getGeocode, getLatLng } from "use-places-autocomplete"
 import { Check, ChevronsUpDown, MapPin, Navigation } from "lucide-react"
@@ -442,11 +443,10 @@ export function EnhancedAddressPicker({ onAddressChange, initialData }: Enhanced
                             ]
                         }}
                     >
-                        <MarkerF
+                        <AdvancedMarker
                             position={coords}
                             draggable={true}
                             onDragEnd={handleMarkerDragEnd}
-                            animation={google.maps.Animation.DROP}
                         />
                     </GoogleMap>
                 </div>

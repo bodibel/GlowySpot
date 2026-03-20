@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Dialog, DialogContent, DialogOverlay, DialogPortal } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogOverlay, DialogPortal, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "./button"
@@ -35,6 +35,8 @@ export function Modal({ isOpen, onClose, children, title, size = "md" }: ModalPr
                     onPointerDownOutside={onClose}
                     onEscapeKeyDown={onClose}
                 >
+                    <DialogTitle className="sr-only">{title || "Ablak"}</DialogTitle>
+                    <DialogDescription className="sr-only">{title || "Tartalom"}</DialogDescription>
                     <div className="flex items-center justify-between mb-4 sticky top-0 bg-white pb-2 z-10">
                         {title && <h2 className="text-xl font-semibold leading-none tracking-tight">{title}</h2>}
                         <Button 

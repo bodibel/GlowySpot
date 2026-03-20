@@ -2,7 +2,8 @@
 
 import { Clock, MapPin, ChevronRight, Star, Sparkles, Phone, Mail } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { GoogleMap, Marker } from "@react-google-maps/api"
+import { GoogleMap } from "@react-google-maps/api"
+import { AdvancedMarker } from "@/components/ui/advanced-marker"
 
 interface ProfileSidebarProps {
     salon: any
@@ -108,7 +109,7 @@ export function ProfileSidebar({ salon }: ProfileSidebarProps) {
                             mapTypeControl: false,
                         }}
                     >
-                        <Marker position={mapCenter} />
+                        <AdvancedMarker position={mapCenter} />
                     </GoogleMap>
                 ) : (
                     <div className="absolute inset-0 flex items-center justify-center text-gray-400 font-medium text-sm">

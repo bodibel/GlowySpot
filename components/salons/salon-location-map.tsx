@@ -1,7 +1,8 @@
 "use client"
 
-import { GoogleMap, Marker } from "@react-google-maps/api"
+import { GoogleMap } from "@react-google-maps/api"
 import { useMemo } from "react"
+import { AdvancedMarker } from "@/components/ui/advanced-marker"
 
 interface SalonLocationMapProps {
     center: { lat: number; lng: number }
@@ -27,7 +28,7 @@ export function SalonLocationMap({ center, markerPosition }: SalonLocationMapPro
             zoom={15}
             options={options}
         >
-            {markerPosition && <Marker position={markerPosition} />}
+            {markerPosition && <AdvancedMarker position={markerPosition} />}
         </GoogleMap>
     )
 }
