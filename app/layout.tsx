@@ -29,7 +29,9 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-// Inline script to prevent flash-of-incorrect-theme (FOIT)
+// Inline script to prevent flash-of-incorrect-theme (FOIT).
+// Absence of the key (!stored) means "system" preference — intentional, not a miss.
+// ThemeProvider removes the key when the user selects "system" mode.
 const foitScript = `
   (function() {
     try {
