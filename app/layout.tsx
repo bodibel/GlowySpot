@@ -4,6 +4,7 @@ import { AuthProvider } from "@/lib/auth-context";
 import { FilterProvider } from "@/lib/filter-context";
 import { GoogleMapsProvider } from "@/components/GoogleMapsProvider";
 import { NotificationProvider } from "@/lib/notification-context";
+import { ThemeProvider } from "@/lib/theme-context";
 import { Toaster } from "sonner";
 import "./globals.css";
 
@@ -25,30 +26,40 @@ export const metadata: Metadata = {
     title: "GlowySpot - Szépségipar Szakemberei",
     description: "Találd meg a legjobb szépségipari szakembereket Magyarországon",
   },
-  robots: {
-    index: true,
-    follow: true,
-  }
+  robots: { index: true, follow: true },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+// Inline script to prevent flash-of-incorrect-theme (FOIT)
+const foitScript = `
+  (function() {
+    try {
+      var stored = localStorage.getItem('glowyspot-theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var isDark = stored === 'dark' || (!stored && prefersDark);
+      if (isDark) document.documentElement.classList.add('dark');
+    } catch(e) {}
+  })();
+`;
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="hu" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: foitScript }} />
+      </head>
       <body className={`${inter.variable} font-sans antialiased`} suppressHydrationWarning>
-        <AuthProvider>
-          <GoogleMapsProvider>
-            <FilterProvider>
-              <NotificationProvider>
-                {children}
-                <Toaster richColors position="top-center" closeButton />
-              </NotificationProvider>
-            </FilterProvider>
-          </GoogleMapsProvider>
-        </AuthProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <GoogleMapsProvider>
+              <FilterProvider>
+                <NotificationProvider>
+                  {children}
+                  <Toaster richColors position="top-center" closeButton />
+                </NotificationProvider>
+              </FilterProvider>
+            </GoogleMapsProvider>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
