@@ -20,9 +20,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "hu_HU",
-    url: "https://beautygram.hu",
-    siteName: "BeautyGram",
-    title: "BeautyGram - Szépségipar Szakemberei",
+    url: "https://glowyspot.com",
+    siteName: "GlowySpot",
+    title: "GlowySpot - Szépségipar Szakemberei",
     description: "Találd meg a legjobb szépségipari szakembereket Magyarországon",
   },
   robots: {
