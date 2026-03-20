@@ -1,10 +1,12 @@
 "use client"
 
+import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Home, Search, Heart, User, Plus } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useAuth } from "@/lib/auth-context"
+import { AuthModal } from "@/components/auth/auth-modal"
 
 const navItems = [
   { href: "/", label: "Feed", icon: Home },
@@ -17,8 +19,10 @@ const navItems = [
 export function BottomNav() {
   const pathname = usePathname()
   const { user } = useAuth()
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
 
   return (
+    <>
     <nav
       className="glass fixed inset-x-0 bottom-0 flex h-16 items-center justify-around rounded-none border-t border-border md:hidden"
       style={{
@@ -26,18 +30,31 @@ export function BottomNav() {
         paddingBottom: "env(safe-area-inset-bottom)",
       }}
     >
-      {navItems.map((item, index) => {
+      {navItems.map((item) => {
         if (!item) {
           // Center floating button
+          if (user) {
+            return (
+              <Link
+                key="new-post"
+                href="/salon"
+                className="relative -mt-6 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent-rose text-white shadow-lg shadow-primary/30 ring-4 ring-background transition-transform active:scale-95"
+                aria-label="Új bejegyzés létrehozása"
+              >
+                <Plus className="h-6 w-6" strokeWidth={2.5} />
+              </Link>
+            )
+          }
           return (
-            <Link
+            <button
               key="new-post"
-              href={user ? "/salon" : "/"}
+              type="button"
+              onClick={() => setIsAuthModalOpen(true)}
               className="relative -mt-6 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent-rose text-white shadow-lg shadow-primary/30 ring-4 ring-background transition-transform active:scale-95"
               aria-label="Új bejegyzés létrehozása"
             >
               <Plus className="h-6 w-6" strokeWidth={2.5} />
-            </Link>
+            </button>
           )
         }
 
@@ -62,5 +79,7 @@ export function BottomNav() {
         )
       })}
     </nav>
+    <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
+    </>
   )
 }
