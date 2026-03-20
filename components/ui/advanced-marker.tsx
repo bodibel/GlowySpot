@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useGoogleMap } from "@react-google-maps/api"
 
 interface AdvancedMarkerProps {
@@ -12,9 +12,16 @@ interface AdvancedMarkerProps {
 export function AdvancedMarker({ position, draggable, onDragEnd }: AdvancedMarkerProps) {
     const map = useGoogleMap()
     const markerRef = useRef<google.maps.marker.AdvancedMarkerElement | null>(null)
+    const [markerLibReady, setMarkerLibReady] = useState(false)
 
     useEffect(() => {
-        if (!map || !google.maps.marker?.AdvancedMarkerElement) return
+        google.maps.importLibrary("marker").then(() => {
+            setMarkerLibReady(true)
+        })
+    }, [])
+
+    useEffect(() => {
+        if (!map || !markerLibReady) return
 
         const marker = new google.maps.marker.AdvancedMarkerElement({
             map,
@@ -34,7 +41,7 @@ export function AdvancedMarker({ position, draggable, onDragEnd }: AdvancedMarke
             marker.map = null
             markerRef.current = null
         }
-    }, [map])
+    }, [map, markerLibReady])
 
     useEffect(() => {
         if (markerRef.current) {
