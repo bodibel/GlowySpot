@@ -53,6 +53,8 @@
   --color-surface-glass: rgba(42,34,64,0.6);
   --color-foreground: #f4e0e8;
   --color-primary-hover: #b4a5d6;
+  --color-primary: #b4a5d6;
+  --color-ring: #b4a5d6;
   --color-secondary: #2a2240;
   --color-secondary-foreground: #f4e0e8;
   --color-muted: #231c38;
