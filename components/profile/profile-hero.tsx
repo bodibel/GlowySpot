@@ -78,7 +78,7 @@ export function ProfileHero({ provider, onMessageClick, isOwner }: ProfileHeroPr
 
                                 <div className="flex flex-wrap gap-2">
                                     {provider.categories?.map((cat, idx) => (
-                                        <span key={idx} className="px-4 py-1.5 rounded-full bg-pink-50 text-pink-600 text-[11px] font-black uppercase tracking-widest border border-pink-100">
+                                        <span key={idx} className="px-4 py-1.5 rounded-full bg-accent text-primary text-[11px] font-black uppercase tracking-widest border border-primary/10">
                                             {CATEGORY_LABELS[cat.toLowerCase()] || cat}
                                         </span>
                                     ))}
@@ -86,7 +86,7 @@ export function ProfileHero({ provider, onMessageClick, isOwner }: ProfileHeroPr
 
                                 <div className="flex items-center gap-5 text-sm text-gray-500 font-medium">
                                     <div className="flex items-center gap-1.5">
-                                        <MapPin className="h-4 w-4 text-pink-500" />
+                                        <MapPin className="h-4 w-4 text-primary" />
                                         <span>
                                             {provider.city}
                                             {provider.district ? `, ${provider.district}` : ""}

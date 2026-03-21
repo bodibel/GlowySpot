@@ -172,7 +172,7 @@ export function ProviderDashboard() {
                                                 {salon.categories?.map((slug, idx) => {
                                                     const catName = allCategories.find(c => c.slug === slug)?.name || slug
                                                     return (
-                                                        <span key={idx} className="text-xs bg-pink-50 text-pink-600 px-2 py-1 rounded">
+                                                        <span key={idx} className="text-xs bg-accent text-primary px-2 py-1 rounded">
                                                             {catName}
                                                         </span>
                                                     )
@@ -221,7 +221,7 @@ export function ProviderDashboard() {
                                     type="button"
                                     onClick={() => toggleCategory(category.slug)}
                                     className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${salonCategories.includes(category.slug)
-                                        ? "bg-pink-100 text-pink-700 border-2 border-pink-500"
+                                        ? "bg-primary/10 text-primary border-2 border-primary"
                                         : "bg-gray-50 text-gray-700 border-2 border-gray-200 hover:bg-gray-100"
                                         }`}
                                 >
@@ -234,7 +234,7 @@ export function ProviderDashboard() {
                                 {salonCategories.map((slug) => {
                                     const catName = allCategories.find(c => c.slug === slug)?.name || slug
                                     return (
-                                        <span key={slug} className="inline-flex items-center gap-1 bg-pink-100 text-pink-700 px-2 py-1 rounded text-xs">
+                                        <span key={slug} className="inline-flex items-center gap-1 bg-primary/10 text-primary px-2 py-1 rounded text-xs">
                                             {catName}
                                             <X
                                                 className="h-3 w-3 cursor-pointer"

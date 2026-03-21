@@ -184,12 +184,12 @@ export default function MessagesPage() {
             <MainLayout showRightSidebar={false}>
                 <div className="container mx-auto p-6 flex items-center justify-center min-h-[60vh]">
                     <Card className="max-w-md w-full text-center p-8 space-y-4">
-                        <div className="bg-pink-50 rounded-full h-16 w-16 flex items-center justify-center mx-auto text-pink-500">
+                        <div className="bg-accent rounded-full h-16 w-16 flex items-center justify-center mx-auto text-primary">
                             <ShieldCheck className="h-8 w-8" />
                         </div>
                         <h2 className="text-2xl font-bold">Bejelentkezés szükséges</h2>
                         <p className="text-muted-foreground">Az üzeneteid megtekintéséhez kérlek jelentkezz be.</p>
-                        <Button className="w-full bg-pink-600 hover:bg-pink-700">Bejelentkezés</Button>
+                        <Button className="w-full bg-primary hover:bg-primary">Bejelentkezés</Button>
                     </Card>
                 </div>
             </MainLayout>
@@ -208,7 +208,7 @@ export default function MessagesPage() {
                                 <Button
                                     variant="ghost"
                                     size="sm"
-                                    className="text-xs font-bold gap-1.5 text-pink-600 bg-pink-50 hover:bg-pink-100 rounded-full px-3"
+                                    className="text-xs font-bold gap-1.5 text-primary bg-accent hover:bg-primary/10 rounded-full px-3"
                                     onClick={handleMessageAdmin}
                                 >
                                     <ShieldCheck className="h-3.5 w-3.5" />
@@ -231,7 +231,7 @@ export default function MessagesPage() {
                             <CardContent className="p-0 flex-1 overflow-y-auto">
                                 {loading ? (
                                     <div className="flex flex-col items-center justify-center py-20 gap-3">
-                                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500" />
+                                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
                                         <p className="text-sm text-gray-400">Betöltés...</p>
                                     </div>
                                 ) : filteredThreads.length > 0 ? (
@@ -242,7 +242,7 @@ export default function MessagesPage() {
                                                 onClick={() => handleSelectThread(thread.id)}
                                                 className={cn(
                                                     "w-full flex items-center gap-3 p-4 text-left transition-colors hover:bg-gray-50 group",
-                                                    activeThreadId === thread.id ? "bg-pink-50/50" : ""
+                                                    activeThreadId === thread.id ? "bg-accent/50" : ""
                                                 )}
                                             >
                                                 <div className="relative">
@@ -253,7 +253,7 @@ export default function MessagesPage() {
                                                         </AvatarFallback>
                                                     </Avatar>
                                                     {thread.unreadCount > 0 && (
-                                                        <span className="absolute -top-1 -right-1 h-5 w-5 bg-pink-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white shadow-sm">
+                                                        <span className="absolute -top-1 -right-1 h-5 w-5 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white shadow-sm">
                                                             {thread.unreadCount}
                                                         </span>
                                                     )}
@@ -334,12 +334,12 @@ export default function MessagesPage() {
                                                     className={cn(
                                                         "p-4 rounded-2xl text-sm shadow-sm",
                                                         isMine
-                                                            ? "bg-pink-600 text-white rounded-br-none"
+                                                            ? "bg-primary text-white rounded-br-none"
                                                             : "bg-white text-gray-700 border border-gray-100 rounded-bl-none"
                                                     )}
                                                 >
                                                     {msg.salon && (
-                                                        <span className="inline-block text-[9px] font-bold uppercase tracking-wider text-pink-600 bg-pink-50 px-1.5 py-0.5 rounded mb-2 mr-2 border border-pink-100/50">
+                                                        <span className="inline-block text-[9px] font-bold uppercase tracking-wider text-primary bg-accent px-1.5 py-0.5 rounded mb-2 mr-2 border border-primary/10/50">
                                                             {msg.salon.name}
                                                         </span>
                                                     )}
@@ -366,7 +366,7 @@ export default function MessagesPage() {
                                     <div className="flex items-center gap-2">
                                         <Textarea
                                             placeholder="Válasz írása..."
-                                            className="min-h-[44px] h-[44px] flex-1 resize-none bg-gray-50/50 border-transparent focus:border-pink-100 focus:bg-white rounded-xl transition-all py-3 px-4 text-sm"
+                                            className="min-h-[44px] h-[44px] flex-1 resize-none bg-gray-50/50 border-transparent focus:border-primary/10 focus:bg-white rounded-xl transition-all py-3 px-4 text-sm"
                                             value={replyContent}
                                             onChange={(e) => setReplyContent(e.target.value)}
                                             onKeyDown={(e) => {
@@ -378,7 +378,7 @@ export default function MessagesPage() {
                                         />
                                         <Button
                                             size="icon"
-                                            className="h-11 w-11 rounded-xl bg-pink-600 hover:bg-pink-700 shadow-md shadow-pink-100 transition-all active:scale-90 shrink-0"
+                                            className="h-11 w-11 rounded-xl bg-primary hover:bg-primary shadow-md shadow-primary/10 transition-all active:scale-90 shrink-0"
                                             disabled={!replyContent.trim() || sending}
                                             onClick={handleSendReply}
                                         >

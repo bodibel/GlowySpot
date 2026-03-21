@@ -348,7 +348,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                             <div className="font-medium">Admin</div>
                             <div className="text-muted-foreground text-[10px]">admin@glowyspot.com</div>
                         </div>
-                        <span className="text-pink-600 font-bold ml-2">Betöltés</span>
+                        <span className="text-primary font-bold ml-2">Betöltés</span>
                     </Button>
 
                     <Button
@@ -361,7 +361,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                             <div className="font-medium">Szolgáltató</div>
                             <div className="text-muted-foreground text-[10px]">provider1@glowyspot.com</div>
                         </div>
-                        <span className="text-pink-600 font-bold ml-2">Betöltés</span>
+                        <span className="text-primary font-bold ml-2">Betöltés</span>
                     </Button>
 
                     <Button
@@ -374,7 +374,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                             <div className="font-medium">1 Szalonos Szolg.</div>
                             <div className="text-muted-foreground text-[10px]">single_provider@glowyspot.com</div>
                         </div>
-                        <span className="text-pink-600 font-bold ml-2">Betöltés</span>
+                        <span className="text-primary font-bold ml-2">Betöltés</span>
                     </Button>
 
                     <Button
@@ -387,7 +387,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                             <div className="font-medium">Látogató</div>
                             <div className="text-muted-foreground text-[10px]">visitor1@glowyspot.com</div>
                         </div>
-                        <span className="text-pink-600 font-bold ml-2">Betöltés</span>
+                        <span className="text-primary font-bold ml-2">Betöltés</span>
                     </Button>
                 </div>
             </div>

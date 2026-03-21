@@ -82,7 +82,7 @@ export function FavoriteButton({
                 size={size}
                 className={cn(
                     "transition-all duration-300",
-                    isFavorite ? "text-pink-600 bg-pink-50 hover:bg-pink-100 hover:text-pink-700" : "text-gray-400 hover:text-pink-500 hover:bg-pink-50",
+                    isFavorite ? "text-primary bg-accent hover:bg-primary/10 hover:text-primary" : "text-gray-400 hover:text-primary hover:bg-accent",
                     className
                 )}
                 onClick={handleToggle}

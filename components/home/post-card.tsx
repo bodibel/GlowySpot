@@ -32,7 +32,7 @@ export function PostCard({ id, author, images, content, likes, comments }: PostC
                     <Image src={author.avatar || "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=100&q=80"} alt={author.name} fill className="object-cover" sizes="40px" />
                 </div>
                 <div className="flex flex-col">
-                    <span className="font-semibold cursor-pointer hover:text-pink-600" onClick={() => window.location.href = `/profile/${author.id}`}>{author.name}</span>
+                    <span className="font-semibold cursor-pointer hover:text-primary" onClick={() => window.location.href = `/profile/${author.id}`}>{author.name}</span>
                     <span className="text-xs text-muted-foreground">{author.role}</span>
                 </div>
             </CardHeader>
@@ -74,7 +74,7 @@ export function PostCard({ id, author, images, content, likes, comments }: PostC
             </div>
             <CardContent className="p-4">
                 <div className="flex items-center gap-4 mb-2">
-                    <Button variant="ghost" size="icon" className={`hover:text-pink-600 ${isLiked ? "text-pink-600" : ""}`} onClick={() => setIsLiked(!isLiked)}>
+                    <Button variant="ghost" size="icon" className={`hover:text-primary ${isLiked ? "text-primary" : ""}`} onClick={() => setIsLiked(!isLiked)}>
                         <Heart className={`h-6 w-6 ${isLiked ? "fill-current" : ""}`} />
                     </Button>
                     <Button variant="ghost" size="icon" className="hover:text-blue-600">

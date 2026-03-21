@@ -17,7 +17,7 @@ export function PortfolioVibeWidget() {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <h3 className="font-bold text-xl text-gray-900">Portfolio Manager</h3>
-                <span className="bg-pink-100 text-pink-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">New Upload</span>
+                <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">New Upload</span>
             </div>
 
             <div className="rounded-3xl bg-white p-6 shadow-sm border border-gray-100">
@@ -37,10 +37,10 @@ export function PortfolioVibeWidget() {
                             <Image src={src} alt="Portfolio" fill className="object-cover" />
                         </div>
                     ))}
-                    <button className="flex items-center justify-center aspect-square rounded-xl border-2 border-dashed border-gray-200 text-gray-400 hover:border-pink-300 hover:text-pink-500 hover:bg-pink-50 transition-colors">
+                    <button className="flex items-center justify-center aspect-square rounded-xl border-2 border-dashed border-gray-200 text-gray-400 hover:border-primary/30 hover:text-primary hover:bg-accent transition-colors">
                         <Plus className="h-6 w-6" />
                     </button>
-                    <button className="flex items-center justify-center aspect-square rounded-xl border-2 border-dashed border-gray-200 text-pink-400 bg-pink-50/50 hover:bg-pink-100 transition-colors">
+                    <button className="flex items-center justify-center aspect-square rounded-xl border-2 border-dashed border-gray-200 text-primary/70 bg-accent/50 hover:bg-primary/10 transition-colors">
                         <Wand2 className="h-6 w-6" />
                     </button>
                 </div>

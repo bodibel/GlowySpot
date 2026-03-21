@@ -18,7 +18,7 @@ export function StoryBar() {
             <div className="flex gap-4">
                 {stories.map((story, i) => (
                     <div key={i} className="flex flex-col items-center gap-2 min-w-[72px] cursor-pointer group">
-                        <div className={`relative h-[72px] w-[72px] rounded-full p-[3px] ${story.isUser ? "border-2 border-dashed border-gray-300" : "bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-500"}`}>
+                        <div className={`relative h-[72px] w-[72px] rounded-full p-[3px] ${story.isUser ? "border-2 border-dashed border-gray-300" : "bg-gradient-to-tr from-yellow-400 via-primary to-purple-500"}`}>
                             <div className="relative h-full w-full rounded-full border-2 border-white bg-white overflow-hidden">
                                 {story.isUser ? (
                                     <div className="h-full w-full flex items-center justify-center bg-gray-50 text-gray-400 group-hover:bg-gray-100">

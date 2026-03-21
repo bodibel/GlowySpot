@@ -1,28 +1,34 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { 
-    getAllUsers, 
-    updateUserAdmin, 
-    deleteUserAdmin, 
-    toggleUserRole 
+import {
+    getAllUsers,
+    updateUserAdmin,
+    deleteUserAdmin,
+    toggleUserRole,
+    toggleUserActiveAdmin
 } from "@/lib/actions/user"
-import { 
-    Edit2, 
-    Trash2, 
-    RefreshCw, 
+import {
+    Edit2,
+    Trash2,
+    RefreshCw,
     Search,
     User as UserIcon,
     Mail,
-    Calendar,
     BadgeCheck,
-    MoreVertical,
-    Check,
+    ChevronDown,
+    ChevronUp,
+    Shield,
+    ShieldOff,
+    Store,
     X,
-    UserCircle
+    Check,
+    UserCog,
+    Power,
+    PowerOff
 } from "lucide-react"
 import { toast } from "sonner"
 import {
@@ -41,8 +47,6 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
-import { format } from "date-fns"
-import { hu } from "date-fns/locale"
 
 interface UserManagerProps {
     filterRole?: string;
@@ -54,9 +58,11 @@ export function UserManager({ filterRole, title, description }: UserManagerProps
     const [users, setUsers] = useState<any[]>([])
     const [loading, setLoading] = useState(true)
     const [searchQuery, setSearchQuery] = useState("")
+    const [expandedUserId, setExpandedUserId] = useState<string | null>(null)
     const [isEditModalOpen, setIsEditModalOpen] = useState(false)
     const [selectedUser, setSelectedUser] = useState<any>(null)
     const [editData, setEditData] = useState({ name: "", email: "", role: "" })
+    const [actionLoading, setActionLoading] = useState<string | null>(null)
 
     const loadUsers = async () => {
         setLoading(true)
@@ -75,11 +81,15 @@ export function UserManager({ filterRole, title, description }: UserManagerProps
 
     const filteredUsers = users.filter(user => {
         const matchesRole = !filterRole || user.role === filterRole
-        const matchesSearch = 
-            (user.name?.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        const matchesSearch =
+            (user.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
              user.email?.toLowerCase().includes(searchQuery.toLowerCase()))
         return matchesRole && matchesSearch
     })
+
+    const handleRowClick = (userId: string) => {
+        setExpandedUserId(expandedUserId === userId ? null : userId)
+    }
 
     const handleEdit = (user: any) => {
         setSelectedUser(user)
@@ -93,7 +103,7 @@ export function UserManager({ filterRole, title, description }: UserManagerProps
 
     const handleUpdate = async () => {
         if (!selectedUser) return
-
+        setActionLoading("edit")
         const result = await updateUserAdmin(selectedUser.id, editData)
         if (result.success) {
             toast.success("Felhasználó frissítve")
@@ -102,29 +112,74 @@ export function UserManager({ filterRole, title, description }: UserManagerProps
         } else {
             toast.error(result.error)
         }
+        setActionLoading(null)
     }
 
-    const handleDelete = async (userId: string) => {
-        if (!confirm("Biztosan törölni szeretnéd ezt a felhasználót? Ez a művelet nem visszavonható!")) return
+    const handleDelete = async (userId: string, userName: string) => {
+        if (!confirm(`Biztosan törölni szeretnéd "${userName || "Névtelen"}" felhasználót?\n\nEz a művelet NEM visszavonható! A felhasználó összes adata (szalonok, posztok, foglalások, értékelések) véglegesen törlődik.`)) return
 
+        setActionLoading(userId)
         const result = await deleteUserAdmin(userId)
         if (result.success) {
-            toast.success("Felhasználó törölve")
+            toast.success("Felhasználó véglegesen törölve")
+            setExpandedUserId(null)
             loadUsers()
         } else {
             toast.error(result.error)
         }
+        setActionLoading(null)
     }
 
     const handleToggleRole = async (userId: string) => {
+        setActionLoading(userId)
         const result = await toggleUserRole(userId)
         if (result.success) {
-            toast.success(`Szerepkör módosítva erre: ${result.newRole === 'provider' ? 'Szolgáltató' : 'Látogató'}`)
+            toast.success(`Szerepkör módosítva: ${result.newRole === 'provider' ? 'Szolgáltató' : 'Látogató'}`)
             loadUsers()
         } else {
             toast.error(result.error)
         }
+        setActionLoading(null)
     }
+
+    const handleToggleActive = async (userId: string, isCurrentlyActive: boolean) => {
+        const action = isCurrentlyActive ? "deaktiválni" : "aktiválni"
+        if (!confirm(`Biztosan szeretnéd ${action} ezt a fiókot?${isCurrentlyActive ? "\n\nA felhasználó szalonjai és posztjai is deaktiválódnak." : ""}`)) return
+
+        setActionLoading(userId)
+        const result = await toggleUserActiveAdmin(userId)
+        if (result.success) {
+            toast.success(result.isActive ? "Fiók aktiválva" : "Fiók deaktiválva")
+            loadUsers()
+        } else {
+            toast.error(result.error)
+        }
+        setActionLoading(null)
+    }
+
+    const getRoleBadge = (role: string) => {
+        const styles = {
+            admin: "bg-blue-100 text-blue-700",
+            provider: "bg-primary/10 text-primary",
+            visitor: "bg-gray-100 text-gray-700"
+        }
+        const labels = {
+            admin: "Admin",
+            provider: "Szolgáltató",
+            visitor: "Látogató"
+        }
+        return (
+            <span className={`text-[11px] font-semibold uppercase py-0.5 px-2.5 rounded-full ${styles[role as keyof typeof styles] || styles.visitor}`}>
+                {labels[role as keyof typeof labels] || role}
+            </span>
+        )
+    }
+
+    const getStatusBadge = (isActive: boolean) => (
+        <span className={`text-[11px] font-semibold py-0.5 px-2.5 rounded-full ${isActive ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
+            {isActive ? "Aktív" : "Inaktív"}
+        </span>
+    )
 
     return (
         <div className="space-y-6">
@@ -132,11 +187,12 @@ export function UserManager({ filterRole, title, description }: UserManagerProps
                 <div>
                     <h2 className="text-2xl font-bold">{title}</h2>
                     <p className="text-sm text-muted-foreground">{description}</p>
+                    <p className="text-xs text-muted-foreground mt-1">{filteredUsers.length} felhasználó</p>
                 </div>
-                <div className="relative w-full md:w-64">
+                <div className="relative w-full md:w-72">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input 
-                        placeholder="Keresés..." 
+                    <Input
+                        placeholder="Keresés név vagy email alapján..."
                         className="pl-10"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
@@ -156,89 +212,168 @@ export function UserManager({ filterRole, title, description }: UserManagerProps
                                 Nincs találat a megadott feltételekkel.
                             </div>
                         ) : (
-                            filteredUsers.map((user) => (
-                                <div key={user.id} className="flex flex-col md:flex-row md:items-center justify-between p-4 hover:bg-gray-50/50 transition-colors gap-4">
-                                    <div className="flex items-center gap-4">
-                                        <div className="h-10 w-10 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center font-bold text-lg overflow-hidden shrink-0">
-                                            {user.image ? (
-                                                <img src={user.image} alt={user.name || ""} className="h-full w-full object-cover" />
-                                            ) : (
-                                                user.name?.charAt(0) || <UserIcon size={20} />
-                                            )}
-                                        </div>
-                                        <div>
-                                            <div className="font-semibold flex items-center gap-2">
-                                                {user.name || "Névtelen"}
-                                                {user.role === "admin" && <BadgeCheck className="h-4 w-4 text-blue-500" />}
-                                            </div>
-                                            <div className="text-sm text-muted-foreground flex items-center gap-2">
-                                                <Mail size={12} /> {user.email}
-                                            </div>
-                                            <div className="text-[10px] text-muted-foreground flex items-center gap-2 mt-1">
-                                                <Calendar size={10} /> 
-                                                Regisztrált: {user.createdAt ? format(new Date(user.createdAt), 'yyyy. MMMM d.', { locale: hu }) : "Ismeretlen"}
-                                            </div>
-                                        </div>
-                                    </div>
+                            filteredUsers.map((user) => {
+                                const isExpanded = expandedUserId === user.id
+                                const isDisabled = actionLoading === user.id
 
-                                    <div className="flex items-center justify-end gap-2 px-4 md:px-0">
-                                        <div className="hidden lg:block text-right mr-4">
-                                            <div className={`text-[10px] font-bold uppercase py-0.5 px-2 rounded-full inline-block ${
-                                                user.role === 'admin' ? 'bg-blue-100 text-blue-700' :
-                                                user.role === 'provider' ? 'bg-pink-100 text-pink-700' :
-                                                'bg-gray-100 text-gray-700'
-                                            }`}>
-                                                {user.role === 'admin' ? 'Admin' : 
-                                                 user.role === 'provider' ? 'Szolgáltató' : 'Látogató'}
-                                            </div>
-                                            {user.role === 'provider' && user.salons?.length > 0 && (
-                                                <div className="text-[10px] text-muted-foreground mt-0.5">
-                                                    {user.salons.length} szalon
+                                return (
+                                    <div key={user.id} className={`transition-colors ${!user.isActive ? "bg-red-50/40" : ""}`}>
+                                        {/* Row */}
+                                        <div
+                                            className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50/80 transition-colors"
+                                            onClick={() => handleRowClick(user.id)}
+                                        >
+                                            <div className="flex items-center gap-4 min-w-0">
+                                                <div className={`h-10 w-10 rounded-full flex items-center justify-center font-bold text-lg overflow-hidden shrink-0 ${user.isActive ? "bg-primary/10 text-primary" : "bg-gray-200 text-gray-400"}`}>
+                                                    {user.image ? (
+                                                        <img src={user.image} alt={user.name || ""} className="h-full w-full object-cover" />
+                                                    ) : (
+                                                        user.name?.charAt(0)?.toUpperCase() || <UserIcon size={20} />
+                                                    )}
                                                 </div>
-                                            )}
+                                                <div className="min-w-0">
+                                                    <div className="font-semibold flex items-center gap-2 truncate">
+                                                        {user.name || "Névtelen"}
+                                                        {user.role === "admin" && <BadgeCheck className="h-4 w-4 text-blue-500 shrink-0" />}
+                                                        {!user.isActive && <span className="text-[10px] text-red-500 font-normal">(inaktív)</span>}
+                                                    </div>
+                                                    <div className="text-sm text-muted-foreground truncate">
+                                                        {user.email}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="flex items-center gap-3 shrink-0 ml-4">
+                                                <div className="hidden md:flex items-center gap-2">
+                                                    {getRoleBadge(user.role)}
+                                                    {getStatusBadge(user.isActive)}
+                                                </div>
+                                                {isExpanded ? (
+                                                    <ChevronUp className="h-5 w-5 text-muted-foreground" />
+                                                ) : (
+                                                    <ChevronDown className="h-5 w-5 text-muted-foreground" />
+                                                )}
+                                            </div>
                                         </div>
 
-                                        <div className="flex items-center gap-1">
-                                            <Button 
-                                                variant="outline" 
-                                                size="icon" 
-                                                className="h-8 w-8"
-                                                onClick={() => handleEdit(user)}
-                                                title="Szerkesztés"
-                                            >
-                                                <Edit2 className="h-4 w-4" />
-                                            </Button>
-                                            
-                                            {user.role !== 'admin' && (
-                                                <Button 
-                                                    variant="outline" 
-                                                    size="icon" 
-                                                    className="h-8 w-8 text-blue-600 border-blue-100 hover:bg-blue-50"
-                                                    onClick={() => handleToggleRole(user.id)}
-                                                    title={`Váltás ${user.role === 'visitor' ? 'Szolgáltatóra' : 'Látogatóra'}`}
-                                                >
-                                                    <RefreshCw className="h-4 w-4" />
-                                                </Button>
-                                            )}
+                                        {/* Expanded Detail */}
+                                        {isExpanded && (
+                                            <div className="px-4 pb-4 border-t bg-gray-50/50">
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+                                                    {/* User info */}
+                                                    <div className="space-y-3">
+                                                        <h4 className="font-semibold text-sm text-muted-foreground uppercase tracking-wide">Felhasználó adatai</h4>
+                                                        <div className="space-y-2 text-sm">
+                                                            <div className="flex items-center gap-2">
+                                                                <UserIcon className="h-4 w-4 text-muted-foreground shrink-0" />
+                                                                <span className="font-medium">Név:</span> {user.name || "Nincs megadva"}
+                                                            </div>
+                                                            <div className="flex items-center gap-2">
+                                                                <Mail className="h-4 w-4 text-muted-foreground shrink-0" />
+                                                                <span className="font-medium">Email:</span> {user.email}
+                                                            </div>
+                                                            <div className="flex items-center gap-2">
+                                                                <UserCog className="h-4 w-4 text-muted-foreground shrink-0" />
+                                                                <span className="font-medium">Szerepkör:</span> {getRoleBadge(user.role)}
+                                                            </div>
+                                                            <div className="flex items-center gap-2">
+                                                                <Power className="h-4 w-4 text-muted-foreground shrink-0" />
+                                                                <span className="font-medium">Státusz:</span> {getStatusBadge(user.isActive)}
+                                                            </div>
+                                                            {user.salons?.length > 0 && (
+                                                                <div className="flex items-start gap-2">
+                                                                    <Store className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
+                                                                    <div>
+                                                                        <span className="font-medium">Szalonok ({user.salons.length}):</span>
+                                                                        <ul className="mt-1 space-y-0.5">
+                                                                            {user.salons.map((salon: any) => (
+                                                                                <li key={salon.id} className="text-muted-foreground">• {salon.name}</li>
+                                                                            ))}
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </div>
 
-                                            <Button 
-                                                variant="outline" 
-                                                size="icon" 
-                                                className="h-8 w-8 text-red-600 border-red-100 hover:bg-red-50"
-                                                onClick={() => handleDelete(user.id)}
-                                                title="Törlés"
-                                            >
-                                                <Trash2 className="h-4 w-4" />
-                                            </Button>
-                                        </div>
+                                                    {/* Actions */}
+                                                    <div className="space-y-3">
+                                                        <h4 className="font-semibold text-sm text-muted-foreground uppercase tracking-wide">Műveletek</h4>
+                                                        <div className="space-y-2">
+                                                            <Button
+                                                                variant="outline"
+                                                                className="w-full justify-start gap-2"
+                                                                onClick={() => handleEdit(user)}
+                                                                disabled={isDisabled}
+                                                            >
+                                                                <Edit2 className="h-4 w-4" />
+                                                                Adatok szerkesztése
+                                                            </Button>
+
+                                                            {user.role !== "admin" && (
+                                                                <Button
+                                                                    variant="outline"
+                                                                    className="w-full justify-start gap-2 text-blue-600 border-blue-200 hover:bg-blue-50"
+                                                                    onClick={() => handleToggleRole(user.id)}
+                                                                    disabled={isDisabled}
+                                                                >
+                                                                    <RefreshCw className="h-4 w-4" />
+                                                                    {user.role === "visitor" ? "Szolgáltatóvá alakítás" : "Látogatóvá alakítás"}
+                                                                </Button>
+                                                            )}
+
+                                                            {user.role !== "admin" && (
+                                                                <Button
+                                                                    variant="outline"
+                                                                    className={`w-full justify-start gap-2 ${user.isActive ? "text-orange-600 border-orange-200 hover:bg-orange-50" : "text-green-600 border-green-200 hover:bg-green-50"}`}
+                                                                    onClick={() => handleToggleActive(user.id, user.isActive)}
+                                                                    disabled={isDisabled}
+                                                                >
+                                                                    {user.isActive ? (
+                                                                        <>
+                                                                            <PowerOff className="h-4 w-4" />
+                                                                            Fiók deaktiválása
+                                                                        </>
+                                                                    ) : (
+                                                                        <>
+                                                                            <Power className="h-4 w-4" />
+                                                                            Fiók aktiválása
+                                                                        </>
+                                                                    )}
+                                                                </Button>
+                                                            )}
+
+                                                            {user.role !== "admin" && (
+                                                                <Button
+                                                                    variant="outline"
+                                                                    className="w-full justify-start gap-2 text-red-600 border-red-200 hover:bg-red-50"
+                                                                    onClick={() => handleDelete(user.id, user.name)}
+                                                                    disabled={isDisabled}
+                                                                >
+                                                                    <Trash2 className="h-4 w-4" />
+                                                                    Felhasználó végleges törlése
+                                                                </Button>
+                                                            )}
+
+                                                            {user.role === "admin" && (
+                                                                <p className="text-xs text-muted-foreground italic px-1">
+                                                                    Admin fiók nem módosítható innen.
+                                                                </p>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
-                                </div>
-                            ))
+                                )
+                            })
                         )}
                     </div>
                 </CardContent>
             </Card>
 
+            {/* Edit Modal */}
             <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
                 <DialogContent>
                     <DialogHeader>
@@ -250,25 +385,25 @@ export function UserManager({ filterRole, title, description }: UserManagerProps
                     <div className="space-y-4 py-4">
                         <div className="space-y-2">
                             <Label htmlFor="name">Név</Label>
-                            <Input 
-                                id="name" 
-                                value={editData.name} 
+                            <Input
+                                id="name"
+                                value={editData.name}
                                 onChange={(e) => setEditData({...editData, name: e.target.value})}
                             />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
-                            <Input 
-                                id="email" 
+                            <Input
+                                id="email"
                                 type="email"
-                                value={editData.email} 
+                                value={editData.email}
                                 onChange={(e) => setEditData({...editData, email: e.target.value})}
                             />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="role">Szerepkör</Label>
-                            <Select 
-                                value={editData.role} 
+                            <Select
+                                value={editData.role}
                                 onValueChange={(value) => setEditData({...editData, role: value})}
                             >
                                 <SelectTrigger>
@@ -284,7 +419,13 @@ export function UserManager({ filterRole, title, description }: UserManagerProps
                     </div>
                     <DialogFooter>
                         <Button variant="outline" onClick={() => setIsEditModalOpen(false)}>Mégse</Button>
-                        <Button onClick={handleUpdate} className="bg-pink-600 hover:bg-pink-700">Mentés</Button>
+                        <Button
+                            onClick={handleUpdate}
+                            className="bg-primary hover:bg-primary"
+                            disabled={actionLoading === "edit"}
+                        >
+                            {actionLoading === "edit" ? "Mentés..." : "Mentés"}
+                        </Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>

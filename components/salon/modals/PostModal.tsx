@@ -134,7 +134,7 @@ export function PostModal({
                     <div className="space-y-2">
                         <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Bejegyzés szövege *</label>
                         <textarea
-                            className="w-full rounded-2xl border border-gray-100 bg-gray-50 px-4 py-3 text-sm min-h-[120px] focus:bg-white focus:ring-2 focus:ring-pink-500/20 transition-all outline-none"
+                            className="w-full rounded-2xl border border-gray-100 bg-gray-50 px-4 py-3 text-sm min-h-[120px] focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all outline-none"
                             placeholder="Írd le, mit szeretnél megosztani..."
                             value={content}
                             onChange={(e) => setContent(e.target.value)}
@@ -161,9 +161,9 @@ export function PostModal({
                             ))}
 
                             {files.length < 10 && (
-                                <label className="flex flex-col items-center justify-center aspect-square border-2 border-dashed border-gray-200 rounded-2xl cursor-pointer hover:bg-pink-50 hover:border-pink-200 transition-all group">
-                                    <ImagePlus className="w-6 h-6 mb-2 text-gray-400 group-hover:text-pink-500" />
-                                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest group-hover:text-pink-600">Hozzáadás</span>
+                                <label className="flex flex-col items-center justify-center aspect-square border-2 border-dashed border-gray-200 rounded-2xl cursor-pointer hover:bg-accent hover:border-primary/20 transition-all group">
+                                    <ImagePlus className="w-6 h-6 mb-2 text-gray-400 group-hover:text-primary" />
+                                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest group-hover:text-primary">Hozzáadás</span>
                                     <input type="file" className="hidden" accept="image/*" multiple onChange={handleImageChange} />
                                 </label>
                             )}
@@ -182,7 +182,7 @@ export function PostModal({
                                         className={cn(
                                             "flex flex-col items-center gap-2 p-3 rounded-2xl border transition-all",
                                             layout === l.id
-                                                ? "bg-pink-50 border-pink-200 text-pink-600 shadow-sm"
+                                                ? "bg-accent border-primary/20 text-primary shadow-sm"
                                                 : "border-gray-100 hover:bg-gray-50 text-gray-500"
                                         )}
                                     >
@@ -198,7 +198,7 @@ export function PostModal({
                         <Button type="button" variant="ghost" onClick={handleClose} disabled={isUploading} className="rounded-xl font-bold">
                             Mégse
                         </Button>
-                        <Button type="submit" disabled={isUploading || !content.trim()} className="min-w-[140px] rounded-xl bg-pink-600 hover:bg-pink-700 font-bold shadow-lg shadow-pink-100">
+                        <Button type="submit" disabled={isUploading || !content.trim()} className="min-w-[140px] rounded-xl bg-primary hover:bg-primary font-bold shadow-lg shadow-primary/10">
                             {isUploading ? (
                                 <>
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />

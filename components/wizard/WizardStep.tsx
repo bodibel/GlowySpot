@@ -14,7 +14,7 @@ export function WizardStep({ title, description, tips, children, isWelcome }: Wi
     if (isWelcome) {
         return (
             <div className="flex flex-col items-center justify-center text-center py-12 px-8">
-                <div className="w-20 h-20 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center mb-6">
+                <div className="w-20 h-20 bg-gradient-to-br from-primary to-purple-600 rounded-full flex items-center justify-center mb-6">
                     <span className="text-4xl">✨</span>
                 </div>
                 <h2 className="text-3xl font-bold text-gray-900 mb-4">{title}</h2>
@@ -31,9 +31,9 @@ export function WizardStep({ title, description, tips, children, isWelcome }: Wi
                 <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
                 <p className="text-gray-600 leading-relaxed">{description}</p>
                 {tips && tips.length > 0 && (
-                    <div className="bg-pink-50 rounded-xl p-4 border border-pink-100">
-                        <h4 className="font-semibold text-pink-700 mb-2 text-sm">💡 Tippek</h4>
-                        <ul className="text-sm text-pink-600 space-y-1">
+                    <div className="bg-accent rounded-xl p-4 border border-primary/10">
+                        <h4 className="font-semibold text-primary mb-2 text-sm">💡 Tippek</h4>
+                        <ul className="text-sm text-primary space-y-1">
                             {tips.map((tip, i) => (
                                 <li key={i}>• {tip}</li>
                             ))}

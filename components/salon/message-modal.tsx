@@ -65,13 +65,13 @@ export function MessageModal({ isOpen, onClose, receiverId, receiverName, salonI
                     <DialogContent className="sm:max-w-md">
                         <DialogHeader>
                             <DialogTitle className="flex items-center gap-2">
-                                <MessageCircle className="h-5 w-5 text-pink-500" />
+                                <MessageCircle className="h-5 w-5 text-primary" />
                                 Üzenet küldése
                             </DialogTitle>
                         </DialogHeader>
                         <div className="py-8 text-center space-y-4">
-                            <div className="bg-pink-50 rounded-full h-16 w-16 flex items-center justify-center mx-auto">
-                                <MessageCircle className="h-8 w-8 text-pink-500" />
+                            <div className="bg-accent rounded-full h-16 w-16 flex items-center justify-center mx-auto">
+                                <MessageCircle className="h-8 w-8 text-primary" />
                             </div>
                             <div className="space-y-2">
                                 <h3 className="font-bold text-lg text-gray-900">Bejelentkezés szükséges</h3>
@@ -82,7 +82,7 @@ export function MessageModal({ isOpen, onClose, receiverId, receiverName, salonI
                             <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
                                 <Button
                                     onClick={() => setIsAuthModalOpen(true)}
-                                    className="bg-pink-600 hover:bg-pink-700 text-white"
+                                    className="bg-primary hover:bg-primary text-white"
                                 >
                                     <LogIn className="h-4 w-4 mr-2" />
                                     Bejelentkezés

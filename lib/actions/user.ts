@@ -169,6 +169,75 @@ export async function deleteUserAdmin(userId: string) {
     }
 }
 
+export async function toggleUserActiveAdmin(userId: string) {
+    if (!(await isAdmin())) {
+        return { success: false, error: "Unauthorized" }
+    }
+
+    try {
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: { isActive: true }
+        })
+
+        if (!user) return { success: false, error: "Felhasználó nem található." }
+
+        const now = new Date()
+        if (user.isActive) {
+            await prisma.$transaction(async (tx) => {
+                await tx.user.update({
+                    where: { id: userId },
+                    data: { isActive: false, inactivatedAt: now }
+                })
+                await tx.salon.updateMany({
+                    where: { ownerId: userId, isActive: true },
+                    data: { isActive: false, inactivatedAt: now }
+                })
+                const salons = await tx.salon.findMany({
+                    where: { ownerId: userId },
+                    select: { id: true }
+                })
+                const salonIds = salons.map(s => s.id)
+                if (salonIds.length > 0) {
+                    await tx.post.updateMany({
+                        where: { salonId: { in: salonIds } },
+                        data: { isActive: false, inactivatedAt: now }
+                    })
+                }
+            })
+        } else {
+            await prisma.$transaction(async (tx) => {
+                await tx.user.update({
+                    where: { id: userId },
+                    data: { isActive: true, inactivatedAt: null }
+                })
+                await tx.salon.updateMany({
+                    where: { ownerId: userId, inactivatedAt: { not: null } },
+                    data: { isActive: true, inactivatedAt: null }
+                })
+                const salons = await tx.salon.findMany({
+                    where: { ownerId: userId },
+                    select: { id: true }
+                })
+                const salonIds = salons.map(s => s.id)
+                if (salonIds.length > 0) {
+                    await tx.post.updateMany({
+                        where: { salonId: { in: salonIds }, inactivatedAt: { not: null } },
+                        data: { isActive: true, inactivatedAt: null }
+                    })
+                }
+            })
+        }
+
+        revalidatePath("/dashboard/admin/visitors")
+        revalidatePath("/dashboard/admin/providers")
+        return { success: true, isActive: !user.isActive }
+    } catch (error) {
+        console.error("Error toggling user active status:", error)
+        return { success: false, error: "Nem sikerült a fiók státuszának módosítása." }
+    }
+}
+
 export async function toggleUserRole(userId: string) {
     if (!(await isAdmin())) {
         return { success: false, error: "Unauthorized" }

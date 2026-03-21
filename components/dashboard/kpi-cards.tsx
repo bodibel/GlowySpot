@@ -9,7 +9,7 @@ export function KpiCards() {
             <div className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-gray-100/50 transition-all hover:shadow-md">
                 <div className="flex items-center justify-between mb-4">
                     <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Bookings Today</span>
-                    <div className="p-2 rounded-xl bg-pink-50 text-pink-600">
+                    <div className="p-2 rounded-xl bg-accent text-primary">
                         <Calendar className="h-5 w-5" />
                     </div>
                 </div>
@@ -20,7 +20,7 @@ export function KpiCards() {
                 {/* Mini Chart Mockup */}
                 <div className="mt-4 flex items-end gap-1 h-8">
                     {[40, 60, 45, 70, 50, 60, 80].map((h, i) => (
-                        <div key={i} style={{ height: `${h}%` }} className={`flex-1 rounded-sm ${i === 6 ? "bg-pink-500" : "bg-pink-100"}`} />
+                        <div key={i} style={{ height: `${h}%` }} className={`flex-1 rounded-sm ${i === 6 ? "bg-primary" : "bg-primary/10"}`} />
                     ))}
                 </div>
             </div>
@@ -29,7 +29,7 @@ export function KpiCards() {
             <div className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-gray-100/50 transition-all hover:shadow-md">
                 <div className="flex items-center justify-between mb-4">
                     <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Monthly Revenue</span>
-                    <div className="p-2 rounded-xl bg-pink-50 text-pink-600">
+                    <div className="p-2 rounded-xl bg-accent text-primary">
                         <DollarSign className="h-5 w-5" />
                     </div>
                 </div>
@@ -40,7 +40,7 @@ export function KpiCards() {
                     </span>
                 </div>
                 {/* Sparkline Mockup */}
-                <svg className="w-full h-10 mt-3 text-pink-500" viewBox="0 0 100 40" preserveAspectRatio="none">
+                <svg className="w-full h-10 mt-3 text-primary" viewBox="0 0 100 40" preserveAspectRatio="none">
                     <path d="M0,35 C20,35 20,10 40,25 C60,40 60,5 100,20" stroke="currentColor" strokeWidth="2" fill="none" />
                 </svg>
             </div>
@@ -49,7 +49,7 @@ export function KpiCards() {
             <div className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-gray-100/50 transition-all hover:shadow-md">
                 <div className="flex items-center justify-between mb-4">
                     <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Profile Reach</span>
-                    <div className="p-2 rounded-xl bg-pink-50 text-pink-600">
+                    <div className="p-2 rounded-xl bg-accent text-primary">
                         <Eye className="h-5 w-5" />
                     </div>
                 </div>
@@ -59,7 +59,7 @@ export function KpiCards() {
                 </div>
                 <div className="mt-4 flex items-end gap-1 h-8">
                     {[30, 40, 35, 50, 45, 60, 65].map((h, i) => (
-                        <div key={i} style={{ height: `${h}%` }} className={`flex-1 rounded-sm ${i === 6 ? "bg-pink-500" : "bg-gray-100"}`} />
+                        <div key={i} style={{ height: `${h}%` }} className={`flex-1 rounded-sm ${i === 6 ? "bg-primary" : "bg-gray-100"}`} />
                     ))}
                 </div>
             </div>

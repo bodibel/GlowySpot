@@ -89,7 +89,7 @@ export function ReviewModal({ isOpen, onClose, salonId, userId, onSuccess }: Rev
                             value={comment}
                             onChange={(e) => setComment(e.target.value)}
                             placeholder="Írd meg a véleményed..."
-                            className="w-full min-h-[120px] rounded-2xl bg-gray-50 border-none p-4 text-sm focus:ring-2 focus:ring-pink-100 transition-all resize-none placeholder:text-gray-400"
+                            className="w-full min-h-[120px] rounded-2xl bg-gray-50 border-none p-4 text-sm focus:ring-2 focus:ring-primary/10 transition-all resize-none placeholder:text-gray-400"
                             disabled={isSubmitting}
                         />
                     </div>
@@ -106,7 +106,7 @@ export function ReviewModal({ isOpen, onClose, salonId, userId, onSuccess }: Rev
                         </Button>
                         <Button
                             type="submit"
-                            className="flex-1 rounded-xl h-12 font-bold bg-pink-600 hover:bg-pink-700 text-white shadow-lg shadow-pink-100"
+                            className="flex-1 rounded-xl h-12 font-bold bg-primary hover:bg-primary text-white shadow-lg shadow-primary/10"
                             disabled={isSubmitting}
                         >
                             {isSubmitting ? (

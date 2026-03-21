@@ -17,7 +17,7 @@ export function HeroBanner() {
                 </span>
                 <h2 className="text-2xl font-bold leading-tight sm:text-3xl md:text-4xl font-serif">
                     Prémium Élmény: <br />
-                    <span className="text-pink-400">Lumière</span> Aesthetics
+                    <span className="text-primary/70">Lumière</span> Aesthetics
                 </h2>
                 <p className="text-sm text-gray-300 max-w-md">
                     Fedezd fel exkluzív arckezeléseinket és spa csomagjainkat.

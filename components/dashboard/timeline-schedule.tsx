@@ -14,19 +14,19 @@ export function TimelineSchedule() {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <h3 className="font-bold text-xl text-gray-900">Upcoming Schedule</h3>
-                <button className="text-sm font-bold text-pink-600 hover:underline">View Full Calendar</button>
+                <button className="text-sm font-bold text-primary hover:underline">View Full Calendar</button>
             </div>
 
             <div className="relative space-y-4 before:absolute before:inset-y-0 before:left-[19px] before:w-[2px] before:bg-gray-100">
                 {SCHEDULE.map((item, idx) => (
                     <div key={idx} className="relative pl-12">
                         {/* Timeline Dot */}
-                        <div className={`absolute left-0 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full border-4 border-white flex items-center justify-center ${item.active ? "bg-pink-500 text-white shadow-lg shadow-pink-200" : "bg-gray-100 text-gray-400"}`}>
+                        <div className={`absolute left-0 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full border-4 border-white flex items-center justify-center ${item.active ? "bg-primary text-white shadow-lg shadow-primary/20" : "bg-gray-100 text-gray-400"}`}>
                             <Clock className="h-4 w-4" />
                         </div>
 
                         {/* Card */}
-                        <div className={`flex items-center justify-between rounded-3xl p-5 transition-shadow ${item.active ? "bg-white shadow-md ring-1 ring-pink-500/10" : "bg-white border border-gray-100"}`}>
+                        <div className={`flex items-center justify-between rounded-3xl p-5 transition-shadow ${item.active ? "bg-white shadow-md ring-1 ring-primary/10" : "bg-white border border-gray-100"}`}>
                             <div className="flex items-center gap-4">
                                 <div className="h-12 w-12 rounded-2xl overflow-hidden bg-gray-100 relative">
                                     <Image src={item.avatar} alt={item.client} fill className="object-cover" />
@@ -34,14 +34,14 @@ export function TimelineSchedule() {
                                 <div>
                                     <div className="flex items-center gap-2 mb-1">
                                         <span className="text-sm font-bold text-gray-500">{item.time}</span>
-                                        {item.active && <span className="text-[10px] font-bold text-pink-600 bg-pink-50 px-2 py-0.5 rounded-full">ONGOING</span>}
+                                        {item.active && <span className="text-[10px] font-bold text-primary bg-accent px-2 py-0.5 rounded-full">ONGOING</span>}
                                     </div>
                                     <h4 className="font-bold text-gray-900">{item.client}</h4>
                                     <p className="text-sm text-gray-500">{item.service}</p>
                                 </div>
                             </div>
 
-                            <button className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors ${item.active ? "bg-pink-600 text-white hover:bg-pink-700 shadow-md shadow-pink-200" : "bg-gray-50 text-gray-600 hover:bg-gray-100"}`}>
+                            <button className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors ${item.active ? "bg-primary text-white hover:bg-primary shadow-md shadow-primary/20" : "bg-gray-50 text-gray-600 hover:bg-gray-100"}`}>
                                 {item.active ? "Check-In" : "Reschedule"}
                             </button>
                         </div>

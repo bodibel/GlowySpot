@@ -145,7 +145,7 @@ export function SettingsModal({ isOpen, onClose, onSave, salon }: SettingsModalP
                                 type="button"
                                 onClick={() => toggleCategory(category.slug)}
                                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${categories.includes(category.slug)
-                                    ? "bg-pink-100 text-pink-700 border-2 border-pink-500"
+                                    ? "bg-primary/10 text-primary border-2 border-primary"
                                     : "bg-gray-50 text-gray-700 border-2 border-gray-200 hover:bg-gray-100"
                                     }`}
                             >
@@ -158,7 +158,7 @@ export function SettingsModal({ isOpen, onClose, onSave, salon }: SettingsModalP
                             {categories.map((slug) => {
                                 const catName = allCategories.find(c => c.slug === slug)?.name || slug
                                 return (
-                                    <span key={slug} className="inline-flex items-center gap-1 bg-pink-100 text-pink-700 px-2 py-1 rounded text-xs">
+                                    <span key={slug} className="inline-flex items-center gap-1 bg-primary/10 text-primary px-2 py-1 rounded text-xs">
                                         {catName}
                                         <X className="h-3 w-3 cursor-pointer" onClick={() => toggleCategory(slug)} />
                                     </span>

@@ -137,7 +137,7 @@ export function CategoryModal({ isOpen, onClose, onSuccess, category }: Category
                                         type="button"
                                         onClick={() => setIcon(item.name)}
                                         className={`p-3 rounded-lg border-2 flex items-center justify-center transition-all ${icon === item.name
-                                                ? "border-pink-500 bg-pink-50 text-pink-600"
+                                                ? "border-primary bg-accent text-primary"
                                                 : "border-gray-100 hover:border-gray-200 text-gray-400"
                                             }`}
                                     >
@@ -158,7 +158,7 @@ export function CategoryModal({ isOpen, onClose, onSuccess, category }: Category
                     </div>
                     <DialogFooter>
                         <Button type="button" variant="outline" onClick={onClose}>Mégse</Button>
-                        <Button type="submit" disabled={loading} className="bg-pink-600 hover:bg-pink-700">
+                        <Button type="submit" disabled={loading} className="bg-primary hover:bg-primary">
                             {loading ? "Mentés..." : "Mentés"}
                         </Button>
                     </DialogFooter>

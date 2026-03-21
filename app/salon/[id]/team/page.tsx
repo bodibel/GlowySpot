@@ -167,7 +167,7 @@ export default function SalonTeamPage({ params }: { params: Promise<{ id: string
                     <Button
                         onClick={handleSave}
                         disabled={saving}
-                        className="bg-pink-600 hover:bg-pink-700"
+                        className="bg-primary hover:bg-primary"
                     >
                         {saving ? "Mentés..." : "Mentés"}
                     </Button>

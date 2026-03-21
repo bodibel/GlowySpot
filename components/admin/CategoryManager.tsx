@@ -84,7 +84,7 @@ export function CategoryManager() {
                     <h2 className="text-2xl font-bold">Kategóriák</h2>
                     <p className="text-sm text-muted-foreground">Kezeld a rendszerben elérhető szolgáltatási kategóriákat.</p>
                 </div>
-                <Button onClick={handleAdd} className="bg-pink-600 hover:bg-pink-700">
+                <Button onClick={handleAdd} className="bg-primary hover:bg-primary">
                     <Plus className="mr-2 h-4 w-4" />
                     Új kategória
                 </Button>
@@ -103,7 +103,7 @@ export function CategoryManager() {
                                 return (
                                     <div key={category.id} className="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors">
                                         <div className="flex items-center gap-4">
-                                            <div className={`p-2 rounded-lg ${category.isActive ? "bg-pink-50 text-pink-600" : "bg-gray-100 text-gray-400"}`}>
+                                            <div className={`p-2 rounded-lg ${category.isActive ? "bg-accent text-primary" : "bg-gray-100 text-gray-400"}`}>
                                                 <IconComp className="h-5 w-5" />
                                             </div>
                                             <div>
@@ -124,7 +124,7 @@ export function CategoryManager() {
                                                 onClick={() => handleToggleStatus(category)}
                                                 title={category.isActive ? "Elrejtés" : "Megjelenítés"}
                                             >
-                                                {category.isActive ? <EyeOff className="h-4 w-4 text-gray-500" /> : <Eye className="h-4 w-4 text-pink-600" />}
+                                                {category.isActive ? <EyeOff className="h-4 w-4 text-gray-500" /> : <Eye className="h-4 w-4 text-primary" />}
                                             </Button>
                                             <Button variant="ghost" size="sm" onClick={() => handleEdit(category)}>
                                                 <Edit2 className="h-4 w-4" />

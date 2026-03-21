@@ -127,7 +127,7 @@ export function ProfileEditModal({ isOpen, onClose, userData }: ProfileEditModal
                 <div className="pt-4 space-y-4">
                     <Button
                         type="submit"
-                        className="w-full rounded-xl h-12 bg-pink-600 hover:bg-pink-700 font-bold shadow-lg shadow-pink-200 transition-all flex items-center justify-center gap-2"
+                        className="w-full rounded-xl h-12 bg-primary hover:bg-primary font-bold shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2"
                         disabled={isSaving || success}
                     >
                         {success ? (

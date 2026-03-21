@@ -69,7 +69,7 @@ export function HoursModal({ isOpen, onClose, onSave, hours }: HoursModalProps) 
                         variant="link"
                         size="sm"
                         onClick={applyFirstDayToAll}
-                        className="text-pink-600 hover:text-pink-700 h-auto p-0 flex items-center gap-1.5"
+                        className="text-primary hover:text-primary h-auto p-0 flex items-center gap-1.5"
                     >
                         <Copy className="h-3.5 w-3.5" />
                         A hétfői beállítás másolása az összes napra
@@ -78,7 +78,7 @@ export function HoursModal({ isOpen, onClose, onSave, hours }: HoursModalProps) 
 
                 <div className="space-y-4">
                     {editingHours.map((hour, idx) => (
-                        <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl bg-gray-50/50 border border-gray-100 transition-colors hover:border-pink-100">
+                        <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl bg-gray-50/50 border border-gray-100 transition-colors hover:border-primary/10">
                             <div className="flex items-center gap-4 min-w-[120px]">
                                 <Switch
                                     id={`open-${idx}`}
@@ -137,7 +137,7 @@ export function HoursModal({ isOpen, onClose, onSave, hours }: HoursModalProps) 
                     <Button variant="outline" type="button" onClick={onClose} className="rounded-xl">
                         Mégse
                     </Button>
-                    <Button type="submit" className="rounded-xl bg-pink-600 hover:bg-pink-700 px-8">
+                    <Button type="submit" className="rounded-xl bg-primary hover:bg-primary px-8">
                         Változtatások mentése
                     </Button>
                 </div>

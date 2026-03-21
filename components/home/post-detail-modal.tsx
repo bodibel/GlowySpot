@@ -167,14 +167,14 @@ export function PostDetailModal({ isOpen, onClose, post, onLike }: PostDetailMod
                         <div className="p-6 border-b border-gray-50">
                             <div className="flex items-center justify-between mb-4">
                                 <Link href={`/profile/${post.author.id}`} className="flex items-center gap-3">
-                                    <div className="relative h-12 w-12 overflow-hidden rounded-full border-2 border-pink-100 p-0.5">
+                                    <div className="relative h-12 w-12 overflow-hidden rounded-full border-2 border-primary/10 p-0.5">
                                         <div className="relative h-full w-full rounded-full overflow-hidden">
                                             <Image src={post.author.avatar} alt={post.author.name} fill className="object-cover" />
                                         </div>
                                     </div>
                                     <div className="flex flex-col">
                                         <span className="font-bold text-gray-900 leading-tight">{post.author.name}</span>
-                                        <span className="text-xs text-pink-600 font-medium">{post.author.role}</span>
+                                        <span className="text-xs text-primary font-medium">{post.author.role}</span>
                                     </div>
                                 </Link>
                                 <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-yellow-50 text-yellow-700">
@@ -266,7 +266,7 @@ export function PostDetailModal({ isOpen, onClose, post, onLike }: PostDetailMod
                                         }}
                                         className="group flex items-center gap-1.5 transition-colors"
                                     >
-                                        <Heart className={cn("h-5 w-5 transition-transform group-hover:scale-110", isLiked ? "fill-pink-500 text-pink-500" : "text-gray-400")} />
+                                        <Heart className={cn("h-5 w-5 transition-transform group-hover:scale-110", isLiked ? "fill-primary text-primary" : "text-gray-400")} />
                                         <span className="text-xs font-bold text-gray-500">{post.likes + (isLiked && !post.isLiked ? 1 : (!isLiked && post.isLiked ? -1 : 0))}</span>
                                     </button>
                                     <div className="flex items-center gap-1.5 text-gray-400">
@@ -285,12 +285,12 @@ export function PostDetailModal({ isOpen, onClose, post, onLike }: PostDetailMod
                                         value={newComment}
                                         onChange={(e) => setNewComment(e.target.value)}
                                         disabled={isSubmitting}
-                                        className="w-full bg-gray-50 border-none rounded-2xl py-3 pl-4 pr-12 text-sm focus:ring-2 focus:ring-pink-100 transition-all placeholder:text-gray-400"
+                                        className="w-full bg-gray-50 border-none rounded-2xl py-3 pl-4 pr-12 text-sm focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-gray-400"
                                     />
                                     <button
                                         type="submit"
                                         disabled={!newComment.trim() || isSubmitting}
-                                        className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-pink-500 disabled:text-gray-300 font-bold text-sm transition-colors"
+                                        className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-primary disabled:text-gray-300 font-bold text-sm transition-colors"
                                     >
                                         Küldés
                                     </button>

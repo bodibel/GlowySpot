@@ -99,7 +99,7 @@ export function ContactSettingsCard({ salon, onSave }: ContactSettingsProps) {
                 <CardHeader className="flex flex-row items-center justify-between">
                     <div>
                         <CardTitle className="flex items-center gap-2">
-                            <Phone className="h-5 w-5 text-pink-600" />
+                            <Phone className="h-5 w-5 text-primary" />
                             Kapcsolati adatok
                         </CardTitle>
                         <CardDescription>Telefonszám és email cím beállítások</CardDescription>
@@ -302,7 +302,7 @@ export function ContactSettingsCard({ salon, onSave }: ContactSettingsProps) {
 
                     <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                         <div className="flex items-center gap-3">
-                            <BarChart3 className="h-5 w-5 text-pink-500" />
+                            <BarChart3 className="h-5 w-5 text-primary" />
                             <div>
                                 <p className="font-medium text-sm">Havi statisztika</p>
                                 <p className="text-xs text-gray-500">Összefoglaló a havi teljesítményről</p>
@@ -319,7 +319,7 @@ export function ContactSettingsCard({ salon, onSave }: ContactSettingsProps) {
                     <Button variant="outline" onClick={handleCancel}>
                         Mégse
                     </Button>
-                    <Button onClick={handleSave} disabled={saving} className="bg-pink-600 hover:bg-pink-700">
+                    <Button onClick={handleSave} disabled={saving} className="bg-primary hover:bg-primary">
                         {saving ? "Mentés..." : "Mentés"}
                     </Button>
                 </div>

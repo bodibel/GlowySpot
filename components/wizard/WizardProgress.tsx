@@ -28,9 +28,9 @@ export function WizardProgress({ currentStep, steps, onStepClick }: WizardProgre
                                     className={cn(
                                         "w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-300",
                                         index < currentStep
-                                            ? "bg-pink-600 text-white hover:bg-pink-700 cursor-pointer"
+                                            ? "bg-primary text-white hover:bg-primary cursor-pointer"
                                             : index === currentStep
-                                                ? "bg-pink-600 text-white ring-4 ring-pink-200 cursor-default"
+                                                ? "bg-primary text-white ring-4 ring-primary/20 cursor-default"
                                                 : "bg-gray-200 text-gray-500 cursor-default"
                                     )}
                                 >
@@ -43,7 +43,7 @@ export function WizardProgress({ currentStep, steps, onStepClick }: WizardProgre
                                 <span
                                     className={cn(
                                         "absolute -bottom-6 text-xs font-medium whitespace-nowrap",
-                                        index <= currentStep ? "text-pink-600" : "text-gray-400",
+                                        index <= currentStep ? "text-primary" : "text-gray-400",
                                         isClickable && "cursor-pointer hover:underline"
                                     )}
                                     onClick={() => isClickable && onStepClick(index)}
@@ -56,7 +56,7 @@ export function WizardProgress({ currentStep, steps, onStepClick }: WizardProgre
                                 <div
                                     className={cn(
                                         "flex-1 h-1 mx-2 rounded transition-all duration-300",
-                                        index < currentStep ? "bg-pink-600" : "bg-gray-200"
+                                        index < currentStep ? "bg-primary" : "bg-gray-200"
                                     )}
                                 />
                             )}

@@ -11,13 +11,13 @@ export function FilterBar() {
                     <input
                         type="text"
                         placeholder="Helyszín (pl. Budapest)"
-                        className="w-full rounded-md border border-input bg-background px-3 py-2 pl-9 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
+                        className="w-full rounded-md border border-input bg-background px-3 py-2 pl-9 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                     />
                 </div>
 
                 <div className="relative flex-1">
                     <Filter className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                    <select className="w-full rounded-md border border-input bg-background px-3 py-2 pl-9 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500">
+                    <select className="w-full rounded-md border border-input bg-background px-3 py-2 pl-9 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
                         <option>Válassz kategóriát</option>
                         <option>Fodrászat</option>
                         <option>Kozmetika</option>
@@ -32,7 +32,7 @@ export function FilterBar() {
                     <input
                         type="text"
                         placeholder="Keresés szolgáltatásra..."
-                        className="w-full rounded-md border border-input bg-background px-3 py-2 pl-9 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
+                        className="w-full rounded-md border border-input bg-background px-3 py-2 pl-9 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                     />
                 </div>
             </div>

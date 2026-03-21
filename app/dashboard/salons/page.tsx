@@ -48,7 +48,7 @@ export default function SalonsPage() {
                     </div>
                     <Button
                         onClick={() => setIsCreateModalOpen(true)}
-                        className="bg-pink-600 hover:bg-pink-700 text-white rounded-2xl px-6 h-12 shadow-lg shadow-pink-200/50 transition-all hover:-translate-y-0.5"
+                        className="bg-primary hover:bg-primary text-white rounded-2xl px-6 h-12 shadow-lg shadow-primary/20/50 transition-all hover:-translate-y-0.5"
                     >
                         <Plus className="mr-2 h-5 w-5" />
                         Új szalon hozzáadása
@@ -57,12 +57,12 @@ export default function SalonsPage() {
 
                 {loading ? (
                     <div className="flex items-center justify-center py-20">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-600"></div>
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                     </div>
                 ) : salons.length === 0 ? (
                     <div className="rounded-3xl bg-white p-12 text-center border-2 border-dashed border-gray-100 shadow-sm">
-                        <div className="h-16 w-16 bg-pink-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                            <Store className="h-8 w-8 text-pink-500" />
+                        <div className="h-16 w-16 bg-accent rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <Store className="h-8 w-8 text-primary" />
                         </div>
                         <h3 className="text-xl font-bold text-gray-900 mb-2">Még nincs regisztrált szalonod</h3>
                         <p className="text-gray-500 mb-8 max-w-md mx-auto">
@@ -80,7 +80,7 @@ export default function SalonsPage() {
                     <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         {salons.map((salon) => (
                             <Link key={salon.id} href={`/salon/${salon.id}`} className="group">
-                                <div className="bg-white rounded-[32px] overflow-hidden shadow-sm ring-1 ring-gray-900/5 transition-all duration-300 hover:shadow-xl hover:ring-pink-100 hover:-translate-y-1 h-full flex flex-col">
+                                <div className="bg-white rounded-[32px] overflow-hidden shadow-sm ring-1 ring-gray-900/5 transition-all duration-300 hover:shadow-xl hover:ring-primary/10 hover:-translate-y-1 h-full flex flex-col">
                                     <div className="h-56 bg-gray-50 relative overflow-hidden">
                                         {salon.images?.[0] ? (
                                             <img
@@ -100,16 +100,16 @@ export default function SalonsPage() {
                                         </div>
                                     </div>
                                     <div className="p-6 flex-1 flex flex-col">
-                                        <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-pink-600 transition-colors line-clamp-1">{salon.name}</h3>
+                                        <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors line-clamp-1">{salon.name}</h3>
                                         <div className="flex items-start gap-1.5 text-gray-500 text-sm mb-4">
-                                            <MapPin className="h-4 w-4 mt-0.5 text-pink-500 flex-shrink-0" />
+                                            <MapPin className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
                                             <span className="line-clamp-2">{salon.city}, {salon.address}</span>
                                         </div>
                                         <div className="mt-auto pt-4 border-t border-gray-50 flex items-center justify-between">
                                             <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                                                 {salon.reviewCount} Értékelés
                                             </span>
-                                            <div className="h-8 w-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-pink-600 group-hover:text-white transition-all">
+                                            <div className="h-8 w-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all">
                                                 <Plus className="h-4 w-4" />
                                             </div>
                                         </div>

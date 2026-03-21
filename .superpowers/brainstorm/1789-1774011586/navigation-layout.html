@@ -1,0 +1,203 @@
+<h2>Navigációs Elrendezés</h2>
+<p class="subtitle">A sötét dashboard mellett milyen navigációs struktúrát szeretnél? A feed (nyitóoldal) és a dashboard (kezelőfelület) eltérő layoutot is kaphat.</p>
+
+<div class="cards">
+  <div class="card" data-choice="sidebar-nav" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 0; background: #0f172a; height: 280px; display: flex;">
+      <!-- Sidebar -->
+      <div style="width: 60px; background: #1e293b; border-right: 1px solid #334155; display: flex; flex-direction: column; align-items: center; padding: 12px 0; gap: 16px;">
+        <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #ec4899, #8b5cf6); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; color: white;">G</div>
+        <div style="width: 1px; height: 1px; background: #334155; margin: 4px 0;"></div>
+        <div style="width: 28px; height: 28px; border-radius: 8px; background: #334155; display: flex; align-items: center; justify-content: center; font-size: 12px;">🏠</div>
+        <div style="width: 28px; height: 28px; border-radius: 8px; background: rgba(236,72,153,0.2); display: flex; align-items: center; justify-content: center; font-size: 12px;">📊</div>
+        <div style="width: 28px; height: 28px; border-radius: 8px; background: transparent; display: flex; align-items: center; justify-content: center; font-size: 12px;">💬</div>
+        <div style="width: 28px; height: 28px; border-radius: 8px; background: transparent; display: flex; align-items: center; justify-content: center; font-size: 12px;">❤️</div>
+        <div style="width: 28px; height: 28px; border-radius: 8px; background: transparent; display: flex; align-items: center; justify-content: center; font-size: 12px;">⚙️</div>
+        <div style="flex: 1;"></div>
+        <div style="width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #ec4899, #f59e0b); display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; font-weight: 700;">AB</div>
+      </div>
+
+      <!-- Main content -->
+      <div style="flex: 1; padding: 16px;">
+        <div style="font-size: 18px; font-weight: 800; color: white; margin-bottom: 4px;">Dashboard</div>
+        <div style="font-size: 10px; color: #64748b; margin-bottom: 16px;">Üdvözlünk, Anna!</div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+          <div style="background: linear-gradient(135deg, #ec4899, #8b5cf6); border-radius: 12px; padding: 10px;">
+            <div style="font-size: 8px; color: rgba(255,255,255,0.7); text-transform: uppercase;">Foglalások</div>
+            <div style="font-size: 18px; font-weight: 800; color: white;">24</div>
+          </div>
+          <div style="background: #1e293b; border-radius: 12px; padding: 10px; border: 1px solid #334155;">
+            <div style="font-size: 8px; color: #64748b; text-transform: uppercase;">Értékelés</div>
+            <div style="font-size: 18px; font-weight: 800; color: white;">4.8</div>
+          </div>
+          <div style="background: #1e293b; border-radius: 12px; padding: 10px; border: 1px solid #334155;">
+            <div style="font-size: 8px; color: #64748b; text-transform: uppercase;">Bevétel</div>
+            <div style="font-size: 18px; font-weight: 800; color: white;">340k</div>
+          </div>
+        </div>
+
+        <div style="background: #1e293b; border-radius: 12px; padding: 12px; border: 1px solid #334155;">
+          <div style="font-size: 10px; font-weight: 700; color: white; margin-bottom: 8px;">Mai napirend</div>
+          <div style="display: flex; flex-direction: column; gap: 4px;">
+            <div style="display: flex; align-items: center; gap: 6px; padding: 5px 6px; background: rgba(16,185,129,0.1); border-radius: 6px;">
+              <div style="width: 4px; height: 4px; background: #10b981; border-radius: 50%;"></div>
+              <span style="font-size: 8px; color: #cbd5e1;">10:00 - Hajvágás</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px; padding: 5px 6px; background: rgba(236,72,153,0.1); border-radius: 6px;">
+              <div style="width: 4px; height: 4px; background: #ec4899; border-radius: 50%;"></div>
+              <span style="font-size: 8px; color: #cbd5e1;">11:30 - Manikűr</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A) Kompakt Icon Sidebar</h3>
+      <p>Keskeny (60px) icon-alapú sidebar bal oldalon — Discord/Slack stílus. A fő tartalom kap minden helyet. Mobilon bottom tab bar.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="top-nav" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 0; background: #0f172a; height: 280px; display: flex; flex-direction: column;">
+      <!-- Top nav -->
+      <div style="background: #1e293b; border-bottom: 1px solid #334155; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div style="width: 28px; height: 28px; background: linear-gradient(135deg, #ec4899, #8b5cf6); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: white;">G</div>
+          <span style="font-size: 13px; font-weight: 700; color: white;">GlowySpot</span>
+        </div>
+        <div style="display: flex; gap: 16px; align-items: center;">
+          <span style="font-size: 10px; color: #94a3b8; padding: 4px 10px; border-radius: 6px; background: rgba(236,72,153,0.15); color: #ec4899; font-weight: 600;">Feed</span>
+          <span style="font-size: 10px; color: #94a3b8;">Felfedezés</span>
+          <span style="font-size: 10px; color: #94a3b8;">Dashboard</span>
+          <span style="font-size: 10px; color: #94a3b8;">💬</span>
+          <div style="width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, #ec4899, #f59e0b);"></div>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div style="flex: 1; padding: 16px;">
+        <div style="font-size: 18px; font-weight: 800; color: white; margin-bottom: 4px;">Dashboard</div>
+        <div style="font-size: 10px; color: #64748b; margin-bottom: 16px;">Üdvözlünk, Anna!</div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+          <div style="background: linear-gradient(135deg, #ec4899, #8b5cf6); border-radius: 12px; padding: 10px;">
+            <div style="font-size: 8px; color: rgba(255,255,255,0.7); text-transform: uppercase;">Foglalások</div>
+            <div style="font-size: 18px; font-weight: 800; color: white;">24</div>
+          </div>
+          <div style="background: #1e293b; border-radius: 12px; padding: 10px; border: 1px solid #334155;">
+            <div style="font-size: 8px; color: #64748b; text-transform: uppercase;">Értékelés</div>
+            <div style="font-size: 18px; font-weight: 800; color: white;">4.8</div>
+          </div>
+          <div style="background: #1e293b; border-radius: 12px; padding: 10px; border: 1px solid #334155;">
+            <div style="font-size: 8px; color: #64748b; text-transform: uppercase;">Bevétel</div>
+            <div style="font-size: 18px; font-weight: 800; color: white;">340k</div>
+          </div>
+        </div>
+
+        <div style="background: #1e293b; border-radius: 12px; padding: 12px; border: 1px solid #334155;">
+          <div style="font-size: 10px; font-weight: 700; color: white; margin-bottom: 8px;">Mai napirend</div>
+          <div style="display: flex; flex-direction: column; gap: 4px;">
+            <div style="display: flex; align-items: center; gap: 6px; padding: 5px 6px; background: rgba(16,185,129,0.1); border-radius: 6px;">
+              <div style="width: 4px; height: 4px; background: #10b981; border-radius: 50%;"></div>
+              <span style="font-size: 8px; color: #cbd5e1;">10:00 - Hajvágás</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px; padding: 5px 6px; background: rgba(236,72,153,0.1); border-radius: 6px;">
+              <div style="width: 4px; height: 4px; background: #ec4899; border-radius: 50%;"></div>
+              <span style="font-size: 8px; color: #cbd5e1;">11:30 - Manikűr</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B) Felső Navigáció</h3>
+      <p>Vízszintes top navbar logóval és menüpontokkal. Egyszerű, Instagram-szerű. Tartalom teljes szélességű. Mobilon bottom tab bar.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="hybrid" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 0; background: #0f172a; height: 280px; display: flex; flex-direction: column;">
+      <!-- Top bar -->
+      <div style="background: #1e293b; border-bottom: 1px solid #334155; padding: 8px 16px; display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div style="width: 26px; height: 26px; background: linear-gradient(135deg, #ec4899, #8b5cf6); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; color: white;">G</div>
+          <span style="font-size: 12px; font-weight: 700; color: white;">GlowySpot</span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <div style="background: #334155; border-radius: 8px; padding: 4px 12px; font-size: 9px; color: #94a3b8;">🔍 Keresés...</div>
+          <span style="font-size: 11px;">💬</span>
+          <span style="font-size: 11px;">🔔</span>
+          <div style="width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #ec4899, #f59e0b);"></div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex: 1;">
+        <!-- Left sidebar (expanded) -->
+        <div style="width: 150px; background: #1e293b; border-right: 1px solid #334155; padding: 12px 8px; display: flex; flex-direction: column; gap: 2px;">
+          <div style="display: flex; align-items: center; gap: 6px; padding: 6px 8px; border-radius: 8px; background: #334155;">
+            <span style="font-size: 10px;">🏠</span>
+            <span style="font-size: 9px; color: white; font-weight: 600;">Feed</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px; padding: 6px 8px; border-radius: 8px;">
+            <span style="font-size: 10px;">🔍</span>
+            <span style="font-size: 9px; color: #94a3b8;">Felfedezés</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px; padding: 6px 8px; border-radius: 8px; background: rgba(236,72,153,0.15);">
+            <span style="font-size: 10px;">📊</span>
+            <span style="font-size: 9px; color: #ec4899; font-weight: 600;">Dashboard</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px; padding: 6px 8px; border-radius: 8px;">
+            <span style="font-size: 10px;">💬</span>
+            <span style="font-size: 9px; color: #94a3b8;">Üzenetek</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px; padding: 6px 8px; border-radius: 8px;">
+            <span style="font-size: 10px;">❤️</span>
+            <span style="font-size: 9px; color: #94a3b8;">Kedvencek</span>
+          </div>
+          <div style="flex:1;"></div>
+          <div style="display: flex; align-items: center; gap: 6px; padding: 6px 8px; border-radius: 8px;">
+            <span style="font-size: 10px;">⚙️</span>
+            <span style="font-size: 9px; color: #94a3b8;">Beállítások</span>
+          </div>
+        </div>
+
+        <!-- Main content -->
+        <div style="flex: 1; padding: 12px;">
+          <div style="font-size: 16px; font-weight: 800; color: white; margin-bottom: 12px;">Dashboard</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 10px;">
+            <div style="background: linear-gradient(135deg, #ec4899, #8b5cf6); border-radius: 10px; padding: 8px;">
+              <div style="font-size: 7px; color: rgba(255,255,255,0.7); text-transform: uppercase;">Foglalások</div>
+              <div style="font-size: 16px; font-weight: 800; color: white;">24</div>
+            </div>
+            <div style="background: #1e293b; border-radius: 10px; padding: 8px; border: 1px solid #334155;">
+              <div style="font-size: 7px; color: #64748b; text-transform: uppercase;">Értékelés</div>
+              <div style="font-size: 16px; font-weight: 800; color: white;">4.8</div>
+            </div>
+            <div style="background: #1e293b; border-radius: 10px; padding: 8px; border: 1px solid #334155;">
+              <div style="font-size: 7px; color: #64748b; text-transform: uppercase;">Bevétel</div>
+              <div style="font-size: 16px; font-weight: 800; color: white;">340k</div>
+            </div>
+          </div>
+          <div style="background: #1e293b; border-radius: 10px; padding: 10px; border: 1px solid #334155;">
+            <div style="font-size: 9px; font-weight: 700; color: white; margin-bottom: 6px;">Mai napirend</div>
+            <div style="display: flex; flex-direction: column; gap: 3px;">
+              <div style="display: flex; align-items: center; gap: 5px; padding: 4px 6px; background: rgba(16,185,129,0.1); border-radius: 5px;">
+                <div style="width: 4px; height: 4px; background: #10b981; border-radius: 50%;"></div>
+                <span style="font-size: 8px; color: #cbd5e1;">10:00 - Hajvágás</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 5px; padding: 4px 6px; background: rgba(236,72,153,0.1); border-radius: 5px;">
+                <div style="width: 4px; height: 4px; background: #ec4899; border-radius: 50%;"></div>
+                <span style="font-size: 8px; color: #cbd5e1;">11:30 - Manikűr</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C) Hibrid (Top Bar + Sidebar)</h3>
+      <p>Felső sáv logóval és kereséssel + bal oldali szöveges sidebar navigációval. Twitter/YouTube Studio stílus. Desktopra optimalizált, mobilon bottom tabs.</p>
+    </div>
+  </div>
+</div>

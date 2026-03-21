@@ -516,7 +516,7 @@ export function SalonWizard({ isOpen, onClose, onSuccess }: SalonWizardProps) {
                                 description="Segítünk beállítani a szalonod profilját. Mindent bármikor módosíthatsz később is!"
                                 isWelcome
                             >
-                                <Button onClick={nextStep} size="lg" className="bg-pink-600 hover:bg-pink-700">
+                                <Button onClick={nextStep} size="lg" className="bg-primary hover:bg-primary">
                                     <Sparkles className="mr-2 h-5 w-5" />
                                     Kezdjük el!
                                 </Button>
@@ -543,7 +543,7 @@ export function SalonWizard({ isOpen, onClose, onSuccess }: SalonWizardProps) {
                                     <div className="grid grid-cols-2 gap-6">
                                         <div className="space-y-2">
                                             <Label>Profilkép</Label>
-                                            <div className="relative h-32 w-32 mx-auto border-2 border-dashed border-gray-300 rounded-full flex items-center justify-center overflow-hidden hover:border-pink-500 transition-colors bg-gray-50">
+                                            <div className="relative h-32 w-32 mx-auto border-2 border-dashed border-gray-300 rounded-full flex items-center justify-center overflow-hidden hover:border-primary transition-colors bg-gray-50">
                                                 {profilePreview ? (
                                                     <>
                                                         <img src={profilePreview} alt="Profile" className="w-full h-full object-cover" />
@@ -562,7 +562,7 @@ export function SalonWizard({ isOpen, onClose, onSuccess }: SalonWizardProps) {
                                         </div>
                                         <div className="space-y-2">
                                             <Label>Borítókép</Label>
-                                            <div className="relative h-32 w-full border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center overflow-hidden hover:border-pink-500 transition-colors bg-gray-50">
+                                            <div className="relative h-32 w-full border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center overflow-hidden hover:border-primary transition-colors bg-gray-50">
                                                 {coverPreview ? (
                                                     <>
                                                         <img src={coverPreview} alt="Cover" className="w-full h-full object-cover" />
@@ -601,7 +601,7 @@ export function SalonWizard({ isOpen, onClose, onSuccess }: SalonWizardProps) {
                                                     type="button"
                                                     onClick={() => toggleCategory(category.slug)}
                                                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${selectedCategories.includes(category.slug)
-                                                        ? "bg-pink-100 text-pink-700 border-2 border-pink-500"
+                                                        ? "bg-primary/10 text-primary border-2 border-primary"
                                                         : "bg-gray-50 text-gray-700 border-2 border-gray-200 hover:bg-gray-100"
                                                         }`}
                                                 >
@@ -692,7 +692,7 @@ export function SalonWizard({ isOpen, onClose, onSuccess }: SalonWizardProps) {
                             >
                                 <div className="space-y-4">
                                     {/* Currency selector */}
-                                    <div className="p-4 bg-pink-50 rounded-xl flex items-center gap-4">
+                                    <div className="p-4 bg-accent rounded-xl flex items-center gap-4">
                                         <Label className="whitespace-nowrap">Pénznem:</Label>
                                         <Select value={currency} onValueChange={setCurrency}>
                                             <SelectTrigger className="w-48">
@@ -766,7 +766,7 @@ export function SalonWizard({ isOpen, onClose, onSuccess }: SalonWizardProps) {
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div className="space-y-2">
                                             <Label className="flex items-center gap-2">
-                                                <Phone className="h-4 w-4 text-pink-600" />
+                                                <Phone className="h-4 w-4 text-primary" />
                                                 Telefonszám
                                             </Label>
                                             <Input
@@ -778,7 +778,7 @@ export function SalonWizard({ isOpen, onClose, onSuccess }: SalonWizardProps) {
                                         </div>
                                         <div className="space-y-2">
                                             <Label className="flex items-center gap-2">
-                                                <Mail className="h-4 w-4 text-pink-600" />
+                                                <Mail className="h-4 w-4 text-primary" />
                                                 E-mail cím
                                             </Label>
                                             <Input
@@ -867,7 +867,7 @@ export function SalonWizard({ isOpen, onClose, onSuccess }: SalonWizardProps) {
                                                 />
                                             </div>
                                         ))}
-                                        <label className="h-32 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-pink-500 transition-colors">
+                                        <label className="h-32 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-primary transition-colors">
                                             <ImagePlus className="h-8 w-8 text-gray-400 mb-2" />
                                             <span className="text-xs text-gray-500">Képek feltöltése</span>
                                             <input type="file" className="hidden" accept="image/*" multiple onChange={addGalleryImage} />
@@ -1036,7 +1036,7 @@ export function SalonWizard({ isOpen, onClose, onSuccess }: SalonWizardProps) {
                             <Button
                                 onClick={handleSubmit}
                                 disabled={loading}
-                                className="bg-pink-600 hover:bg-pink-700"
+                                className="bg-primary hover:bg-primary"
                             >
                                 {loading ? "Létrehozás..." : "Szalon létrehozása"}
                             </Button>
@@ -1044,7 +1044,7 @@ export function SalonWizard({ isOpen, onClose, onSuccess }: SalonWizardProps) {
                             <Button
                                 onClick={nextStep}
                                 disabled={!canProceed()}
-                                className="bg-pink-600 hover:bg-pink-700"
+                                className="bg-primary hover:bg-primary"
                             >
                                 Következő <ChevronRight className="ml-2 h-4 w-4" />
                             </Button>

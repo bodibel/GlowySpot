@@ -35,9 +35,9 @@ export function ActiveSalonIndicator() {
 
     return (
         <div className="px-4 sm:px-6 lg:px-8 pt-4">
-            <div className="rounded-2xl bg-white/50 backdrop-blur-md border border-pink-100/50 p-3 shadow-sm flex items-center justify-between">
+            <div className="rounded-2xl bg-white/50 backdrop-blur-md border border-primary/10/50 p-3 shadow-sm flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-xl bg-pink-50 flex items-center justify-center text-pink-600 shadow-inner">
+                    <div className="h-10 w-10 rounded-xl bg-accent flex items-center justify-center text-primary shadow-inner">
                         {salonData.profileImage ? (
                             <img
                                 src={salonData.profileImage}
@@ -59,7 +59,7 @@ export function ActiveSalonIndicator() {
 
                 <Link
                     href={`/salon/${salonId}`}
-                    className="flex items-center gap-1 text-[11px] font-bold text-pink-600 hover:text-pink-700 transition-colors bg-white px-3 py-1.5 rounded-lg border border-pink-50 shadow-sm"
+                    className="flex items-center gap-1 text-[11px] font-bold text-primary hover:text-primary transition-colors bg-white px-3 py-1.5 rounded-lg border border-primary/5 shadow-sm"
                 >
                     Vezérlőpult
                     <ChevronRight className="h-3 w-3" />

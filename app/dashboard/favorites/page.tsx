@@ -46,8 +46,8 @@ export default function FavoritesPage() {
             <MainLayout>
                 <div className="container mx-auto p-4 md:p-8 max-w-7xl">
                     <div className="flex items-center gap-3 mb-8">
-                        <div className="h-10 w-10 rounded-xl bg-pink-100 flex items-center justify-center text-pink-600">
-                            <Heart className="h-6 w-6 fill-pink-600" />
+                        <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                            <Heart className="h-6 w-6 fill-primary" />
                         </div>
                         <h1 className="text-3xl font-black text-gray-900 tracking-tight">Kedvenceim</h1>
                     </div>
@@ -66,8 +66,8 @@ export default function FavoritesPage() {
             <MainLayout>
                 <div className="min-h-[60vh] flex flex-col items-center justify-center p-4">
                     <div className="text-center max-w-md mx-auto">
-                        <div className="bg-pink-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <Heart className="h-10 w-10 text-pink-500 fill-pink-500" />
+                        <div className="bg-accent w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <Heart className="h-10 w-10 text-primary fill-primary" />
                         </div>
                         <h2 className="text-2xl font-black mb-3 text-gray-900">Jelentkezz be!</h2>
                         <p className="text-gray-500 font-medium leading-relaxed">
@@ -84,7 +84,7 @@ export default function FavoritesPage() {
             <div className="container mx-auto p-4 md:p-8 max-w-7xl min-h-screen">
                 <div className="flex items-center justify-between mb-8">
                     <div className="flex items-center gap-3">
-                        <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center shadow-lg shadow-pink-200">
+                        <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-primary to-accent-rose flex items-center justify-center shadow-lg shadow-primary/20">
                             <Heart className="h-6 w-6 text-white fill-white" />
                         </div>
                         <div>

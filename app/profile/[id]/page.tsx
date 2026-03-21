@@ -102,7 +102,7 @@ export default function ProfilePage({ params }: { params: Promise<{ id: string }
         return (
             <MainLayout showRightSidebar={false}>
                 <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-                    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-pink-600"></div>
+                    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
                     <p className="text-gray-400 font-medium">Profil betöltése...</p>
                 </div>
             </MainLayout>
@@ -142,21 +142,21 @@ export default function ProfilePage({ params }: { params: Promise<{ id: string }
                                     {/* Add New Post for Owner */}
                                     {userData?.id === salon?.ownerId && (
                                         <Card
-                                            className="border-2 border-dashed border-gray-100 hover:border-pink-300 transition-all cursor-pointer group bg-gray-50/30 overflow-hidden rounded-3xl"
+                                            className="border-2 border-dashed border-gray-100 hover:border-primary/30 transition-all cursor-pointer group bg-gray-50/30 overflow-hidden rounded-3xl"
                                             onClick={() => {
                                                 setEditingPost(null)
                                                 setIsPostModalOpen(true)
                                             }}
                                         >
                                             <CardContent className="p-8 flex flex-col items-center justify-center gap-4">
-                                                <div className="h-14 w-14 rounded-full bg-white shadow-sm flex items-center justify-center text-pink-500 group-hover:scale-110 transition-transform">
+                                                <div className="h-14 w-14 rounded-full bg-white shadow-sm flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
                                                     <ImagePlus className="h-6 w-6" />
                                                 </div>
                                                 <div className="text-center">
                                                     <h3 className="font-bold text-gray-900">Új bejegyzés hozzáadása</h3>
                                                     <p className="text-gray-400 text-sm mt-1">Oszd meg a legújabb munkáidat vagy híreidet!</p>
                                                 </div>
-                                                <div className="flex items-center gap-2 text-pink-600 font-bold text-sm bg-white px-4 py-2 rounded-full shadow-sm">
+                                                <div className="flex items-center gap-2 text-primary font-bold text-sm bg-white px-4 py-2 rounded-full shadow-sm">
                                                     <Plus className="h-4 w-4" />
                                                     Létrehozás
                                                 </div>
@@ -203,7 +203,7 @@ export default function ProfilePage({ params }: { params: Promise<{ id: string }
                                                 <h4 className="font-semibold text-gray-900">{service.name}</h4>
                                                 <p className="text-sm text-gray-500 mt-1">{service.duration}</p>
                                             </div>
-                                            <div className="font-bold text-pink-600 bg-pink-50 px-3 py-1 rounded-full">
+                                            <div className="font-bold text-primary bg-accent px-3 py-1 rounded-full">
                                                 {service.price} {salon.currency}
                                             </div>
                                         </div>
@@ -306,7 +306,7 @@ export default function ProfilePage({ params }: { params: Promise<{ id: string }
                                     <div className="space-y-6">
                                         {salon.reviews?.length > 0 ? (
                                             salon.reviews.map((review: any) => (
-                                                <div key={review.id} className="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 flex gap-5 items-start group hover:border-pink-100 transition-colors">
+                                                <div key={review.id} className="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 flex gap-5 items-start group hover:border-primary/10 transition-colors">
                                                     <div className="relative h-12 w-12 rounded-2xl overflow-hidden shrink-0 border border-gray-100">
                                                         <img
                                                             src={review.user?.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(review.user?.name || "Guest")}&background=random`}
@@ -366,7 +366,7 @@ export default function ProfilePage({ params }: { params: Promise<{ id: string }
                                 <div className="space-y-10">
                                     {!salon.isTeam ? (
                                         <div className="bg-white rounded-[32px] p-8 shadow-sm border border-gray-100 flex flex-col md:flex-row gap-8 items-start">
-                                            <div className="w-32 h-32 rounded-3xl overflow-hidden border-4 border-pink-50 flex-shrink-0 shadow-lg shadow-pink-100/50">
+                                            <div className="w-32 h-32 rounded-3xl overflow-hidden border-4 border-primary/5 flex-shrink-0 shadow-lg shadow-primary/10/50">
                                                 <img
                                                     src={salon.ownerImage || providerData.avatar}
                                                     alt={salon.ownerName || providerData.name}
@@ -376,7 +376,7 @@ export default function ProfilePage({ params }: { params: Promise<{ id: string }
                                             <div className="flex-1 space-y-4">
                                                 <div>
                                                     <h3 className="text-2xl font-bold text-gray-900">{salon.ownerName || providerData.name}</h3>
-                                                    <p className="text-pink-600 font-semibold">{providerData.categories?.[0] || "Szolgáltató"}</p>
+                                                    <p className="text-primary font-semibold">{providerData.categories?.[0] || "Szolgáltató"}</p>
                                                 </div>
                                                 <p className="text-gray-600 leading-relaxed whitespace-pre-wrap">
                                                     {salon.aboutMe || "Még nincs bemutatkozás megadva."}
@@ -389,7 +389,7 @@ export default function ProfilePage({ params }: { params: Promise<{ id: string }
                                             <div className="grid sm:grid-cols-2 gap-6">
                                                 {salon.teamMembers?.map((member: any) => (
                                                     <div key={member.id} className="bg-white rounded-[32px] p-6 shadow-sm border border-gray-100 flex gap-4 items-center group hover:shadow-md transition-shadow">
-                                                        <div className="w-20 h-20 rounded-2xl overflow-hidden flex-shrink-0 border-2 border-gray-50 group-hover:border-pink-200 transition-colors">
+                                                        <div className="w-20 h-20 rounded-2xl overflow-hidden flex-shrink-0 border-2 border-gray-50 group-hover:border-primary/20 transition-colors">
                                                             <img
                                                                 src={member.image || "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=100&q=80"}
                                                                 alt={member.name}
@@ -397,7 +397,7 @@ export default function ProfilePage({ params }: { params: Promise<{ id: string }
                                                             />
                                                         </div>
                                                         <div className="flex-1">
-                                                            <h4 className="font-bold text-gray-900 group-hover:text-pink-600 transition-colors">{member.name}</h4>
+                                                            <h4 className="font-bold text-gray-900 group-hover:text-primary transition-colors">{member.name}</h4>
                                                             <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest">{member.role}</p>
                                                             {member.description && (
                                                                 <p className="text-sm text-gray-500 mt-2 line-clamp-2">{member.description}</p>

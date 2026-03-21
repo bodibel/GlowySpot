@@ -35,7 +35,7 @@ export default function MyProfilePage() {
                     <div className="lg:col-span-2 space-y-6">
                         <div className="rounded-[32px] bg-white p-8 shadow-sm ring-1 ring-gray-900/5 transition-all hover:shadow-md">
                             <div className="flex items-center gap-6 mb-8">
-                                <div className="h-24 w-24 rounded-3xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center text-white text-3xl font-black shadow-lg shadow-pink-200">
+                                <div className="h-24 w-24 rounded-3xl bg-gradient-to-br from-primary to-accent-rose flex items-center justify-center text-white text-3xl font-black shadow-lg shadow-primary/20">
                                     {userData.name?.[0] || "U"}
                                 </div>
                                 <div className="flex-1">
@@ -59,14 +59,14 @@ export default function MyProfilePage() {
                             <div className="grid sm:grid-cols-2 gap-4">
                                 <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
                                     <div className="flex items-center gap-3 mb-1">
-                                        <Shield className="h-4 w-4 text-pink-600" />
+                                        <Shield className="h-4 w-4 text-primary" />
                                         <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Jogosultság</span>
                                     </div>
                                     <p className="font-bold text-gray-900 capitalize">{userData.role === 'provider' ? 'Szolgáltató' : 'Látogató'}</p>
                                 </div>
                                 <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
                                     <div className="flex items-center gap-3 mb-1">
-                                        <Calendar className="h-4 w-4 text-pink-600" />
+                                        <Calendar className="h-4 w-4 text-primary" />
                                         <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Tagság kezdete</span>
                                     </div>
                                     <p className="font-bold text-gray-900">2026. Január</p>
@@ -77,9 +77,9 @@ export default function MyProfilePage() {
                         {/* Quick Actions */}
                         <div className="grid sm:grid-cols-2 gap-6">
                             <Link href="/dashboard/favorites" className="group">
-                                <div className="rounded-[32px] bg-white p-8 shadow-sm ring-1 ring-gray-900/5 transition-all group-hover:shadow-xl group-hover:ring-pink-100">
-                                    <div className="h-12 w-12 rounded-2xl bg-pink-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                                        <Heart className="h-6 w-6 text-pink-600" />
+                                <div className="rounded-[32px] bg-white p-8 shadow-sm ring-1 ring-gray-900/5 transition-all group-hover:shadow-xl group-hover:ring-primary/10">
+                                    <div className="h-12 w-12 rounded-2xl bg-accent flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                        <Heart className="h-6 w-6 text-primary" />
                                     </div>
                                     <h3 className="text-lg font-bold text-gray-900 mb-1">Kedvencek</h3>
                                     <p className="text-sm text-gray-500">Mentsd el kedvenc szalonjaidat és szolgáltatóidat.</p>
@@ -88,7 +88,7 @@ export default function MyProfilePage() {
 
                             {userData.role !== 'visitor' && (
                                 <Link href="/dashboard/salons" className="group">
-                                    <div className="rounded-[32px] bg-white p-8 shadow-sm ring-1 ring-gray-900/5 transition-all group-hover:shadow-xl group-hover:ring-pink-100">
+                                    <div className="rounded-[32px] bg-white p-8 shadow-sm ring-1 ring-gray-900/5 transition-all group-hover:shadow-xl group-hover:ring-primary/10">
                                         <div className="h-12 w-12 rounded-2xl bg-blue-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                                             <Store className="h-6 w-6 text-blue-600" />
                                         </div>
@@ -104,7 +104,7 @@ export default function MyProfilePage() {
                     <div className="space-y-6">
                         <div className="rounded-[32px] bg-white p-6 shadow-sm ring-1 ring-gray-900/5">
                             <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
-                                <Briefcase className="h-5 w-5 text-pink-600" />
+                                <Briefcase className="h-5 w-5 text-primary" />
                                 Statisztika
                             </h3>
                             <div className="space-y-4">

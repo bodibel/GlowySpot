@@ -116,7 +116,7 @@ export function CreateSalonModal({ isOpen, onClose }: CreateSalonModalProps) {
             <Dialog open={isOpen} onOpenChange={onClose}>
                 <DialogContent className="sm:max-w-[600px] bg-white text-gray-900">
                     <DialogHeader>
-                        <DialogTitle className="text-2xl font-bold text-pink-600">Új szalon létrehozása</DialogTitle>
+                        <DialogTitle className="text-2xl font-bold text-primary">Új szalon létrehozása</DialogTitle>
                         <DialogDescription>
                             Add meg a szalonod alapvető adatait a kezdéshez.
                         </DialogDescription>
@@ -163,7 +163,7 @@ export function CreateSalonModal({ isOpen, onClose }: CreateSalonModalProps) {
                                     <Label>Profilkép</Label>
                                     <div className="flex items-center justify-center">
                                         {profilePreview ? (
-                                            <div className="relative h-32 w-32 rounded-full overflow-hidden border-2 border-pink-100 group">
+                                            <div className="relative h-32 w-32 rounded-full overflow-hidden border-2 border-primary/10 group">
                                                 <img src={profilePreview} alt="Profile" className="h-full w-full object-cover" />
                                                 <button
                                                     type="button"
@@ -174,7 +174,7 @@ export function CreateSalonModal({ isOpen, onClose }: CreateSalonModalProps) {
                                                 </button>
                                             </div>
                                         ) : (
-                                            <label className="h-32 w-32 rounded-full border-2 border-dashed border-gray-200 flex flex-col items-center justify-center cursor-pointer hover:border-pink-300 hover:bg-pink-50 transition-all">
+                                            <label className="h-32 w-32 rounded-full border-2 border-dashed border-gray-200 flex flex-col items-center justify-center cursor-pointer hover:border-primary/30 hover:bg-accent transition-all">
                                                 <ImagePlus className="h-8 w-8 text-gray-400" />
                                                 <span className="text-[10px] font-bold text-gray-400 mt-2 uppercase">Feltöltés</span>
                                                 <input type="file" className="hidden" accept="image/*" onChange={handleProfileChange} />
@@ -187,7 +187,7 @@ export function CreateSalonModal({ isOpen, onClose }: CreateSalonModalProps) {
                                     <Label>Borítókép</Label>
                                     <div className="flex items-center justify-center">
                                         {coverPreview ? (
-                                            <div className="relative h-24 w-full rounded-xl overflow-hidden border-2 border-pink-100 group">
+                                            <div className="relative h-24 w-full rounded-xl overflow-hidden border-2 border-primary/10 group">
                                                 <img src={coverPreview} alt="Cover" className="h-full w-full object-cover" />
                                                 <button
                                                     type="button"
@@ -198,7 +198,7 @@ export function CreateSalonModal({ isOpen, onClose }: CreateSalonModalProps) {
                                                 </button>
                                             </div>
                                         ) : (
-                                            <label className="h-24 w-full rounded-xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center cursor-pointer hover:border-pink-300 hover:bg-pink-50 transition-all">
+                                            <label className="h-24 w-full rounded-xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center cursor-pointer hover:border-primary/30 hover:bg-accent transition-all">
                                                 <ImagePlus className="h-6 w-6 text-gray-400" />
                                                 <span className="text-[10px] font-bold text-gray-400 mt-1 uppercase">Borítókép feltöltése</span>
                                                 <input type="file" className="hidden" accept="image/*" onChange={handleCoverChange} />
@@ -213,7 +213,7 @@ export function CreateSalonModal({ isOpen, onClose }: CreateSalonModalProps) {
                             <Button type="button" variant="ghost" onClick={onClose} disabled={isLoading} className="rounded-xl">
                                 Mégse
                             </Button>
-                            <Button type="submit" disabled={isLoading} className="rounded-xl bg-pink-600 hover:bg-pink-700 text-white min-w-[120px]">
+                            <Button type="submit" disabled={isLoading} className="rounded-xl bg-primary hover:bg-primary text-white min-w-[120px]">
                                 {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Létrehozás"}
                             </Button>
                         </DialogFooter>

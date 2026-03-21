@@ -39,7 +39,7 @@ export function ProfileSidebar({ salon }: ProfileSidebarProps) {
             {(showPhone || showEmail) && (
                 <div className="rounded-3xl bg-white p-6 shadow-sm border border-gray-100">
                     <div className="flex items-center gap-2 mb-4">
-                        <Phone className="h-5 w-5 text-pink-500" />
+                        <Phone className="h-5 w-5 text-primary" />
                         <h3 className="font-bold text-gray-900">Kapcsolat</h3>
                     </div>
                     <div className="space-y-3">
@@ -49,9 +49,9 @@ export function ProfileSidebar({ salon }: ProfileSidebarProps) {
                                 className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors group"
                             >
                                 <div className="bg-white p-2 rounded-lg shadow-sm">
-                                    <Phone className="h-4 w-4 text-pink-500" />
+                                    <Phone className="h-4 w-4 text-primary" />
                                 </div>
-                                <span className="text-sm font-medium text-gray-700 group-hover:text-pink-600">{salon.phone}</span>
+                                <span className="text-sm font-medium text-gray-700 group-hover:text-primary">{salon.phone}</span>
                             </a>
                         )}
                         {showEmail && (
@@ -60,9 +60,9 @@ export function ProfileSidebar({ salon }: ProfileSidebarProps) {
                                 className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors group"
                             >
                                 <div className="bg-white p-2 rounded-lg shadow-sm">
-                                    <Mail className="h-4 w-4 text-pink-500" />
+                                    <Mail className="h-4 w-4 text-primary" />
                                 </div>
-                                <span className="text-sm font-medium text-gray-700 group-hover:text-pink-600">{salon.email}</span>
+                                <span className="text-sm font-medium text-gray-700 group-hover:text-primary">{salon.email}</span>
                             </a>
                         )}
                     </div>

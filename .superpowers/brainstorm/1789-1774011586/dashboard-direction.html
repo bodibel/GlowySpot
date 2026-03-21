@@ -1,0 +1,175 @@
+<h2>Dashboard Design Irány</h2>
+<p class="subtitle">A dashboard az, ami legjobban eltér az Instagramtól — itt szépségipari menedzsment történik. Melyik irány tetszik?</p>
+
+<div class="cards">
+  <div class="card" data-choice="clean-minimal" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 20px; background: linear-gradient(135deg, #fdf2f8 0%, #ffffff 100%);">
+      <div style="font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px;">Dashboard</div>
+
+      <!-- KPI row -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 16px;">
+        <div style="background: white; border-radius: 16px; padding: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+          <div style="font-size: 9px; color: #94a3b8; text-transform: uppercase;">Foglalások</div>
+          <div style="font-size: 22px; font-weight: 800; color: #0f172a;">24</div>
+          <div style="font-size: 9px; color: #10b981;">+12%</div>
+        </div>
+        <div style="background: white; border-radius: 16px; padding: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+          <div style="font-size: 9px; color: #94a3b8; text-transform: uppercase;">Értékelések</div>
+          <div style="font-size: 22px; font-weight: 800; color: #0f172a;">4.8</div>
+          <div style="font-size: 9px; color: #f59e0b;">★★★★★</div>
+        </div>
+        <div style="background: white; border-radius: 16px; padding: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+          <div style="font-size: 9px; color: #94a3b8; text-transform: uppercase;">Bevétel</div>
+          <div style="font-size: 22px; font-weight: 800; color: #0f172a;">340k</div>
+          <div style="font-size: 9px; color: #10b981;">+8%</div>
+        </div>
+      </div>
+
+      <!-- Content area -->
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px;">
+        <div style="background: white; border-radius: 16px; padding: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+          <div style="font-size: 10px; font-weight: 700; color: #0f172a; margin-bottom: 8px;">Mai napirend</div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <div style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; background: #f0fdf4; border-radius: 8px;">
+              <div style="width: 6px; height: 6px; background: #10b981; border-radius: 50%;"></div>
+              <span style="font-size: 9px; color: #374151;">10:00 - Hajvágás</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; background: #fdf2f8; border-radius: 8px;">
+              <div style="width: 6px; height: 6px; background: #ec4899; border-radius: 50%;"></div>
+              <span style="font-size: 9px; color: #374151;">11:30 - Manikűr</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; background: #f5f3ff; border-radius: 8px;">
+              <div style="width: 6px; height: 6px; background: #8b5cf6; border-radius: 50%;"></div>
+              <span style="font-size: 9px; color: #374151;">14:00 - Festés</span>
+            </div>
+          </div>
+        </div>
+        <div style="background: white; border-radius: 16px; padding: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+          <div style="font-size: 10px; font-weight: 700; color: #0f172a; margin-bottom: 8px;">Gyors műveletek</div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <div style="background: #ec4899; color: white; font-size: 9px; padding: 8px; border-radius: 10px; text-align: center; font-weight: 600;">+ Poszt</div>
+            <div style="background: #f1f5f9; color: #475569; font-size: 9px; padding: 8px; border-radius: 10px; text-align: center; font-weight: 600;">Üzenetek</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A) Clean Minimal</h3>
+      <p>Letisztult, sok whitespace, lekerekített kártyák, finom árnyékok. Apple/Notion stílus. A pink csak akcentszínként jelenik meg.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="bold-gradient" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 20px; background: #0f172a;">
+      <div style="font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px;">Dashboard</div>
+
+      <!-- KPI row -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 16px;">
+        <div style="background: linear-gradient(135deg, #ec4899, #8b5cf6); border-radius: 16px; padding: 14px;">
+          <div style="font-size: 9px; color: rgba(255,255,255,0.7); text-transform: uppercase;">Foglalások</div>
+          <div style="font-size: 22px; font-weight: 800; color: white;">24</div>
+          <div style="font-size: 9px; color: #86efac;">+12%</div>
+        </div>
+        <div style="background: linear-gradient(135deg, #f59e0b, #ef4444); border-radius: 16px; padding: 14px;">
+          <div style="font-size: 9px; color: rgba(255,255,255,0.7); text-transform: uppercase;">Értékelések</div>
+          <div style="font-size: 22px; font-weight: 800; color: white;">4.8</div>
+          <div style="font-size: 9px; color: rgba(255,255,255,0.9);">★★★★★</div>
+        </div>
+        <div style="background: linear-gradient(135deg, #10b981, #3b82f6); border-radius: 16px; padding: 14px;">
+          <div style="font-size: 9px; color: rgba(255,255,255,0.7); text-transform: uppercase;">Bevétel</div>
+          <div style="font-size: 22px; font-weight: 800; color: white;">340k</div>
+          <div style="font-size: 9px; color: #86efac;">+8%</div>
+        </div>
+      </div>
+
+      <!-- Content area -->
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px;">
+        <div style="background: #1e293b; border-radius: 16px; padding: 14px; border: 1px solid #334155;">
+          <div style="font-size: 10px; font-weight: 700; color: white; margin-bottom: 8px;">Mai napirend</div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <div style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; background: rgba(16,185,129,0.15); border-radius: 8px;">
+              <div style="width: 6px; height: 6px; background: #10b981; border-radius: 50%;"></div>
+              <span style="font-size: 9px; color: #e2e8f0;">10:00 - Hajvágás</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; background: rgba(236,72,153,0.15); border-radius: 8px;">
+              <div style="width: 6px; height: 6px; background: #ec4899; border-radius: 50%;"></div>
+              <span style="font-size: 9px; color: #e2e8f0;">11:30 - Manikűr</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; background: rgba(139,92,246,0.15); border-radius: 8px;">
+              <div style="width: 6px; height: 6px; background: #8b5cf6; border-radius: 50%;"></div>
+              <span style="font-size: 9px; color: #e2e8f0;">14:00 - Festés</span>
+            </div>
+          </div>
+        </div>
+        <div style="background: #1e293b; border-radius: 16px; padding: 14px; border: 1px solid #334155;">
+          <div style="font-size: 10px; font-weight: 700; color: white; margin-bottom: 8px;">Gyors műveletek</div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <div style="background: linear-gradient(135deg, #ec4899, #8b5cf6); color: white; font-size: 9px; padding: 8px; border-radius: 10px; text-align: center; font-weight: 600;">+ Poszt</div>
+            <div style="background: #334155; color: #e2e8f0; font-size: 9px; padding: 8px; border-radius: 10px; text-align: center; font-weight: 600;">Üzenetek</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B) Bold & Dark</h3>
+      <p>Sötét háttér, élénk gradiens kártyák, kontrasztos színek. Modern, "prémium" érzés. Spotify/Discord stílus.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="warm-elegant" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 20px; background: linear-gradient(180deg, #faf5f0 0%, #ffffff 100%);">
+      <div style="font-size: 11px; color: #a18072; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; font-weight: 600;">Dashboard</div>
+
+      <!-- KPI row -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 16px;">
+        <div style="background: white; border-radius: 20px; padding: 14px; border: 1px solid #f0e6de;">
+          <div style="font-size: 9px; color: #a18072; text-transform: uppercase; letter-spacing: 1px;">Foglalások</div>
+          <div style="font-size: 22px; font-weight: 800; color: #3d2c22;">24</div>
+          <div style="font-size: 9px; color: #10b981;">+12%</div>
+        </div>
+        <div style="background: white; border-radius: 20px; padding: 14px; border: 1px solid #f0e6de;">
+          <div style="font-size: 9px; color: #a18072; text-transform: uppercase; letter-spacing: 1px;">Értékelések</div>
+          <div style="font-size: 22px; font-weight: 800; color: #3d2c22;">4.8</div>
+          <div style="font-size: 9px; color: #d4a574;">★★★★★</div>
+        </div>
+        <div style="background: white; border-radius: 20px; padding: 14px; border: 1px solid #f0e6de;">
+          <div style="font-size: 9px; color: #a18072; text-transform: uppercase; letter-spacing: 1px;">Bevétel</div>
+          <div style="font-size: 22px; font-weight: 800; color: #3d2c22;">340k</div>
+          <div style="font-size: 9px; color: #10b981;">+8%</div>
+        </div>
+      </div>
+
+      <!-- Content area -->
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px;">
+        <div style="background: white; border-radius: 20px; padding: 14px; border: 1px solid #f0e6de;">
+          <div style="font-size: 10px; font-weight: 700; color: #3d2c22; margin-bottom: 8px;">Mai napirend</div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <div style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; background: #faf5f0; border-radius: 12px;">
+              <div style="width: 6px; height: 6px; background: #d4a574; border-radius: 50%;"></div>
+              <span style="font-size: 9px; color: #5c4033;">10:00 - Hajvágás</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; background: #fdf2f8; border-radius: 12px;">
+              <div style="width: 6px; height: 6px; background: #e8a0bf; border-radius: 50%;"></div>
+              <span style="font-size: 9px; color: #5c4033;">11:30 - Manikűr</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; background: #f5f0eb; border-radius: 12px;">
+              <div style="width: 6px; height: 6px; background: #a18072; border-radius: 50%;"></div>
+              <span style="font-size: 9px; color: #5c4033;">14:00 - Festés</span>
+            </div>
+          </div>
+        </div>
+        <div style="background: white; border-radius: 20px; padding: 14px; border: 1px solid #f0e6de;">
+          <div style="font-size: 10px; font-weight: 700; color: #3d2c22; margin-bottom: 8px;">Gyors műveletek</div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <div style="background: linear-gradient(135deg, #d4a574, #e8a0bf); color: white; font-size: 9px; padding: 8px; border-radius: 12px; text-align: center; font-weight: 600;">+ Poszt</div>
+            <div style="background: #faf5f0; color: #5c4033; font-size: 9px; padding: 8px; border-radius: 12px; text-align: center; font-weight: 600;">Üzenetek</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C) Warm & Elegant</h3>
+      <p>Meleg, aranyos-bézs tónusok, elegáns szegélyek, finom textúra. Szépségipari "luxus" érzés. Aesop/Glossier stílus.</p>
+    </div>
+  </div>
+</div>

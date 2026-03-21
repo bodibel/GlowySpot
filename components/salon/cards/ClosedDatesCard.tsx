@@ -18,8 +18,8 @@ export function ClosedDatesCard({ closedDates, onAdd, onDelete }: ClosedDatesCar
         <div className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5 transition-all hover:shadow-md h-full">
             <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-2">
-                    <div className="h-8 w-8 rounded-lg bg-pink-100 flex items-center justify-center">
-                        <Calendar className="h-4 w-4 text-pink-600" />
+                    <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <Calendar className="h-4 w-4 text-primary" />
                     </div>
                     <h3 className="text-lg font-bold text-gray-900">Zárt napok</h3>
                 </div>
@@ -27,7 +27,7 @@ export function ClosedDatesCard({ closedDates, onAdd, onDelete }: ClosedDatesCar
                     onClick={onAdd}
                     size="sm"
                     variant="ghost"
-                    className="h-8 w-8 p-0 rounded-full hover:bg-pink-50 hover:text-pink-600 transition-colors"
+                    className="h-8 w-8 p-0 rounded-full hover:bg-accent hover:text-primary transition-colors"
                 >
                     <Plus className="h-4 w-4" />
                 </Button>
