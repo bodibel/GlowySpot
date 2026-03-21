@@ -26,7 +26,7 @@ export function TopBar() {
           {/* Logo — aligned with left sidebar width */}
           <Link
             href="/"
-            className="flex-shrink-0 w-[60px] lg:w-[220px] flex items-center justify-center lg:justify-start lg:px-4 text-xl font-light tracking-[0.15em] text-foreground hover:opacity-80 transition-opacity"
+            className="flex-shrink-0 w-[60px] lg:w-[280px] flex items-center justify-center lg:justify-start lg:px-4 text-xl font-light tracking-[0.15em] text-foreground hover:opacity-80 transition-opacity"
           >
             GlowySpot
           </Link>

@@ -3,7 +3,7 @@ import {
   LayoutGrid, Users, Heart, Briefcase, User, Store,
   Settings, Calendar, Image as ImageIcon, FileText,
   Info, BarChart3, MessageSquare,
-  Filter
+  Filter, CreditCard
 } from "lucide-react"
 
 export interface NavLink {
@@ -30,6 +30,7 @@ export const loggedInVisitorLinks: NavLink[] = [
 
 export const providerLinks: NavLink[] = [
   { href: "/dashboard/salons", label: "Vállalkozásom", icon: Store },
+  { href: "/dashboard/subscription", label: "Előfizetés", icon: CreditCard },
   { href: "/profile/me", label: "Profilom", icon: User },
 ]
 

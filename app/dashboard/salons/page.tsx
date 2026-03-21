@@ -10,10 +10,11 @@ import { Salon } from "@/lib/salon-types"
 import { getUserSalons } from "@/lib/actions/salon"
 import Link from "next/link"
 import { SalonWizard } from "@/components/wizard/SalonWizard"
+import { SubscriptionBadge } from "@/components/dashboard/SubscriptionBadge"
 
 export default function SalonsPage() {
     const { userData } = useAuth()
-    const [salons, setSalons] = useState<Salon[]>([])
+    const [salons, setSalons] = useState<any[]>([])
     const [loading, setLoading] = useState(true)
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
 
@@ -39,8 +40,8 @@ export default function SalonsPage() {
     }
 
     return (
-        <MainLayout showRightSidebar={false}>
-            <div className="container mx-auto p-6 md:p-8 max-w-7xl space-y-10">
+        <MainLayout showRightSidebar={false} fullWidth={true}>
+            <div className="p-6 md:p-10 space-y-8">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div className="flex flex-col gap-1">
                         <h1 className="text-3xl font-black text-gray-900 tracking-tight">Szalonjaim</h1>
@@ -77,7 +78,7 @@ export default function SalonsPage() {
                         </Button>
                     </div>
                 ) : (
-                    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         {salons.map((salon) => (
                             <Link key={salon.id} href={`/salon/${salon.id}`} className="group">
                                 <div className="bg-white rounded-[32px] overflow-hidden shadow-sm ring-1 ring-gray-900/5 transition-all duration-300 hover:shadow-xl hover:ring-primary/10 hover:-translate-y-1 h-full flex flex-col">
@@ -98,6 +99,17 @@ export default function SalonsPage() {
                                             <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
                                             <span className="text-xs font-black text-gray-900">{salon.rating.toFixed(1)}</span>
                                         </div>
+                                        {salon.subscription && (
+                                            <div className="absolute top-4 left-4">
+                                                <SubscriptionBadge
+                                                    plan={salon.subscription.plan}
+                                                    status={salon.subscription.status}
+                                                    freeExpiresAt={salon.subscription.freeExpiresAt}
+                                                    currentPeriodEnd={salon.subscription.currentPeriodEnd}
+                                                    cancelAtPeriodEnd={salon.subscription.cancelAtPeriodEnd}
+                                                />
+                                            </div>
+                                        )}
                                     </div>
                                     <div className="p-6 flex-1 flex flex-col">
                                         <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors line-clamp-1">{salon.name}</h3>

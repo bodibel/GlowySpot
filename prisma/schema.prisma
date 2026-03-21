@@ -8,7 +8,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// NextAuth Models
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
+enum SubscriptionPlan {
+  FREE
+  STANDARD
+  PREMIUM
+}
+
+enum SubscriptionStatus {
+  ACTIVE     // fizetett vagy ingyenes, még érvényes
+  INACTIVE   // lejárt free vagy lemondott
+  PAST_DUE   // fizetés sikertelen
+  CANCELLED  // lemondott, de még fut az időszak végéig
+}
+
+// ─── NextAuth Models ──────────────────────────────────────────────────────────
+
 model Account {
   id                 String  @id @default(cuid())
   userId             String
@@ -68,7 +84,8 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-// Application Models
+// ─── Salon ────────────────────────────────────────────────────────────────────
+
 model Salon {
   id            String   @id @default(cuid())
   name          String
@@ -80,7 +97,7 @@ model Salon {
   floor         String?
   door          String?
   zipCode       String?
-  address       String   // Keep full address for backward compatibility/display
+  address       String
   categories    String[]
   currency      String   @default("HUF")
   description   String?  @db.Text
@@ -101,26 +118,35 @@ model Salon {
   bookings      Booking[]
   reviews       Review[]
   favorites     Favorite[]
-  languages     String[] // e.g. ["English", "Hungarian"]
+  languages     String[]
   lat           Float?
   lng           Float?
   isActive      Boolean   @default(true)
   inactivatedAt DateTime?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  // Owner/About fields
+
+  // Duplikáció megelőzés: normalizált telefon+cím hash, globálisan egyedi
+  // Formátum: sha256(normalizedPhone + "|" + normalizedAddress)
+  salonFingerprint String? @unique
+
+  // Előfizetés (1-1 kapcsolat)
+  subscription  Subscription?
+
+  // Owner/About
   ownerName     String?
   ownerImage    String?
   aboutMe       String?  @db.Text
   isTeam        Boolean  @default(false)
   teamMembers   TeamMember[]
+
   // Contact preferences
   allowMessages       Boolean  @default(true)
   allowBookings       Boolean  @default(true)
+
   // Profile display settings
   showPhoneOnProfile  Boolean  @default(true)
   showEmailOnProfile  Boolean  @default(false)
-  // Email notification preferences (granular)
+
+  // Email notifications
   notifyNewMessage    Boolean  @default(true)
   notifyNewBooking    Boolean  @default(true)
   notifyNewReview     Boolean  @default(true)
@@ -129,8 +155,78 @@ model Salon {
   notifyPostComment   Boolean  @default(true)
   notifyWeeklyStats   Boolean  @default(true)
   notifyMonthlyStats  Boolean  @default(true)
+
   messages            Message[]
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
 }
+
+// ─── Subscription ─────────────────────────────────────────────────────────────
+
+model Subscription {
+  id      String @id @default(cuid())
+  salonId String @unique
+  salon   Salon  @relation(fields: [salonId], references: [id], onDelete: Cascade)
+
+  plan    SubscriptionPlan   @default(FREE)
+  status  SubscriptionStatus @default(ACTIVE)
+
+  // Pénznem (regisztrációkor meghatározva, ország alapján)
+  billingCurrency String @default("HUF") // "HUF" | "EUR"
+
+  // Stripe azonosítók (null amíg nincs fizetés)
+  stripeCustomerId     String?
+  stripeSubscriptionId String? @unique
+  stripePriceId        String?
+
+  // Aktuális számlázási időszak (Stripe szinkronizálva)
+  currentPeriodStart DateTime?
+  currentPeriodEnd   DateTime?
+
+  // Free csomag lejárat (freeStartedAt + SubscriptionConfig.freeTrialDays)
+  freeStartedAt DateTime  @default(now())
+  freeExpiresAt DateTime?
+
+  // 30 napos gördülő poszt számláló
+  postWindowStart   DateTime @default(now())
+  postCountInWindow Int      @default(0)
+
+  // Ütemezett csomag visszaminősítés (időszak végén lép életbe)
+  scheduledPlan   SubscriptionPlan?
+  scheduledPlanAt DateTime?
+
+  cancelAtPeriodEnd Boolean   @default(false)
+  cancelledAt       DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ─── SubscriptionConfig (admin által konfigurálható) ─────────────────────────
+
+model SubscriptionConfig {
+  id   String @id @default(cuid())
+
+  // Free csomag korlátok
+  freeTrialDays        Int @default(60)  // 2 hónap
+  freeMonthlyPostLimit Int @default(5)
+
+  // Stripe Price ID-k (admin adja meg)
+  standardPriceHufId String?
+  standardPriceEurId String?
+  premiumPriceHufId  String?
+  premiumPriceEurId  String?
+
+  // Stripe kulcsok (admin adja meg a dashboardon)
+  stripePublishableKey String?
+  stripeSecretKey      String?  // Titkosítva tárolva
+  stripeWebhookSecret  String?
+
+  updatedAt DateTime @updatedAt
+  updatedBy String?  // admin userId
+}
+
+// ─── TeamMember ───────────────────────────────────────────────────────────────
 
 model TeamMember {
   id          String   @id @default(cuid())
@@ -145,48 +241,57 @@ model TeamMember {
   updatedAt   DateTime @updatedAt
 }
 
+// ─── Service ──────────────────────────────────────────────────────────────────
+
 model Service {
-  id        String @id @default(cuid())
-  name      String
-  price     String
-  duration  String
+  id          String  @id @default(cuid())
+  name        String
+  price       String
+  duration    String
   description String? @db.Text
-  salonId   String
-  salon     Salon  @relation(fields: [salonId], references: [id], onDelete: Cascade)
-  bookings  Booking[]
+  salonId     String
+  salon       Salon   @relation(fields: [salonId], references: [id], onDelete: Cascade)
+  bookings    Booking[]
 }
 
+// ─── OpeningHour / ClosedDate ─────────────────────────────────────────────────
+
 model OpeningHour {
-  id        String   @id @default(cuid())
-  day       String
-  open      String?
-  close     String?
-  isOpen    Boolean  @default(true)
-  salonId   String
-  salon     Salon    @relation(fields: [salonId], references: [id], onDelete: Cascade)
+  id      String  @id @default(cuid())
+  day     String
+  open    String?
+  close   String?
+  isOpen  Boolean @default(true)
+  salonId String
+  salon   Salon   @relation(fields: [salonId], references: [id], onDelete: Cascade)
 }
 
 model ClosedDate {
-  id        String @id @default(cuid())
-  date      String
-  reason    String
-  salonId   String
-  salon     Salon  @relation(fields: [salonId], references: [id], onDelete: Cascade)
+  id      String @id @default(cuid())
+  date    String
+  reason  String
+  salonId String
+  salon   Salon  @relation(fields: [salonId], references: [id], onDelete: Cascade)
 }
+
+// ─── Post ─────────────────────────────────────────────────────────────────────
 
 model Post {
   id        String   @id @default(cuid())
   content   String   @db.Text
   images    String[]
+  videos    String[] // Standard+ csomagtól engedélyezett
   layout    String   @default("grid") // grid, carousel, collage, columns
   salonId   String
   salon     Salon    @relation(fields: [salonId], references: [id], onDelete: Cascade)
   comments  Comment[]
   likes     Like[]
-  isActive  Boolean   @default(true)
+  isActive      Boolean   @default(true)
   inactivatedAt DateTime?
   createdAt DateTime @default(now())
 }
+
+// ─── Booking ──────────────────────────────────────────────────────────────────
 
 model Booking {
   id        String   @id @default(cuid())
@@ -202,6 +307,8 @@ model Booking {
   createdAt DateTime @default(now())
 }
 
+// ─── Review ───────────────────────────────────────────────────────────────────
+
 model Review {
   id        String   @id @default(cuid())
   rating    Int
@@ -213,19 +320,23 @@ model Review {
   createdAt DateTime @default(now())
 }
 
+// ─── Message ──────────────────────────────────────────────────────────────────
+
 model Message {
-  id          String   @id @default(cuid())
-  subject     String?
-  content     String   @db.Text
-  senderId    String
-  sender      User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
-  receiverId  String
-  receiver    User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
-  salonId     String?
-  salon       Salon?   @relation(fields: [salonId], references: [id], onDelete: SetNull)
-  isRead      Boolean  @default(false)
-  createdAt   DateTime @default(now())
+  id         String   @id @default(cuid())
+  subject    String?
+  content    String   @db.Text
+  senderId   String
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId String
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  salonId    String?
+  salon      Salon?   @relation(fields: [salonId], references: [id], onDelete: SetNull)
+  isRead     Boolean  @default(false)
+  createdAt  DateTime @default(now())
 }
+
+// ─── Comment / Like / Favorite ────────────────────────────────────────────────
 
 model Comment {
   id        String   @id @default(cuid())
@@ -238,24 +349,26 @@ model Comment {
 }
 
 model Like {
-  id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  postId    String
-  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  postId String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@unique([userId, postId])
 }
 
 model Favorite {
-  id        String @id @default(cuid())
-  userId    String
-  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  salonId   String
-  salon     Salon  @relation(fields: [salonId], references: [id], onDelete: Cascade)
+  id      String @id @default(cuid())
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  salonId String
+  salon   Salon  @relation(fields: [salonId], references: [id], onDelete: Cascade)
 
   @@unique([userId, salonId])
 }
+
+// ─── Auth ─────────────────────────────────────────────────────────────────────
 
 model PasswordResetToken {
   id      String   @id @default(cuid())
@@ -266,11 +379,13 @@ model PasswordResetToken {
   @@unique([email, token])
 }
 
+// ─── Category ─────────────────────────────────────────────────────────────────
+
 model Category {
   id        String   @id @default(cuid())
   name      String   @unique
   slug      String   @unique
-  icon      String?  // Name of the icon (e.g., "Scissors")
+  icon      String?
   order     Int      @default(0)
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())

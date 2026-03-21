@@ -10,9 +10,11 @@ import { cn } from "@/lib/utils"
 export function MainLayout({
   children,
   showRightSidebar = true,
+  fullWidth = false,
 }: {
   children: React.ReactNode
   showRightSidebar?: boolean
+  fullWidth?: boolean
 }) {
   return (
     <div className="min-h-screen bg-background">
@@ -28,12 +30,14 @@ export function MainLayout({
         {/* Center + Right — fills remaining space */}
         <div className="flex-1 min-w-0 flex items-start gap-6 pl-6 py-5 pb-24 md:pb-8">
 
-          {/* Main feed — fixed width, never grows */}
+          {/* Main feed */}
           <main className={cn(
-            "flex-shrink-0 w-full",
-            showRightSidebar
-              ? "lg:max-w-[480px] xl:max-w-[640px]"
-              : "max-w-[680px] mx-auto"
+            "w-full min-w-0",
+            fullWidth
+              ? "flex-1"
+              : showRightSidebar
+                ? "flex-shrink-0 lg:max-w-[480px] xl:max-w-[640px]"
+                : "max-w-[680px] mx-auto flex-shrink-0"
           )}>
             <ActiveSalonIndicator />
             {children}

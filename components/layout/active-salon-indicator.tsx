@@ -30,8 +30,8 @@ export function ActiveSalonIndicator() {
         }
     }, [salonId])
 
-    // Only show if we are in a salon context and not just viewing the list
-    if (!salonId || !salonData) return null
+    // Only show if we are in a salon context and not just viewing the list or a public profile
+    if (!salonId || !salonData || pathname?.startsWith("/profile/")) return null
 
     return (
         <div className="px-4 sm:px-6 lg:px-8 pt-4">

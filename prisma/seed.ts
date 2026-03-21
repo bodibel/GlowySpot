@@ -19,6 +19,7 @@ async function main() {
     await prisma.openingHour.deleteMany()
     await prisma.service.deleteMany()
     await prisma.message.deleteMany()
+    await prisma.subscription.deleteMany()
     await prisma.salon.deleteMany()
     await prisma.user.deleteMany()
     await prisma.category.deleteMany()
@@ -229,7 +230,36 @@ async function main() {
         },
     ]
 
+    // Teszt szalonok fingerprintjei (hash alapú, itt egyszerűsítve salonName alapján)
+    const { createHash } = await import("crypto")
+    const makeFingerprint = (phone: string | null, address: string) => {
+        const normalizedPhone = (phone || "").replace(/\D/g, "")
+        const normalizedAddress = address.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9\s]/g, "").trim()
+        return createHash("sha256").update(`${normalizedPhone}|${normalizedAddress}`).digest("hex")
+    }
+
+    // FREE előfizetés: 60 nap próba, de a teszt szalonoknak adjunk eltérő lejáratokat a badge demo-hoz
+    const now = new Date()
+    const daysFromNow = (d: number) => new Date(now.getTime() + d * 24 * 60 * 60 * 1000)
+
+    // Szalonok sorrendje alapján különböző lejáratok a badge demo-hoz
+    const freeExpiries = [
+        daysFromNow(58),  // Glamour Szalon - 58 nap
+        daysFromNow(2),   // Harmónia Wellness - 2 nap (piros - kritikus)
+        daysFromNow(60),  // Nails by Anna - 60 nap
+        daysFromNow(10),  // Classic Barbershop - 10 nap (sárga)
+        daysFromNow(45),  // Zen Stúdió
+        daysFromNow(30),  // Modern Beauty
+        daysFromNow(5),   // Diamond Spa - 5 nap (sárga)
+        daysFromNow(60),  // Stílus Fodrászat
+        daysFromNow(60),  // Royal Beauty
+        daysFromNow(60),  // Elite Cut
+        daysFromNow(60),  // Single Salon Studio
+    ]
+
+    let salonIndex = 0
     for (const s of salonsData) {
+        const fingerprint = makeFingerprint(null, s.address)
         const salon = await prisma.salon.create({
             data: {
                 ...s,
@@ -240,8 +270,24 @@ async function main() {
                 languages: ["Hungarian", "English"],
                 lat: 47.4979 + (Math.random() - 0.5) * 0.1,
                 lng: 19.0402 + (Math.random() - 0.5) * 0.1,
+                salonFingerprint: fingerprint,
             }
         })
+
+        // FREE Subscription rekord létrehozása minden szalonhoz
+        await prisma.subscription.create({
+            data: {
+                salonId: salon.id,
+                plan: "FREE",
+                status: "ACTIVE",
+                billingCurrency: "HUF",
+                freeStartedAt: now,
+                freeExpiresAt: freeExpiries[salonIndex] || daysFromNow(60),
+                postWindowStart: now,
+                postCountInWindow: 0,
+            }
+        })
+        salonIndex++
 
         // Create Opening Hours
         const days = ["Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"]

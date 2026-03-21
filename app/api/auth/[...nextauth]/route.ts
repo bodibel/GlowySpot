@@ -95,6 +95,16 @@ export const authOptions = {
                 token.sub = user.id
                 token.role = user.role
                 token.name = user.name
+            } else if (token.sub && !token.role) {
+                // Ha a role hiányzik a token-ből (pl. régi session), frissítsük DB-ből
+                const dbUser = await prisma.user.findUnique({
+                    where: { id: token.sub },
+                    select: { role: true, name: true }
+                })
+                if (dbUser) {
+                    token.role = dbUser.role
+                    token.name = dbUser.name
+                }
             }
             if (trigger === "update") {
                 // Re-fetch on explicit session update (e.g. profile change)

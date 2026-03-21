@@ -5,6 +5,7 @@ import { FilterProvider } from "@/lib/filter-context";
 import { GoogleMapsProvider } from "@/components/GoogleMapsProvider";
 import { NotificationProvider } from "@/lib/notification-context";
 import { ThemeProvider } from "@/lib/theme-context";
+import { SalonProfileProvider } from "@/lib/salon-profile-context";
 import { Toaster } from "sonner";
 import "./globals.css";
 
@@ -54,10 +55,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <AuthProvider>
             <GoogleMapsProvider>
               <FilterProvider>
-                <NotificationProvider>
-                  {children}
-                  <Toaster richColors position="top-center" closeButton />
-                </NotificationProvider>
+                <SalonProfileProvider>
+                  <NotificationProvider>
+                    {children}
+                    <Toaster richColors position="top-center" closeButton />
+                  </NotificationProvider>
+                </SalonProfileProvider>
               </FilterProvider>
             </GoogleMapsProvider>
           </AuthProvider>

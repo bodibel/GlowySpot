@@ -1,16 +1,15 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { MainLayout } from "@/components/layout/main-layout"
 import { ProviderCard } from "@/components/home/provider-card"
 import { getAllSalons } from "@/lib/actions/salon"
-import { Search, MapPin } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { useFilter } from "@/lib/filter-context"
 
 export default function ProvidersPage() {
     const [providers, setProviders] = useState<any[]>([])
     const [loading, setLoading] = useState(true)
+    const { filters } = useFilter()
 
     useEffect(() => {
         loadProviders()
@@ -39,29 +38,22 @@ export default function ProvidersPage() {
         }
     }
 
+    const filteredProviders = useMemo(() => {
+        const q = filters.searchQuery.toLowerCase().trim()
+        if (!q) return providers
+        return providers.filter((p) =>
+            p.name.toLowerCase().includes(q) ||
+            p.category.toLowerCase().includes(q) ||
+            p.location?.toLowerCase().includes(q)
+        )
+    }, [providers, filters.searchQuery])
+
     return (
-        <MainLayout showRightSidebar={false}>
-            <div className="space-y-6">
-                <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-                    <h1 className="text-3xl font-bold">Szolgáltatók</h1>
+        <MainLayout showRightSidebar={true}>
+            <div className="space-y-4 pt-2">
+                <h1 className="text-2xl font-bold">Szolgáltatók</h1>
 
-                    {/* Search and Location */}
-                    <div className="flex gap-4 w-full md:w-auto">
-                        <div className="relative flex-1 md:w-80">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                            <Input
-                                placeholder="Keresés szolgáltatók között..."
-                                className="pl-10 h-12 bg-white border-gray-200"
-                            />
-                        </div>
-                        <Button variant="outline" className="h-12 px-6 gap-2 bg-white border-gray-200 text-gray-700 hover:bg-gray-50">
-                            <MapPin className="h-4 w-4" />
-                            Helyzet megadása
-                        </Button>
-                    </div>
-                </div>
-
-                <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                <div className="grid gap-4 grid-cols-2">
                     {loading ? (
                         <div className="col-span-full text-center text-muted-foreground py-12">
                             Betöltés...
@@ -70,8 +62,12 @@ export default function ProvidersPage() {
                         <div className="col-span-full text-center text-muted-foreground py-12">
                             Még nincs egy szalon sem regisztrálva
                         </div>
+                    ) : filteredProviders.length === 0 ? (
+                        <div className="col-span-full text-center text-muted-foreground py-12">
+                            Nincs találat a keresési feltételekre
+                        </div>
                     ) : (
-                        providers.map((provider) => (
+                        filteredProviders.map((provider) => (
                             <ProviderCard key={provider.id} {...provider} />
                         ))
                     )}

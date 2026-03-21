@@ -98,16 +98,16 @@ export function PostDetailModal({ isOpen, onClose, post, onLike }: PostDetailMod
         <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
             <DialogContent className="max-w-5xl p-0 overflow-hidden border-none bg-white rounded-3xl shadow-2xl">
                 <DialogTitle className="sr-only">Bejegyzés: {post.author.name}</DialogTitle>
-                <div className="flex flex-col lg:flex-row h-full max-h-[90vh]">
+                <div className="flex flex-col lg:flex-row h-[80vh]">
                     {/* Left side: Image */}
-                    <div className="relative w-full lg:w-3/5 bg-gray-100 flex items-center justify-center min-h-[300px]">
+                    <div className="relative w-full lg:w-3/5 bg-gray-100 min-h-[300px]">
                         {images.length > 0 ? (
                             <>
                                 <Image
                                     src={images[currentImageIndex]}
                                     alt={post.content}
                                     fill
-                                    className="object-contain"
+                                    className="object-cover"
                                     priority
                                 />
                                 {images.length > 1 && (
@@ -194,14 +194,6 @@ export function PostDetailModal({ isOpen, onClose, post, onLike }: PostDetailMod
                                     {new Date(post.createdAt).toLocaleDateString('hu-HU', { year: 'numeric', month: 'long', day: 'numeric' })}
                                 </span>
                             </div>
-
-                            {/* Service teaser if applicable */}
-                            {post.author.minPrice && (
-                                <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                                    <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Szolgáltatás kezdő ára</h4>
-                                    <p className="text-lg font-bold text-gray-900">{post.author.minPrice} {post.author.currency || "HUF"}</p>
-                                </div>
-                            )}
 
                             {/* Section for comments */}
                             <div className="pt-4 border-t border-gray-50">

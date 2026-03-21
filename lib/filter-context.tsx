@@ -15,6 +15,7 @@ export interface FilterState {
     rating: number | null
     openNow: boolean
     availableToday: boolean
+    searchQuery: string
 }
 
 interface FilterContextType {
@@ -26,6 +27,7 @@ interface FilterContextType {
     updateFilters: (filters: Partial<FilterState>) => void
     addServiceFilter: (service: string) => void
     removeServiceFilter: (service: string) => void
+    updateSearchQuery: (query: string) => void
     clearFilters: () => void
 }
 
@@ -42,6 +44,7 @@ const defaultFilters: FilterState = {
     rating: null,
     openNow: false,
     availableToday: false,
+    searchQuery: "",
 }
 
 export function FilterProvider({ children }: { children: ReactNode }) {
@@ -75,6 +78,10 @@ export function FilterProvider({ children }: { children: ReactNode }) {
         }))
     }
 
+    const updateSearchQuery = (query: string) => {
+        setFilters((prev) => ({ ...prev, searchQuery: query }))
+    }
+
     const clearFilters = () => {
         setFilters(defaultFilters)
     }
@@ -90,6 +97,7 @@ export function FilterProvider({ children }: { children: ReactNode }) {
                 updateFilters,
                 addServiceFilter,
                 removeServiceFilter,
+                updateSearchQuery,
                 clearFilters,
             }}
         >

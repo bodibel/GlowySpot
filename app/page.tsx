@@ -193,48 +193,11 @@ export default function Home() {
   return (
     <MainLayout>
       <div className="space-y-6 pb-10 w-full">
-        {/* Hero Banner */}
-        <HeroBanner />
-
-        {/* Filters - Card Wrapper */}
-        <div className="rounded-2xl bg-surface p-4 shadow-sm border border-border">
-          <div className="flex gap-2 overflow-x-auto scrollbar-hide">
-            <button
-              type="button"
-              className={`rounded-full px-5 h-9 text-sm font-medium whitespace-nowrap transition-colors ${filters.services.length === 0
-                ? "bg-accent text-white"
-                : "bg-secondary text-muted-foreground hover:bg-accent/20 border border-border"
-                }`}
-              onClick={() => {
-                filters.services.forEach(s => removeServiceFilter(s))
-              }}
-            >
-              Összes
-            </button>
-            {categories.map((category) => {
-              const id = category.slug
-              const isSelected = filters.services.includes(id)
-              return (
-                <button
-                  key={category.id}
-                  type="button"
-                  className={`rounded-full px-5 h-9 text-sm font-medium whitespace-nowrap transition-colors ${isSelected
-                    ? "bg-accent text-white"
-                    : "bg-secondary text-muted-foreground hover:bg-accent/20 border border-border"
-                    }`}
-                  onClick={() => isSelected ? removeServiceFilter(id) : addServiceFilter(id)}
-                >
-                  {category.name}
-                </button>
-              )
-            })}
-          </div>
-        </div>
-
-        {/* Stories - Card Wrapper with Sticky Container */}
+        {/* Featured Salons Bar */}
         <div className="sticky top-16 z-30">
           <div className="py-2">
-            <div className="rounded-2xl bg-surface p-5 shadow-sm border border-border">
+            <div className="rounded-2xl bg-surface px-5 py-4 shadow-sm border border-border">
+              <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest mb-3">Kiemelt szalonok</p>
               <StoryBar />
             </div>
           </div>
@@ -243,7 +206,6 @@ export default function Home() {
         {/* Recent Works Header */}
         <div className="flex items-center justify-between px-1">
           <h2 className="text-xl font-bold font-serif text-foreground">Legújabb Bejegyzések</h2>
-          <span className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Kiemelt</span>
         </div>
 
         {/* Feed */}

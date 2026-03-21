@@ -5,6 +5,14 @@ import { revalidatePath } from "next/cache"
 import prisma from "@/lib/db"
 import { Salon, Service, OpeningHour, ClosedDate, Post } from "@/lib/salon-types"
 import { requireSession } from "@/lib/auth-utils"
+import {
+  generateSalonFingerprint,
+  checkFingerprintDuplicate,
+  initSubscription,
+  canCreatePost,
+  incrementPostCount,
+  canUploadVideo,
+} from "@/lib/subscription"
 
 async function requireSalonOwner(salonId: string): Promise<string> {
     const sessionUserId = await requireSession()
@@ -124,7 +132,18 @@ export async function updateSalon(salonId: string, data: any) {
 export async function getUserSalons(userId: string) {
     try {
         return await prisma.salon.findMany({
-            where: { ownerId: userId }
+            where: { ownerId: userId },
+            include: {
+                subscription: {
+                    select: {
+                        plan: true,
+                        status: true,
+                        freeExpiresAt: true,
+                        currentPeriodEnd: true,
+                        cancelAtPeriodEnd: true,
+                    }
+                }
+            }
         })
     } catch (error) {
         console.error("Error fetching user salons:", error)
@@ -210,8 +229,28 @@ export async function getUserFavorites(userId: string) {
 export async function createSalon(data: any) {
     const sessionUserId = await requireSession()
     if (data.ownerId !== sessionUserId) throw new Error("Nincs jogosultságod más nevében szalont létrehozni.")
+
+    // Duplikáció ellenőrzés fingerprint alapján (globálisan, lejárt szalonokra is)
+    const fingerprint = generateSalonFingerprint(data.phone, data.address)
+    const dupCheck = await checkFingerprintDuplicate(fingerprint)
+    if (dupCheck.duplicate) {
+        if (dupCheck.isInactive) {
+            throw new Error(
+                `Ez a szalon (${dupCheck.salonName}) már regisztrálva van, de az ingyenes időszaka lejárt. Kérjük vegye fel a kapcsolatot az ügyfélszolgálattal.`
+            )
+        }
+        throw new Error(
+            `Ez a szalon (${dupCheck.salonName}) már regisztrálva van az oldalon.`
+        )
+    }
+
+    // Pénznem meghatározása ország alapján (HU → HUF, egyéb → EUR)
+    const billingCurrency = (data.country === "Magyarország" || data.country === "Hungary")
+        ? "HUF"
+        : "EUR"
+
     try {
-        return await (prisma as any).salon.create({
+        const salon = await prisma.salon.create({
             data: {
                 name: data.name,
                 country: data.country || "Magyarország",
@@ -236,6 +275,7 @@ export async function createSalon(data: any) {
                 lng: data.lng || null,
                 phone: data.phone || null,
                 email: data.email || null,
+                salonFingerprint: fingerprint,
                 allowMessages: data.allowMessages ?? true,
                 allowBookings: data.allowBookings ?? true,
                 showPhoneOnProfile: data.showPhoneOnProfile ?? true,
@@ -263,6 +303,11 @@ export async function createSalon(data: any) {
                 } : undefined
             }
         })
+
+        // FREE Subscription rekord automatikus létrehozása
+        await initSubscription(salon.id, billingCurrency as "HUF" | "EUR")
+
+        return salon
     } catch (error) {
         console.error("Error creating salon:", error)
         throw error
@@ -303,6 +348,87 @@ export async function getAllSalons() {
         })
     } catch (error) {
         console.error("Error fetching all salons:", error)
+        return []
+    }
+}
+
+export async function getFeaturedSalons({
+    city,
+    services,
+    limit = 8,
+}: {
+    city?: string
+    services?: string[]
+    limit?: number
+}) {
+    try {
+        const baseWhere: any = { isActive: true }
+
+        if (city) {
+            baseWhere.city = { contains: city, mode: "insensitive" }
+        }
+        if (services && services.length > 0) {
+            baseWhere.categories = { hasSome: services }
+        }
+
+        const select = {
+            id: true,
+            name: true,
+            profileImage: true,
+            categories: true,
+            city: true,
+            rating: true,
+            subscriptionPlan: true,
+        }
+
+        // 1. Prémium szalonok
+        const premiumSalons = await prisma.salon.findMany({
+            where: { ...baseWhere, subscriptionPlan: "premium" },
+            orderBy: { rating: "desc" },
+            take: limit,
+            select,
+        })
+
+        const remaining = limit - premiumSalons.length
+        if (remaining <= 0) return premiumSalons
+
+        // 2. Feltöltés legnépszerűbbekkel
+        const excludeIds = premiumSalons.map((s) => s.id)
+        const popularSalons = await prisma.salon.findMany({
+            where: {
+                ...baseWhere,
+                subscriptionPlan: { not: "premium" },
+                id: { notIn: excludeIds },
+            },
+            orderBy: [{ reviewCount: "desc" }, { rating: "desc" }],
+            take: remaining,
+            select,
+        })
+
+        return [...premiumSalons, ...popularSalons]
+    } catch (error) {
+        console.error("Error fetching featured salons:", error)
+        return []
+    }
+}
+
+export async function getRecentSalons(limit = 4) {
+    try {
+        return await prisma.salon.findMany({
+            where: { isActive: true },
+            orderBy: { createdAt: "desc" },
+            take: limit,
+            select: {
+                id: true,
+                name: true,
+                profileImage: true,
+                categories: true,
+                city: true,
+                rating: true,
+            }
+        })
+    } catch (error) {
+        console.error("Error fetching recent salons:", error)
         return []
     }
 }
@@ -504,14 +630,36 @@ export async function deleteClosedDate(id: string) {
 
 export async function createPost(data: any) {
     await requireSalonOwner(data.salonId)
-    return await prisma.post.create({
+
+    // Poszt limit ellenőrzés
+    const postCheck = await canCreatePost(data.salonId)
+    if (!postCheck.allowed) {
+        throw new Error(postCheck.reason)
+    }
+
+    // Videó jogosultság ellenőrzés
+    const hasVideos = data.videos && data.videos.length > 0
+    if (hasVideos) {
+        const videoCheck = await canUploadVideo(data.salonId)
+        if (!videoCheck.allowed) {
+            throw new Error(videoCheck.reason)
+        }
+    }
+
+    const post = await prisma.post.create({
         data: {
             salonId: data.salonId,
             content: data.content,
             images: data.images || [],
+            videos: data.videos || [],
             layout: data.layout || "grid"
-        } as any
+        }
     })
+
+    // FREE csomagnál növeljük a számlálót
+    await incrementPostCount(data.salonId)
+
+    return post
 }
 
 export async function updatePost(postId: string, data: any) {

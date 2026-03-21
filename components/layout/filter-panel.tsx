@@ -12,7 +12,7 @@ import { useFilter } from "@/lib/filter-context"
 import { getCategories } from "@/lib/actions/category"
 import {
   Scissors, Sparkles, Hand, User, Palette, Waves, Smile,
-  MapPin, Check, ChevronsUpDown,
+  MapPin, Check, ChevronsUpDown, Search,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useLoadScript } from "@react-google-maps/api"
@@ -47,6 +47,7 @@ export function FilterPanel({ onApply, compact = false }: FilterPanelProps) {
     updateLocation,
     addServiceFilter,
     removeServiceFilter,
+    updateSearchQuery,
     clearFilters,
   } = useFilter()
 
@@ -110,6 +111,20 @@ export function FilterPanel({ onApply, compact = false }: FilterPanelProps) {
 
   return (
     <div className={cn("space-y-5", compact && "space-y-4")}>
+
+      {/* ── Keresés ── */}
+      <div className="space-y-1">
+        <Label className={labelCls}>Keresés</Label>
+        <div className="relative">
+          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+          <Input
+            value={filters.searchQuery}
+            onChange={(e) => updateSearchQuery(e.target.value)}
+            placeholder="Szalon neve, szolgáltatás..."
+            className={cn("pl-8", compact ? "h-8 text-xs" : "")}
+          />
+        </div>
+      </div>
 
       {/* ── Távolság és Helyszín ── */}
       <div className="space-y-3">
