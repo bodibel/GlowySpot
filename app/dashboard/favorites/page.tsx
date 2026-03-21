@@ -84,7 +84,7 @@ export default function FavoritesPage() {
             <div className="container mx-auto p-4 md:p-8 max-w-7xl min-h-screen">
                 <div className="flex items-center justify-between mb-8">
                     <div className="flex items-center gap-3">
-                        <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-primary to-accent-rose flex items-center justify-center shadow-lg shadow-primary/20">
+                        <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-primary to-accent-warm flex items-center justify-center shadow-lg shadow-primary/20">
                             <Heart className="h-6 w-6 text-white fill-white" />
                         </div>
                         <div>

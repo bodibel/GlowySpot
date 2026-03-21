@@ -34,7 +34,7 @@ export function BottomNav() {
               <Link
                 key="center"
                 href="/salon"
-                className="relative -mt-6 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent-rose text-white shadow-lg shadow-primary/30 ring-4 ring-background transition-transform active:scale-95"
+                className="relative -mt-6 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent-warm text-white shadow-lg shadow-primary/30 ring-4 ring-background transition-transform active:scale-95"
                 aria-label="Új bejegyzés létrehozása"
               >
                 <Plus className="h-6 w-6" strokeWidth={2.5} />
@@ -45,7 +45,7 @@ export function BottomNav() {
             <Link
               key="center"
               href="/providers"
-              className="relative -mt-6 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent-rose text-white shadow-lg shadow-primary/30 ring-4 ring-background transition-transform active:scale-95"
+              className="relative -mt-6 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent-warm text-white shadow-lg shadow-primary/30 ring-4 ring-background transition-transform active:scale-95"
               aria-label="Keresés"
             >
               <Search className="h-6 w-6" strokeWidth={2.5} />

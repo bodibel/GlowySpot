@@ -124,7 +124,7 @@ export function Sidebar() {
           {userData ? (
             <div className="space-y-2">
               <div className="flex items-center gap-2 p-2 rounded-xl bg-accent/50">
-                <div className="h-8 w-8 rounded-full bg-gradient-to-br from-primary/20 to-accent-rose/20 flex items-center justify-center text-primary font-bold text-sm shrink-0">
+                <div className="h-8 w-8 rounded-full bg-gradient-to-br from-primary/20 to-accent-warm/20 flex items-center justify-center text-primary font-bold text-sm shrink-0">
                   {userData.name?.[0]?.toUpperCase() ?? "U"}
                 </div>
                 <div className="flex-1 overflow-hidden">

@@ -274,7 +274,7 @@ export function FeedCard({ post, isOwner, onEdit, onLike }: FeedCardProps) {
                     {post.author.minPrice !== undefined && post.author.minPrice > 0 && (
                         <button
                             type="button"
-                            className="w-full rounded-xl bg-gradient-to-r from-primary to-accent-rose py-2.5 text-sm font-semibold text-white hover:opacity-90 transition-opacity"
+                            className="w-full rounded-xl bg-gradient-to-r from-primary to-accent-warm py-2.5 text-sm font-semibold text-white hover:opacity-90 transition-opacity"
                         >
                             Foglalj időpontot · {post.author.minPrice} {post.author.currency}-tól
                         </button>

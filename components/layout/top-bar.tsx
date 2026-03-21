@@ -67,7 +67,7 @@ export function TopBar() {
 
                 <Link
                   href="/profile/me"
-                  className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent-rose text-sm font-bold text-white ring-2 ring-primary/20 hover:ring-primary/40 transition-all"
+                  className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent-warm text-sm font-bold text-white ring-2 ring-primary/20 hover:ring-primary/40 transition-all"
                   aria-label="Profilom"
                 >
                   {userData?.name?.[0] || "U"}

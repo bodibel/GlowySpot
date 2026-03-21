@@ -35,7 +35,7 @@ export default function MyProfilePage() {
                     <div className="lg:col-span-2 space-y-6">
                         <div className="rounded-[32px] bg-white p-8 shadow-sm ring-1 ring-gray-900/5 transition-all hover:shadow-md">
                             <div className="flex items-center gap-6 mb-8">
-                                <div className="h-24 w-24 rounded-3xl bg-gradient-to-br from-primary to-accent-rose flex items-center justify-center text-white text-3xl font-black shadow-lg shadow-primary/20">
+                                <div className="h-24 w-24 rounded-3xl bg-gradient-to-br from-primary to-accent-warm flex items-center justify-center text-white text-3xl font-black shadow-lg shadow-primary/20">
                                     {userData.name?.[0] || "U"}
                                 </div>
                                 <div className="flex-1">
