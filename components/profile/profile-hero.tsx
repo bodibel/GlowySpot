@@ -78,7 +78,7 @@ export function ProfileHero({ provider, onMessageClick, isOwner }: ProfileHeroPr
 
                                 <div className="flex flex-wrap gap-2">
                                     {provider.categories?.map((cat, idx) => (
-                                        <span key={idx} className="px-4 py-1.5 rounded-full bg-accent text-primary text-[11px] font-black uppercase tracking-widest border border-primary/10">
+                                        <span key={idx} className="px-4 py-1.5 rounded-full bg-accent text-white text-[11px] font-black uppercase tracking-widest">
                                             {CATEGORY_LABELS[cat.toLowerCase()] || cat}
                                         </span>
                                     ))}

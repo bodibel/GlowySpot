@@ -16,46 +16,40 @@ export function MainLayout({
 }) {
   return (
     <div className="min-h-screen bg-background">
-      {/* Top bar — all breakpoints */}
+      {/* TopBar — sticky, full width, content within 1440px */}
       <TopBar />
 
-      <div className="flex max-w-[1440px] mx-auto relative">
-        {/* Left sidebar — md and above */}
+      {/* 1440px container — three-column layout */}
+      <div className="mx-auto max-w-[1440px] flex items-start">
+
+        {/* Left sidebar — sticky within the 1440px container */}
         <Sidebar />
 
-        {/* Main content — offset by sidebar width */}
-        <div
-          className={cn(
-            "flex flex-1 flex-col min-w-0 transition-all",
-            "md:ml-[60px] lg:ml-[220px]"
-          )}
-        >
-          <ActiveSalonIndicator />
+        {/* Center + Right — fills remaining space */}
+        <div className="flex-1 min-w-0 flex items-start gap-6 pl-6 py-5 pb-24 md:pb-8">
 
-          <div
-            className={cn(
-              "flex gap-0 px-4 sm:px-6 lg:px-8 py-6 w-full",
-              "pb-24 md:pb-6",
-              showRightSidebar ? "justify-center xl:justify-start" : "justify-center"
-            )}
-          >
-            <main
-              className={cn(
-                "w-full transition-all duration-300",
-                showRightSidebar ? "max-w-[680px]" : "max-w-7xl mx-auto"
-              )}
-            >
-              {children}
-            </main>
+          {/* Main feed — fixed width, never grows */}
+          <main className={cn(
+            "flex-shrink-0 w-full",
+            showRightSidebar
+              ? "lg:max-w-[480px] xl:max-w-[640px]"
+              : "max-w-[680px] mx-auto"
+          )}>
+            <ActiveSalonIndicator />
+            {children}
+          </main>
 
-            {showRightSidebar && (
-              <div className="hidden flex-1 min-w-[360px] max-w-[420px] ml-8 xl:block">
-                <div className="sticky top-20">
-                  <RightSidebar />
-                </div>
+          {/* Right sidebar — sticky flex item
+              self-start + sticky top-14: canonical sticky sidebar pattern in flexbox
+              flex-1: fills all remaining horizontal space
+              h-[calc(100vh-3.5rem)]: fills viewport below topbar, scrolls internally */}
+          {showRightSidebar && (
+            <div className="hidden lg:block flex-1 min-w-0 sticky top-[80px] self-start">
+              <div className="h-[calc(100vh-3.5rem)] overflow-y-auto pr-6">
+                <RightSidebar />
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
 

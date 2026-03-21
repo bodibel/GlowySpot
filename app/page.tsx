@@ -192,47 +192,49 @@ export default function Home() {
 
   return (
     <MainLayout>
-      <div className="space-y-8 pb-10 w-full max-w-2xl">
+      <div className="space-y-6 pb-10 w-full">
         {/* Hero Banner */}
         <HeroBanner />
 
         {/* Filters - Card Wrapper */}
-        <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-gray-900/5">
+        <div className="rounded-2xl bg-surface p-4 shadow-sm border border-border">
           <div className="flex gap-2 overflow-x-auto scrollbar-hide">
-            <Button
-              variant={filters.services.length === 0 ? "default" : "outline"}
-              className={`rounded-full px-6 h-9 text-sm font-medium ${filters.services.length === 0 ? "bg-gray-900 text-white hover:bg-black" : "border-gray-200 text-gray-600 hover:bg-gray-100"}`}
+            <button
+              type="button"
+              className={`rounded-full px-5 h-9 text-sm font-medium whitespace-nowrap transition-colors ${filters.services.length === 0
+                ? "bg-accent text-white"
+                : "bg-secondary text-muted-foreground hover:bg-accent/20 border border-border"
+                }`}
               onClick={() => {
-                // Clear all service filters
                 filters.services.forEach(s => removeServiceFilter(s))
               }}
             >
-              All
-            </Button>
+              Összes
+            </button>
             {categories.map((category) => {
               const id = category.slug
               const isSelected = filters.services.includes(id)
               return (
-                <Button
+                <button
                   key={category.id}
-                  variant={isSelected ? "default" : "outline"}
-                  className={`rounded-full px-6 h-9 text-sm font-medium whitespace-nowrap ${isSelected
-                    ? "bg-gray-900 text-white hover:bg-black"
-                    : "border-gray-200 text-gray-600 hover:bg-gray-100"
+                  type="button"
+                  className={`rounded-full px-5 h-9 text-sm font-medium whitespace-nowrap transition-colors ${isSelected
+                    ? "bg-accent text-white"
+                    : "bg-secondary text-muted-foreground hover:bg-accent/20 border border-border"
                     }`}
                   onClick={() => isSelected ? removeServiceFilter(id) : addServiceFilter(id)}
                 >
                   {category.name}
-                </Button>
+                </button>
               )
             })}
           </div>
         </div>
 
         {/* Stories - Card Wrapper with Sticky Container */}
-        <div className="sticky top-16 xl:top-0 z-30 transition-[top]">
-          <div className="bg-transparent py-2">
-            <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-900/5">
+        <div className="sticky top-16 z-30">
+          <div className="py-2">
+            <div className="rounded-2xl bg-surface p-5 shadow-sm border border-border">
               <StoryBar />
             </div>
           </div>
@@ -240,8 +242,8 @@ export default function Home() {
 
         {/* Recent Works Header */}
         <div className="flex items-center justify-between px-1">
-          <h2 className="text-xl font-bold font-serif text-gray-900">Legújabb Bejegyzések</h2>
-          <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Kiemelt</span>
+          <h2 className="text-xl font-bold font-serif text-foreground">Legújabb Bejegyzések</h2>
+          <span className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Kiemelt</span>
         </div>
 
         {/* Feed */}

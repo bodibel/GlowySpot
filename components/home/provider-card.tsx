@@ -58,7 +58,7 @@ export function ProviderCard({ id, name, category, rating, reviewCount, location
                     {/* Content */}
                     <div className="flex-1 space-y-2">
                         <div>
-                            <span className="inline-block text-[10px] font-bold uppercase tracking-wider text-primary bg-accent px-2 py-0.5 rounded-md mb-1.5">
+                            <span className="inline-block text-[10px] font-bold uppercase tracking-wider text-white bg-accent px-2 py-0.5 rounded-md mb-1.5">
                                 {category}
                             </span>
                             <h3 className="font-bold text-lg text-gray-900 leading-tight group-hover:text-primary transition-colors line-clamp-1">

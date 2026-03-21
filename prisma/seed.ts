@@ -44,7 +44,7 @@ async function main() {
     const users = await Promise.all([
         prisma.user.upsert({
             where: { email: 'admin@glowyspot.com' },
-            update: {},
+            update: { password },
             create: {
                 email: 'admin@glowyspot.com',
                 name: 'Admin User',
@@ -54,7 +54,7 @@ async function main() {
         }),
         prisma.user.upsert({
             where: { email: 'provider1@glowyspot.com' },
-            update: {},
+            update: { password },
             create: {
                 email: 'provider1@glowyspot.com',
                 name: 'Kovács Anita',
@@ -64,7 +64,7 @@ async function main() {
         }),
         prisma.user.upsert({
             where: { email: 'provider2@glowyspot.com' },
-            update: {},
+            update: { password },
             create: {
                 email: 'provider2@glowyspot.com',
                 name: 'Nagy Béla',
@@ -74,7 +74,7 @@ async function main() {
         }),
         prisma.user.upsert({
             where: { email: 'visitor1@glowyspot.com' },
-            update: {},
+            update: { password },
             create: {
                 email: 'visitor1@glowyspot.com',
                 name: 'Teszt Látogató',
@@ -84,7 +84,7 @@ async function main() {
         }),
         prisma.user.upsert({
             where: { email: 'single_provider@glowyspot.com' },
-            update: {},
+            update: { password },
             create: {
                 email: 'single_provider@glowyspot.com',
                 name: 'Egy Szalonos Szolgáltató',

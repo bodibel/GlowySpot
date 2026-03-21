@@ -53,7 +53,7 @@ export function BasicInfoCard({ salon, onEdit }: BasicInfoCardProps) {
                         <dt className="text-xs font-medium text-muted-foreground">Kategóriák</dt>
                         <dd className="flex flex-wrap gap-1 mt-0.5">
                             {salon.categories?.map((cat: string, idx: number) => (
-                                <span key={idx} className="text-xs bg-accent text-primary px-2 py-0.5 rounded">
+                                <span key={idx} className="text-xs bg-accent text-white px-2 py-0.5 rounded-md font-medium">
                                     {cat}
                                 </span>
                             ))}

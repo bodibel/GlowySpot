@@ -9,7 +9,9 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { AuthModal } from "@/components/auth/auth-modal"
 import { FilterModal } from "@/components/layout/filter-modal"
-import { getNavLinks } from "@/lib/navigation-config"
+import { FilterPanel } from "@/components/layout/filter-panel"
+import { getSalonLinks } from "@/lib/navigation-config"
+import { adminLinks, authLinks, loggedInVisitorLinks } from "@/lib/navigation-config"
 import { useAuth } from "@/lib/auth-context"
 import { useFilter } from "@/lib/filter-context"
 import { useNotifications } from "@/lib/notification-context"
@@ -19,108 +21,155 @@ export function Sidebar() {
   const pathname = usePathname()
   const params = useParams()
   const { user, userData } = useAuth()
-  const { isFilterModalOpen, toggleFilterModal } = useFilter()
+  const { isFilterModalOpen, toggleFilterModal, clearFilters } = useFilter()
   const { unreadCount } = useNotifications()
 
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
 
   const isSalonContext = !!(pathname.startsWith("/salon/") && params.id)
   const salonId = params.id as string | undefined
+  const isAdmin = userData?.role === "admin"
+  const isOnDashboard = pathname?.startsWith("/dashboard")
 
-  const navLinks = getNavLinks(
-    userData?.role,
-    isSalonContext,
-    salonId,
-    !!user,
-    () => toggleFilterModal(true)
-  )
+  // Nav links per context
+  const navLinks = isSalonContext && salonId
+    ? getSalonLinks(salonId)
+    : isAdmin
+      ? adminLinks
+      : isOnDashboard && userData
+        ? [...authLinks, ...loggedInVisitorLinks]
+        : null   // main pages → show filter panel
 
-  const handleLogout = () => {
-    signOut({ callbackUrl: "/" })
-  }
+  const showNavLinks = !!(navLinks && (isSalonContext || isAdmin || isOnDashboard))
+  const showFilterPanel = !showNavLinks
 
   return (
     <>
       <aside
-        className="hidden md:flex fixed left-0 top-14 bottom-0 flex-col glass border-r border-border transition-all w-[60px] lg:w-[220px]"
+        className="hidden lg:flex flex-col glass border-r border-border w-[220px] flex-shrink-0 sticky top-[80px] self-start h-[calc(100vh-5rem)] overflow-y-auto"
         style={{ zIndex: "var(--z-sidebar)" }}
       >
-        {/* Nav links */}
-        <nav className="flex-1 overflow-y-auto py-4 px-2 space-y-1">
-          {navLinks.map((link, index) => {
-            const Icon = link.icon
-
-            let isActive = false
-            if (link.href) {
-              isActive = link.href === "/"
-                ? pathname === "/"
-                : pathname.startsWith(link.href)
-              // Exact match for salon overview to avoid matching sub-pages
-              if (salonId && link.href === `/salon/${salonId}`) {
-                isActive = pathname === link.href
+        {/* ── Nav links (salon / admin context) ── */}
+        {showNavLinks && navLinks && (
+          <nav className="flex-1 overflow-y-auto py-4 px-2 space-y-1">
+            {navLinks.map((link, index) => {
+              const Icon = link.icon
+              let isActive = false
+              if (link.href) {
+                isActive = link.href === "/" ? pathname === "/" : pathname.startsWith(link.href)
+                if (salonId && link.href === `/salon/${salonId}`) {
+                  isActive = pathname === link.href
+                }
               }
-            }
 
-            const content = (
-              <>
-                <Icon
-                  className={cn(
-                    "h-5 w-5 shrink-0 transition-transform",
-                    isActive ? "stroke-[2.5px]" : "stroke-2"
+              const content = (
+                <>
+                  <Icon className={cn("h-5 w-5 shrink-0 transition-transform", isActive ? "stroke-[2.5px]" : "stroke-2")} />
+                  <span className="text-sm font-medium truncate">{link.label}</span>
+                  {link.badge === "unread-messages" && unreadCount > 0 && (
+                    <Badge className="ml-auto bg-primary text-primary-foreground border-none h-5 min-w-[20px] px-1.5 flex items-center justify-center text-[10px] font-bold rounded-full">
+                      {unreadCount}
+                    </Badge>
                   )}
-                />
-                <span className="hidden lg:block text-sm font-medium truncate">{link.label}</span>
-                {link.badge === "unread-messages" && unreadCount > 0 && (
-                  <Badge className="hidden lg:flex ml-auto bg-primary text-primary-foreground border-none h-5 min-w-[20px] px-1.5 items-center justify-center text-[10px] font-bold rounded-full">
-                    {unreadCount}
-                  </Badge>
-                )}
-              </>
-            )
+                </>
+              )
 
-            const commonClass = cn(
-              "relative flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors min-h-[44px]",
-              isActive
-                ? "bg-primary/10 text-primary border-l-2 border-primary"
-                : "text-muted-foreground hover:bg-primary-subtle hover:text-foreground"
-            )
+              const commonClass = cn(
+                "relative flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors min-h-[44px]",
+                isActive
+                  ? "bg-primary/10 text-primary border-l-2 border-primary"
+                  : "text-muted-foreground hover:bg-primary-subtle hover:text-foreground"
+              )
 
-            if (link.onClick) {
-              return (
-                <div key={index} className="relative group">
-                  <button
-                    type="button"
-                    onClick={link.onClick}
-                    className={cn(commonClass, "w-full")}
-                    aria-label={link.label}
-                  >
+              if (link.onClick) {
+                return (
+                  <button key={index} type="button" onClick={link.onClick} className={cn(commonClass, "w-full")}>
                     {content}
                   </button>
-                  <span className="lg:hidden absolute left-full ml-2 z-10 hidden group-hover:block bg-surface text-foreground text-xs rounded px-2 py-1 whitespace-nowrap shadow border border-border">
-                    {link.label}
-                  </span>
-                </div>
-              )
-            }
+                )
+              }
 
-            return (
-              <div key={link.href} className="relative group">
-                <Link href={link.href!} className={commonClass} aria-label={link.label}>
+              return (
+                <Link key={link.href} href={link.href!} className={commonClass}>
                   {content}
                 </Link>
-                <span className="lg:hidden absolute left-full ml-2 z-10 hidden group-hover:block bg-surface text-foreground text-xs rounded px-2 py-1 whitespace-nowrap shadow border border-border">
-                  {link.label}
-                  {link.badge === "unread-messages" && unreadCount > 0 && (
-                    <span className="ml-1 font-bold text-primary">({unreadCount})</span>
-                  )}
-                </span>
-              </div>
-            )
-          })}
-        </nav>
+              )
+            })}
+          </nav>
+        )}
 
-        {/* User card — visible only at lg+ */}
-        <div className="hidden lg:block border-t border-border p-3">
+        {/* ── Inline Filter Panel (main context) ── */}
+        {showFilterPanel && (
+          <>
+            {/* Header */}
+            <div className="flex items-center justify-between px-4 py-3 border-b border-border flex-shrink-0">
+              <span className="text-sm font-semibold text-foreground">Szűrők</span>
+              <button
+                onClick={clearFilters}
+                className="text-[11px] text-muted-foreground hover:text-primary transition-colors"
+              >
+                Alaphelyzet
+              </button>
+            </div>
+
+            {/* Filter content */}
+            <div className="flex-1 overflow-y-auto px-4 py-4">
+              <FilterPanel compact />
+            </div>
+
+            {/* Apply button */}
+            <div className="flex-shrink-0 border-t border-border p-3">
+              <Button className="w-full text-sm rounded-xl font-semibold">
+                Szűrés alkalmazása
+              </Button>
+            </div>
+          </>
+        )}
+
+        {/* ── Logged-in user nav links (non-salon, non-admin) ── */}
+        {!showNavLinks && !showFilterPanel && navLinks && (
+          <nav className="flex-1 overflow-y-auto py-4 px-2 space-y-1">
+            {navLinks.map((link, index) => {
+              const Icon = link.icon
+              const isActive = link.href
+                ? link.href === "/" ? pathname === "/" : pathname.startsWith(link.href)
+                : false
+              const commonClass = cn(
+                "flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors min-h-[44px]",
+                isActive
+                  ? "bg-primary/10 text-primary border-l-2 border-primary"
+                  : "text-muted-foreground hover:bg-primary-subtle hover:text-foreground"
+              )
+              if (link.onClick) {
+                return (
+                  <button key={index} type="button" onClick={link.onClick} className={cn(commonClass, "w-full")}>
+                    <Icon className="h-5 w-5 shrink-0" />
+                    <span className="text-sm font-medium truncate">{link.label}</span>
+                    {link.badge === "unread-messages" && unreadCount > 0 && (
+                      <Badge className="ml-auto bg-primary text-primary-foreground border-none h-5 min-w-[20px] px-1.5 flex items-center justify-center text-[10px] font-bold rounded-full">
+                        {unreadCount}
+                      </Badge>
+                    )}
+                  </button>
+                )
+              }
+              return (
+                <Link key={link.href} href={link.href!} className={commonClass}>
+                  <Icon className="h-5 w-5 shrink-0" />
+                  <span className="text-sm font-medium truncate">{link.label}</span>
+                  {link.badge === "unread-messages" && unreadCount > 0 && (
+                    <Badge className="ml-auto bg-primary text-primary-foreground border-none h-5 min-w-[20px] px-1.5 flex items-center justify-center text-[10px] font-bold rounded-full">
+                      {unreadCount}
+                    </Badge>
+                  )}
+                </Link>
+              )
+            })}
+          </nav>
+        )}
+
+        {/* ── User card — bottom ── */}
+        <div className="flex-shrink-0 border-t border-border p-3">
           {userData ? (
             <div className="space-y-2">
               <div className="flex items-center gap-2 p-2 rounded-xl bg-secondary">
@@ -136,7 +185,7 @@ export function Sidebar() {
                 variant="ghost"
                 size="sm"
                 className="w-full justify-start gap-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-xl"
-                onClick={handleLogout}
+                onClick={() => signOut({ callbackUrl: "/" })}
               >
                 <LogOut className="h-4 w-4" />
                 <span className="text-xs">Kijelentkezés</span>

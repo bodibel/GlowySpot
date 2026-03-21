@@ -34,7 +34,7 @@ export function TimelineSchedule() {
                                 <div>
                                     <div className="flex items-center gap-2 mb-1">
                                         <span className="text-sm font-bold text-gray-500">{item.time}</span>
-                                        {item.active && <span className="text-[10px] font-bold text-primary bg-accent px-2 py-0.5 rounded-full">ONGOING</span>}
+                                        {item.active && <span className="text-[10px] font-bold text-white bg-accent px-2 py-0.5 rounded-full">ONGOING</span>}
                                     </div>
                                     <h4 className="font-bold text-gray-900">{item.client}</h4>
                                     <p className="text-sm text-gray-500">{item.service}</p>

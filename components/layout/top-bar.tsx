@@ -2,15 +2,18 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { Search, MessageSquare } from "lucide-react"
 import { useAuth } from "@/lib/auth-context"
 import { useNotifications } from "@/lib/notification-context"
 import { ThemeToggle } from "@/components/ui/theme-toggle"
 import { AuthModal } from "@/components/auth/auth-modal"
+import { cn } from "@/lib/utils"
 
 export function TopBar() {
   const { user, userData } = useAuth()
   const { unreadCount } = useNotifications()
+  const pathname = usePathname()
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
 
   return (
@@ -19,17 +22,43 @@ export function TopBar() {
         className="glass sticky top-0 w-full rounded-none border-b"
         style={{ zIndex: "var(--z-topbar)" }}
       >
-        <div className="mx-auto flex h-14 max-w-[1440px] items-center gap-4 px-4">
-          {/* Logo */}
+        <div className="mx-auto flex h-14 max-w-[1440px] items-center gap-4 px-0">
+          {/* Logo — aligned with left sidebar width */}
           <Link
             href="/"
-            className="flex-shrink-0 text-xl font-light tracking-[0.15em] text-foreground hover:opacity-80 transition-opacity"
+            className="flex-shrink-0 w-[60px] lg:w-[220px] flex items-center justify-center lg:justify-start lg:px-4 text-xl font-light tracking-[0.15em] text-foreground hover:opacity-80 transition-opacity"
           >
             GlowySpot
           </Link>
 
+          {/* Main nav — Bejegyzések + Szolgáltatók */}
+          <nav className="hidden md:flex items-center gap-1 ml-2">
+            <Link
+              href="/"
+              className={cn(
+                "px-3 py-1.5 text-sm font-medium rounded-xl transition-colors",
+                pathname === "/"
+                  ? "text-primary bg-primary/10"
+                  : "text-muted-foreground hover:text-foreground hover:bg-primary-subtle"
+              )}
+            >
+              Bejegyzések
+            </Link>
+            <Link
+              href="/providers"
+              className={cn(
+                "px-3 py-1.5 text-sm font-medium rounded-xl transition-colors",
+                pathname?.startsWith("/providers")
+                  ? "text-primary bg-primary/10"
+                  : "text-muted-foreground hover:text-foreground hover:bg-primary-subtle"
+              )}
+            >
+              Szolgáltatók
+            </Link>
+          </nav>
+
           {/* Search — full on desktop, hidden on mobile */}
-          <div className="flex-1 max-w-md hidden md:block">
+          <div className="flex-1 max-w-sm hidden md:block">
             <div className="glass-solid flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-muted-foreground cursor-pointer hover:border-primary/30 transition-colors">
               <Search className="h-4 w-4 flex-shrink-0" />
               <span className="hidden lg:block">Keresés...</span>
@@ -40,7 +69,7 @@ export function TopBar() {
           <div className="flex-1" />
 
           {/* Right actions */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 pr-6">
             {/* Search icon (mobile only) */}
             <button
               type="button"

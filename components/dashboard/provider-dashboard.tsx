@@ -172,7 +172,7 @@ export function ProviderDashboard() {
                                                 {salon.categories?.map((slug, idx) => {
                                                     const catName = allCategories.find(c => c.slug === slug)?.name || slug
                                                     return (
-                                                        <span key={idx} className="text-xs bg-accent text-primary px-2 py-1 rounded">
+                                                        <span key={idx} className="text-xs bg-accent text-white px-2 py-1 rounded-md font-medium">
                                                             {catName}
                                                         </span>
                                                     )
