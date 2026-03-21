@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlowySpot – Warm Peach Design</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #FAF4F0; font-family: 'Helvetica Neue', Arial, sans-serif; color: #1C1A19; }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(250,244,240,0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(200,120,96,0.12);
+    height: 56px;
+    display: flex; align-items: center;
+    padding: 0 20px; gap: 16px;
+  }
+  .logo { font-family: Georgia, 'Times New Roman', serif; font-size: 18px; font-weight: 300; letter-spacing: 0.2em; color: #1C1A19; text-decoration: none; flex-shrink: 0; }
+  .search-bar {
+    flex: 1; max-width: 340px;
+    background: rgba(255,255,255,0.7);
+    border: 1px solid rgba(200,120,96,0.15);
+    border-radius: 24px; padding: 7px 14px 7px 36px;
+    font-size: 13px; color: #999; position: relative;
+    display: flex; align-items: center; gap: 8px;
+    cursor: pointer;
+  }
+  .search-icon { position: absolute; left: 12px; color: #C8A090; font-size: 13px; }
+  .topbar-spacer { flex: 1; }
+  .topbar-actions { display: flex; align-items: center; gap: 8px; }
+  .icon-btn { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; color: #8C6B5A; transition: background 0.15s; }
+  .icon-btn:hover { background: rgba(200,120,96,0.08); }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #C87860, #E8A090); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer; }
+  .toggle {
+    width: 44px; height: 24px; background: #E8D5CC; border-radius: 12px;
+    position: relative; cursor: pointer; border: 1px solid rgba(200,120,96,0.2);
+  }
+  .toggle-knob {
+    position: absolute; top: 2px; left: 2px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: #C87860; box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  }
+  .login-btn {
+    background: #C87860; color: #fff; border: none; border-radius: 20px;
+    padding: 7px 18px; font-size: 12px; font-weight: 600; cursor: pointer;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── LAYOUT ── */
+  .layout { display: flex; max-width: 1200px; margin: 0 auto; min-height: calc(100vh - 56px); }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 60px; flex-shrink: 0;
+    position: sticky; top: 56px; height: calc(100vh - 56px);
+    background: rgba(250,244,240,0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-right: 1px solid rgba(200,120,96,0.1);
+    display: flex; flex-direction: column; align-items: center;
+    padding: 16px 0; gap: 4px;
+    overflow: hidden; transition: width 0.2s;
+  }
+  .sidebar.expanded { width: 200px; align-items: flex-start; padding: 16px 8px; }
+  .nav-item {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 18px; color: #8C6B5A;
+    transition: background 0.15s; flex-shrink: 0;
+  }
+  .nav-item:hover { background: rgba(200,120,96,0.08); }
+  .nav-item.active { background: rgba(200,120,96,0.12); color: #C87860; }
+  .nav-item-wide {
+    height: 44px; border-radius: 12px; padding: 0 12px;
+    display: flex; align-items: center; gap: 10px; cursor: pointer;
+    font-size: 13px; font-weight: 500; color: #8C6B5A; width: 100%;
+    transition: background 0.15s;
+  }
+  .nav-item-wide:hover { background: rgba(200,120,96,0.08); }
+  .nav-item-wide.active { background: rgba(200,120,96,0.12); color: #C87860; font-weight: 600; }
+  .nav-icon { font-size: 17px; flex-shrink: 0; }
+  .nav-divider { width: 32px; height: 1px; background: rgba(200,120,96,0.12); margin: 4px auto; }
+  .create-btn-small {
+    width: 40px; height: 40px; border-radius: 50%; margin-top: auto;
+    background: linear-gradient(135deg, #C87860, #E8A090);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: 0 4px 12px rgba(200,120,96,0.35);
+    color: #fff; font-size: 20px; font-weight: 300;
+  }
+  .create-btn-wide {
+    margin-top: auto; width: 100%; height: 40px; border-radius: 20px;
+    background: linear-gradient(135deg, #C87860, #E8A090);
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    cursor: pointer; box-shadow: 0 4px 12px rgba(200,120,96,0.3);
+    color: #fff; font-size: 13px; font-weight: 600;
+  }
+
+  /* ── MAIN + RIGHT ── */
+  .main { flex: 1; padding: 24px 20px; max-width: 680px; }
+  .right-sidebar { width: 300px; flex-shrink: 0; padding: 24px 16px; display: none; }
+  @media (min-width: 1100px) { .right-sidebar { display: block; } }
+
+  /* ── STORY BAR ── */
+  .story-bar { display: flex; gap: 12px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 4px; }
+  .story { display: flex; flex-direction: column; align-items: center; gap: 5px; flex-shrink: 0; cursor: pointer; }
+  .story-ring { width: 58px; height: 58px; border-radius: 50%; padding: 2px; background: linear-gradient(135deg, #C87860, #E8A090); }
+  .story-avatar { width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(135deg, #E8D0C4, #D4B0A0); border: 2px solid #FAF4F0; }
+  .story-name { font-size: 10px; color: #8C6B5A; text-align: center; max-width: 58px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* ── FEED CARD ── */
+  .feed-card {
+    background: #fff; border-radius: 16px; overflow: hidden;
+    box-shadow: 0 2px 16px rgba(180,100,80,0.08);
+    margin-bottom: 16px; border: 1px solid rgba(200,120,96,0.06);
+  }
+  .card-header { display: flex; align-items: center; gap: 10px; padding: 12px 14px 10px; }
+  .card-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #C87860, #E8B090); flex-shrink: 0; }
+  .card-avatar-2 { background: linear-gradient(135deg, #8BBCB5, #A8D0C8); }
+  .card-author { flex: 1; }
+  .card-name { font-size: 13px; font-weight: 600; color: #1C1A19; }
+  .card-meta { font-size: 11px; color: #B09080; }
+  .card-rating { display: flex; align-items: center; gap: 3px; font-size: 11px; color: #E8A030; font-weight: 700; }
+  .card-img { width: 100%; height: 220px; background: linear-gradient(135deg, #EDCFC4 0%, #D9A898 50%, #C89888 100%); position: relative; }
+  .card-img-2 { background: linear-gradient(135deg, #C8D8D5 0%, #A8C0BC 50%, #8BAAA6 100%); }
+  .card-chips { display: flex; gap: 6px; padding: 10px 14px 4px; flex-wrap: wrap; }
+  .chip { background: rgba(139,188,181,0.15); color: #4A9A94; border: 1px solid rgba(139,188,181,0.5); border-radius: 20px; padding: 3px 10px; font-size: 10px; font-weight: 600; }
+  .chip-solid { background: #8BBCB5; color: #fff; border-radius: 20px; padding: 3px 10px; font-size: 10px; font-weight: 600; }
+  .card-actions { display: flex; align-items: center; gap: 12px; padding: 8px 14px; border-top: 1px solid #F5EFEC; }
+  .action { display: flex; align-items: center; gap: 5px; font-size: 13px; color: #C87860; cursor: pointer; }
+  .action-muted { color: #B09080; }
+  .card-cta {
+    margin-left: auto; background: #C87860; color: #fff; border: none;
+    border-radius: 20px; padding: 5px 14px; font-size: 11px; font-weight: 600;
+    cursor: pointer; letter-spacing: 0.02em;
+  }
+  .card-text { padding: 4px 14px 14px; font-size: 13px; color: #3C3028; line-height: 1.6; }
+  .card-text strong { font-weight: 700; }
+
+  /* ── RIGHT SIDEBAR ── */
+  .rs-card { background: #fff; border-radius: 14px; padding: 16px; margin-bottom: 14px; box-shadow: 0 2px 12px rgba(180,100,80,0.06); border: 1px solid rgba(200,120,96,0.06); }
+  .rs-title { font-family: Georgia, serif; font-size: 14px; font-weight: 400; letter-spacing: 0.05em; color: #1C1A19; margin-bottom: 12px; }
+  .provider-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .p-avatar { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; }
+  .p-name { font-size: 12px; font-weight: 600; color: #1C1A19; }
+  .p-cat { font-size: 10px; color: #B09080; margin-top: 1px; }
+  .p-follow { margin-left: auto; background: transparent; border: 1px solid #C87860; color: #C87860; border-radius: 20px; padding: 3px 10px; font-size: 10px; font-weight: 600; cursor: pointer; }
+  .filter-chip { display: inline-flex; align-items: center; background: rgba(139,188,181,0.12); border: 1px solid rgba(139,188,181,0.4); color: #4A9A94; border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 600; margin: 3px; cursor: pointer; }
+  .filter-chip.active { background: #8BBCB5; color: #fff; border-color: #8BBCB5; }
+
+  /* ── LABEL ── */
+  .section-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #C8A090; margin-bottom: 14px; }
+
+  /* ── DESIGN INFO ── */
+  .design-legend {
+    background: rgba(255,255,255,0.8); border: 1px solid rgba(200,120,96,0.15);
+    border-radius: 12px; padding: 14px 16px; margin: 0 20px 20px;
+    display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #6C5040; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <a class="logo" href="#">GlowySpot</a>
+  <div class="search-bar">
+    <span class="search-icon">⌕</span>
+    <span>Keresés...</span>
+  </div>
+  <div class="topbar-spacer"></div>
+  <div class="topbar-actions">
+    <div class="icon-btn">💬</div>
+    <div class="icon-btn">🔔</div>
+    <div class="toggle"><div class="toggle-knob"></div></div>
+    <div class="avatar">K</div>
+  </div>
+</header>
+
+<!-- DESIGN LEGEND -->
+<div class="design-legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#FAF4F0;border:1px solid #DDD"></div> Krém háttér</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#C87860"></div> Peach — gombok, like, brand</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#8BBCB5"></div> Menta — kategória chipek</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#FFFFFF;border:1px solid #DDD"></div> Fehér kártyák</div>
+  <div class="legend-item"><span style="font-family:Georgia,serif;font-size:13px;letter-spacing:0.1em;">Gs</span> Serif logó + Sans szöveg</div>
+  <div class="legend-item" style="color:#8BBCB5;font-weight:600;">Glass fejléc ✓</div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR (icon only, simulate md breakpoint) -->
+  <nav class="sidebar">
+    <div class="nav-item active" title="Feed">⌂</div>
+    <div class="nav-item" title="Keresés">⊕</div>
+    <div class="nav-divider"></div>
+    <div class="nav-item" title="Üzenetek">💬</div>
+    <div class="nav-item" title="Kedvencek">♥</div>
+    <div class="nav-item" title="Profil">👤</div>
+    <div class="create-btn-small">+</div>
+  </nav>
+
+  <!-- MAIN FEED -->
+  <main class="main">
+    <div class="section-label">Bejegyzések</div>
+
+    <!-- Story bar -->
+    <div class="story-bar">
+      <div class="story">
+        <div class="story-ring"><div class="story-avatar"></div></div>
+        <div class="story-name">Réka</div>
+      </div>
+      <div class="story">
+        <div class="story-ring"><div class="story-avatar" style="background:linear-gradient(135deg,#C8D8D5,#A8C0BC)"></div></div>
+        <div class="story-name">Anna</div>
+      </div>
+      <div class="story">
+        <div class="story-ring"><div class="story-avatar" style="background:linear-gradient(135deg,#E8D0B8,#D4B898)"></div></div>
+        <div class="story-name">Zsuzsi</div>
+      </div>
+      <div class="story">
+        <div class="story-ring"><div class="story-avatar" style="background:linear-gradient(135deg,#D8C0C8,#C4A0B0)"></div></div>
+        <div class="story-name">Mónika</div>
+      </div>
+    </div>
+
+    <!-- Feed Card 1 -->
+    <div class="feed-card">
+      <div class="card-header">
+        <div class="card-avatar"></div>
+        <div class="card-author">
+          <div class="card-name">Kovács Réka</div>
+          <div class="card-meta">Kozmetikus · 5 perce</div>
+        </div>
+        <div class="card-rating">★ 4.9</div>
+      </div>
+      <div class="card-img"></div>
+      <div class="card-chips">
+        <span class="chip-solid">Kozmetika</span>
+        <span class="chip">Arckezelés</span>
+        <span class="chip">Tavaszi akció</span>
+      </div>
+      <div class="card-actions">
+        <div class="action">♥ <span>42</span></div>
+        <div class="action action-muted">💬 <span>8</span></div>
+        <div class="action action-muted">↗</div>
+        <button class="card-cta">Foglalj · 4 500 Ft-tól</button>
+      </div>
+      <div class="card-text">
+        <strong>Kovács Réka</strong> Tavaszi megújulás — fedezd fel a szezon legjobb arckezelését! Hidratáló + feszesítő kombináció, 60 perc relaxáció...
+      </div>
+    </div>
+
+    <!-- Feed Card 2 -->
+    <div class="feed-card">
+      <div class="card-header">
+        <div class="card-avatar card-avatar-2"></div>
+        <div class="card-author">
+          <div class="card-name">Nagy Anna</div>
+          <div class="card-meta">Fodrász · 23 perce</div>
+        </div>
+        <div class="card-rating">★ 4.7</div>
+      </div>
+      <div class="card-img card-img-2"></div>
+      <div class="card-chips">
+        <span class="chip-solid">Fodrászat</span>
+        <span class="chip">Hajfestés</span>
+      </div>
+      <div class="card-actions">
+        <div class="action">♥ <span>18</span></div>
+        <div class="action action-muted">💬 <span>3</span></div>
+        <div class="action action-muted">↗</div>
+        <button class="card-cta">Foglalj · 8 000 Ft-tól</button>
+      </div>
+      <div class="card-text">
+        <strong>Nagy Anna</strong> Őszi árnyalatok, tavaszi frissességgel — balayage és highlights specialista vagyok...
+      </div>
+    </div>
+  </main>
+
+  <!-- RIGHT SIDEBAR -->
+  <aside class="right-sidebar">
+    <div class="rs-card">
+      <div class="rs-title">Ajánlott szolgáltatók</div>
+      <div class="provider-row">
+        <div class="p-avatar" style="background:linear-gradient(135deg,#C87860,#E8A090)"></div>
+        <div><div class="p-name">Kovács Réka</div><div class="p-cat">Kozmetikus</div></div>
+        <button class="p-follow">Követ</button>
+      </div>
+      <div class="provider-row">
+        <div class="p-avatar" style="background:linear-gradient(135deg,#8BBCB5,#A8D0C8)"></div>
+        <div><div class="p-name">Nagy Anna</div><div class="p-cat">Fodrász</div></div>
+        <button class="p-follow">Követ</button>
+      </div>
+      <div class="provider-row" style="margin-bottom:0">
+        <div class="p-avatar" style="background:linear-gradient(135deg,#D4A0B0,#C090A0)"></div>
+        <div><div class="p-name">Kiss Mónika</div><div class="p-cat">Manikűrös</div></div>
+        <button class="p-follow">Követ</button>
+      </div>
+    </div>
+
+    <div class="rs-card">
+      <div class="rs-title">Kategóriák</div>
+      <div>
+        <span class="filter-chip active">Kozmetika</span>
+        <span class="filter-chip">Fodrászat</span>
+        <span class="filter-chip">Műköröm</span>
+        <span class="filter-chip">Masszázs</span>
+        <span class="filter-chip">Smink</span>
+        <span class="filter-chip">Pedikűr</span>
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #FAF4F0; color: #1C1A19; }
+  .page { max-width: 900px; margin: 0 auto; padding: 32px 24px; }
+  h2 { font-size: 20px; font-weight: 400; letter-spacing: 0.05em; margin-bottom: 6px; font-family: Georgia, serif; }
+  .subtitle { font-size: 13px; color: #999; margin-bottom: 28px; font-family: sans-serif; }
+  .cards-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+  .option-card {
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.2s, transform 0.15s;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+    background: #fff;
+  }
+  .option-card:hover { transform: translateY(-2px); }
+  .option-card.selected { border-color: #C8806A; }
+
+  .card-label {
+    padding: 8px 12px;
+    font-size: 11px;
+    font-family: sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8C6B5A;
+    background: #FDF8F5;
+    border-bottom: 1px solid #F0E8E3;
+    display: flex;
+    justify-content: space-between;
+  }
+  .tick { display: none; }
+  .option-card.selected .tick { display: inline; }
+
+  .mock-topbar {
+    padding: 10px 14px;
+    background: rgba(250,244,240,0.9);
+    border-bottom: 1px solid rgba(200,128,106,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .mock-feed { padding: 10px 12px; background: #FAF4F0; }
+  .mock-card { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 8px; }
+  .mock-img { height: 80px; background: linear-gradient(135deg, #E8C4B4, #D4A08A); }
+  .mock-body { padding: 8px 10px; }
+  .mock-actions { display: flex; gap: 10px; padding: 5px 10px 8px; border-top: 1px solid #F5EFEC; }
+  .mock-action { font-size: 9px; color: #C8806A; }
+  .mock-cta { margin-left: auto; background: #C8806A; color: #fff; border-radius: 6px; padding: 2px 8px; font-size: 9px; }
+</style>
+
+<h2>Melyik betűtípus stílus illik legjobban?</h2>
+<p class="subtitle">A logó, a fejléc és a szövegek karakterét határozza meg — kattints a kedvencedre</p>
+
+<div class="cards-grid">
+
+  <!-- Option A: Elegant Serif -->
+  <div class="option-card" data-choice="serif" onclick="toggleSelect(this)">
+    <div class="card-label">A — Elegáns Serif <span class="tick">✓</span></div>
+    <div class="mock-topbar">
+      <span style="font-family:'Georgia',serif; font-size:14px; font-weight:400; letter-spacing:0.15em; color:#1C1A19;">GlowySpot</span>
+      <span style="background:#C8806A;color:#fff;border-radius:20px;padding:3px 10px;font-size:9px;font-family:sans-serif;font-weight:600;">Belépés</span>
+    </div>
+    <div class="mock-feed">
+      <div class="mock-card">
+        <div class="mock-img"></div>
+        <div class="mock-body">
+          <div style="font-family:'Georgia',serif; font-size:12px; font-weight:400; color:#1C1A19; margin-bottom:3px;">Kovács Réka</div>
+          <div style="font-family:sans-serif; font-size:9px; color:#999; margin-bottom:5px;">Kozmetikus · 2 perce</div>
+          <div style="font-family:'Georgia',serif; font-size:10px; color:#555; line-height:1.5; font-style:italic;">„Tavaszi megújulás kezeléssel..."</div>
+        </div>
+        <div class="mock-actions">
+          <span class="mock-action">♥ 42</span>
+          <span class="mock-action">💬 8</span>
+          <span class="mock-cta" style="font-family:sans-serif;">Foglalj</span>
+        </div>
+      </div>
+    </div>
+    <div style="padding:8px 12px 12px; font-family:sans-serif; font-size:10px; color:#999; line-height:1.5;">
+      Romantikus, időtlen — a szépségipar klasszikus hangja. Meleg, megbízható érzet.
+    </div>
+  </div>
+
+  <!-- Option B: Modern Sans -->
+  <div class="option-card" data-choice="sans" onclick="toggleSelect(this)">
+    <div class="card-label">B — Modern Sans-serif <span class="tick">✓</span></div>
+    <div class="mock-topbar">
+      <span style="font-family:'Helvetica Neue',sans-serif; font-size:13px; font-weight:700; letter-spacing:0.12em; color:#1C1A19; text-transform:uppercase;">GlowySpot</span>
+      <span style="background:#C8806A;color:#fff;border-radius:6px;padding:3px 10px;font-size:9px;font-family:sans-serif;font-weight:700;letter-spacing:0.05em;">BELÉPÉS</span>
+    </div>
+    <div class="mock-feed">
+      <div class="mock-card">
+        <div class="mock-img"></div>
+        <div class="mock-body">
+          <div style="font-family:sans-serif; font-size:11px; font-weight:700; color:#1C1A19; margin-bottom:3px;">Kovács Réka</div>
+          <div style="font-family:sans-serif; font-size:9px; color:#999; margin-bottom:5px;">Kozmetikus · 2 perce</div>
+          <div style="font-family:sans-serif; font-size:10px; color:#555; line-height:1.5;">Tavaszi megújulás kezeléssel...</div>
+        </div>
+        <div class="mock-actions">
+          <span class="mock-action">♥ 42</span>
+          <span class="mock-action">💬 8</span>
+          <span class="mock-cta" style="font-family:sans-serif;font-weight:700;">Foglalj</span>
+        </div>
+      </div>
+    </div>
+    <div style="padding:8px 12px 12px; font-family:sans-serif; font-size:10px; color:#999; line-height:1.5;">
+      Letisztult, modern, tech-forward. Fiatalos és lendületes.
+    </div>
+  </div>
+
+  <!-- Option C: Serif logo + Sans body (hybrid) -->
+  <div class="option-card" data-choice="hybrid" onclick="toggleSelect(this)">
+    <div class="card-label">C — Hybrid (ajánlott) <span class="tick">✓</span></div>
+    <div class="mock-topbar">
+      <span style="font-family:'Georgia',serif; font-size:14px; font-weight:300; letter-spacing:0.18em; color:#1C1A19;">GlowySpot</span>
+      <span style="background:#C8806A;color:#fff;border-radius:20px;padding:3px 10px;font-size:9px;font-family:sans-serif;font-weight:600;letter-spacing:0.03em;">Belépés</span>
+    </div>
+    <div class="mock-feed">
+      <div class="mock-card">
+        <div class="mock-img"></div>
+        <div class="mock-body">
+          <div style="font-family:sans-serif; font-size:11px; font-weight:600; color:#1C1A19; margin-bottom:2px;">Kovács Réka</div>
+          <div style="font-family:sans-serif; font-size:9px; color:#999; margin-bottom:5px;">Kozmetikus · 2 perce</div>
+          <div style="font-family:sans-serif; font-size:10px; color:#555; line-height:1.5;">Tavaszi megújulás kezeléssel...</div>
+        </div>
+        <div class="mock-actions">
+          <span class="mock-action">♥ 42</span>
+          <span class="mock-action">💬 8</span>
+          <span class="mock-cta" style="font-family:sans-serif;font-weight:600;">Foglalj</span>
+        </div>
+      </div>
+    </div>
+    <div style="padding:8px 12px 12px; font-family:sans-serif; font-size:10px; color:#999; line-height:1.5;">
+      Serif logó (elegáns, brand feel) + sans-serif tartalom (olvasható, tiszta). A legtöbb beauty brand ezt használja.
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggleSelect(el) {
+  document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+</script>

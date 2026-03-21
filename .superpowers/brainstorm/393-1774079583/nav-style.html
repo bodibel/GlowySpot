@@ -1,0 +1,123 @@
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #FAF4F0; color: #1C1A19; font-family: sans-serif; }
+  h2 { font-family: Georgia, serif; font-size: 20px; font-weight: 400; letter-spacing: 0.05em; margin-bottom: 6px; padding: 28px 24px 0; }
+  .subtitle { font-size: 13px; color: #999; margin-bottom: 24px; padding: 0 24px; }
+  .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 0 24px 28px; }
+
+  .option-card {
+    border-radius: 14px; overflow: hidden; cursor: pointer;
+    border: 2px solid transparent; transition: border-color 0.2s, transform 0.15s;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+  }
+  .option-card:hover { transform: translateY(-2px); }
+  .option-card.selected { border-color: #C87860; }
+  .card-label {
+    padding: 8px 12px; font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em; color: #8C6B5A;
+    background: #FDF8F5; border-bottom: 1px solid #F0E8E3;
+    display: flex; justify-content: space-between;
+  }
+  .tick { display: none; }
+  .option-card.selected .tick { display: inline; }
+
+  /* shared feed area */
+  .feed-bg { background: #FAF4F0; padding: 10px; }
+  .feed-card { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .feed-img { height: 80px; background: linear-gradient(135deg, #E8C4B4, #D4A08A); }
+  .feed-body { padding: 8px 10px; }
+  .feed-name { font-size: 11px; font-weight: 600; margin-bottom: 2px; }
+  .feed-sub { font-size: 9px; color: #999; margin-bottom: 5px; }
+  .feed-chips { display: flex; gap: 4px; }
+  .chip { background: rgba(139,188,181,0.15); color: #5A9A94; border: 1px solid #8BBCB5; border-radius: 20px; padding: 2px 7px; font-size: 8px; font-weight: 600; }
+  .chip-solid { background: #8BBCB5; color: #fff; border-radius: 20px; padding: 2px 7px; font-size: 8px; font-weight: 600; }
+  .feed-actions { display: flex; gap: 8px; align-items: center; padding: 5px 10px 8px; border-top: 1px solid #F5EFEC; }
+  .like { font-size: 9px; color: #C87860; }
+  .cta { margin-left: auto; background: #C87860; color: #fff; border-radius: 20px; padding: 2px 9px; font-size: 9px; font-weight: 600; }
+</style>
+
+<h2>A fejléc és sidebar stílusa</h2>
+<p class="subtitle">Az inspirációs képen tiszta fehér/krém felületek voltak — melyik illik jobban?</p>
+
+<div class="cards-grid">
+
+  <!-- Option A: Clean solid (mint + peach) -->
+  <div class="option-card" data-choice="solid" onclick="toggleSelect(this)">
+    <div class="card-label">A — Tiszta, tömör (ajánlott) <span class="tick">✓</span></div>
+    <div style="background:#fff; border-bottom:1px solid #F0E8E3; padding:9px 14px; display:flex; align-items:center; justify-content:space-between;">
+      <span style="font-family:Georgia,serif;font-size:13px;font-weight:300;letter-spacing:0.18em;color:#1C1A19;">GlowySpot</span>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:11px;color:#999;">☀</span>
+        <span style="background:#C87860;color:#fff;border-radius:20px;padding:3px 11px;font-size:9px;font-weight:600;">Belépés</span>
+      </div>
+    </div>
+    <div style="display:flex;">
+      <div style="width:42px;background:#fff;border-right:1px solid #F0E8E3;padding:8px 0;display:flex;flex-direction:column;align-items:center;gap:8px;">
+        <div style="width:26px;height:26px;border-radius:8px;background:rgba(200,120,96,0.1);display:flex;align-items:center;justify-content:center;font-size:12px;color:#C87860;">⌂</div>
+        <div style="width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#C0A898;">🔍</div>
+        <div style="width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#C0A898;">♥</div>
+      </div>
+      <div class="feed-bg" style="flex:1;">
+        <div class="feed-card">
+          <div class="feed-img"></div>
+          <div class="feed-body">
+            <div class="feed-name">Kovács Réka</div>
+            <div class="feed-sub">Kozmetikus · 2 perce</div>
+            <div class="feed-chips"><span class="chip-solid">Kozmetika</span><span class="chip">Arckezelés</span></div>
+          </div>
+          <div class="feed-actions">
+            <span class="like">♥ 42</span><span class="like">💬 8</span>
+            <span class="cta">Foglalj</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:8px 12px 12px;font-size:10px;color:#999;line-height:1.5;background:#FDF8F5;">
+      Fehér fejléc + fehér sidebar — az inspirációs képen látott stílushoz hasonló. Tiszta, légies, professzionális.
+    </div>
+  </div>
+
+  <!-- Option B: Glass (current) -->
+  <div class="option-card" data-choice="glass" onclick="toggleSelect(this)">
+    <div class="card-label">B — Üveg hatás (jelenlegi) <span class="tick">✓</span></div>
+    <div style="background:rgba(250,244,240,0.85);backdrop-filter:blur(8px);border-bottom:1px solid rgba(200,128,106,0.15);padding:9px 14px;display:flex;align-items:center;justify-content:space-between;">
+      <span style="font-family:Georgia,serif;font-size:13px;font-weight:300;letter-spacing:0.18em;color:#1C1A19;">GlowySpot</span>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:11px;color:#999;">☀</span>
+        <span style="background:#C87860;color:#fff;border-radius:20px;padding:3px 11px;font-size:9px;font-weight:600;">Belépés</span>
+      </div>
+    </div>
+    <div style="display:flex;">
+      <div style="width:42px;background:rgba(250,244,240,0.9);backdrop-filter:blur(4px);border-right:1px solid rgba(200,128,106,0.1);padding:8px 0;display:flex;flex-direction:column;align-items:center;gap:8px;">
+        <div style="width:26px;height:26px;border-radius:8px;background:rgba(200,120,96,0.1);display:flex;align-items:center;justify-content:center;font-size:12px;color:#C87860;">⌂</div>
+        <div style="width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#C0A898;">🔍</div>
+        <div style="width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#C0A898;">♥</div>
+      </div>
+      <div class="feed-bg" style="flex:1;">
+        <div class="feed-card">
+          <div class="feed-img"></div>
+          <div class="feed-body">
+            <div class="feed-name">Kovács Réka</div>
+            <div class="feed-sub">Kozmetikus · 2 perce</div>
+            <div class="feed-chips"><span class="chip-solid">Kozmetika</span><span class="chip">Arckezelés</span></div>
+          </div>
+          <div class="feed-actions">
+            <span class="like">♥ 42</span><span class="like">💬 8</span>
+            <span class="cta">Foglalj</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:8px 12px 12px;font-size:10px;color:#999;line-height:1.5;background:#FDF8F5;">
+      Átlátszó, blur hatással — modern, de néha nehezebben olvasható a szöveg mögötte.
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggleSelect(el) {
+  document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+</script>

@@ -1,0 +1,208 @@
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #FAF4F0; color: #1C1A19; font-family: sans-serif; }
+  .page { max-width: 920px; margin: 0 auto; padding: 28px 24px; }
+  h2 { font-family: Georgia, serif; font-size: 20px; font-weight: 400; letter-spacing: 0.05em; margin-bottom: 6px; }
+  .subtitle { font-size: 13px; color: #999; margin-bottom: 24px; }
+
+  /* Palette strip */
+  .palette-strip { display: flex; gap: 10px; margin-bottom: 28px; }
+  .sw { flex:1; border-radius:10px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.07); }
+  .sw-color { height: 48px; }
+  .sw-label { background:#fff; padding:6px 8px; }
+  .sw-name { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#555; }
+  .sw-hex { font-size:10px; color:#aaa; font-family:monospace; }
+
+  /* Option cards */
+  .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .option-card {
+    border-radius: 14px; overflow: hidden; cursor: pointer;
+    border: 2px solid transparent; transition: border-color 0.2s, transform 0.15s;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07); background: #fff;
+  }
+  .option-card:hover { transform: translateY(-2px); }
+  .option-card.selected { border-color: #8BBCB5; }
+  .card-label {
+    padding: 8px 12px; font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em; color: #6A9A94;
+    background: #F4FAF9; border-bottom: 1px solid #E0F0ED;
+    display: flex; justify-content: space-between;
+  }
+  .tick { display: none; }
+  .option-card.selected .tick { display: inline; }
+
+  /* Shared mockup elements */
+  .mock-topbar {
+    padding: 9px 14px; background: rgba(250,244,240,0.92);
+    border-bottom: 1px solid rgba(200,128,106,0.12);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .mock-logo { font-family: Georgia, serif; font-size: 13px; font-weight: 300; letter-spacing: 0.18em; color: #1C1A19; }
+  .mock-feed { padding: 10px; background: #FAF4F0; }
+  .mock-card { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .mock-img { height: 90px; background: linear-gradient(135deg, #E8C4B4, #D4A08A); position:relative; }
+  .mock-body { padding: 8px 10px; }
+  .mock-name { font-size: 11px; font-weight: 600; color: #1C1A19; margin-bottom: 2px; }
+  .mock-sub { font-size: 9px; color: #999; margin-bottom: 5px; }
+  .mock-text { font-size: 10px; color: #555; line-height: 1.5; }
+  .mock-actions { display: flex; gap: 8px; align-items: center; padding: 6px 10px 8px; border-top: 1px solid #F5EFEC; }
+  .mock-like { font-size: 9px; color: #C8806A; }
+
+  /* Sidebar mini */
+  .mock-sidebar-wrap { display: flex; }
+  .mock-sidebar { width: 44px; background: rgba(250,244,240,0.95); border-right: 1px solid rgba(200,128,106,0.1); padding: 10px 0; display: flex; flex-direction:column; align-items:center; gap:8px; }
+  .sb-icon { width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:13px; }
+  .sb-active-peach { background: rgba(200,120,96,0.12); }
+  .sb-active-mint { background: rgba(139,188,181,0.18); }
+  .mock-content { flex:1; padding: 8px; background: #FAF4F0; }
+</style>
+
+<h2>Hol jelenjen meg a menta szín?</h2>
+<p class="subtitle">Válassz egyet — vagy kombináld őket (több is kijelölhető)</p>
+
+<div class="palette-strip">
+  <div class="sw"><div class="sw-color" style="background:#FAF4F0"></div><div class="sw-label"><div class="sw-name">Háttér</div><div class="sw-hex">#FAF4F0</div></div></div>
+  <div class="sw"><div class="sw-color" style="background:#C87860"></div><div class="sw-label"><div class="sw-name">Peach (fő)</div><div class="sw-hex">#C87860</div></div></div>
+  <div class="sw"><div class="sw-color" style="background:#8BBCB5"></div><div class="sw-label"><div class="sw-name">Menta (kiegészítő)</div><div class="sw-hex">#8BBCB5</div></div></div>
+  <div class="sw"><div class="sw-color" style="background:#FFFFFF; border:1px solid #EEE"></div><div class="sw-label"><div class="sw-name">Kártya</div><div class="sw-hex">#FFFFFF</div></div></div>
+  <div class="sw"><div class="sw-color" style="background:#1C1A19"></div><div class="sw-label"><div class="sw-name">Szöveg</div><div class="sw-hex">#1C1A19</div></div></div>
+</div>
+
+<div class="cards-grid" data-multiselect>
+
+  <!-- Option A: Mint as CTA button -->
+  <div class="option-card" data-choice="cta" onclick="toggleSelect(this)">
+    <div class="card-label">A — Foglalj gomb mentás <span class="tick">✓</span></div>
+    <div class="mock-topbar">
+      <span class="mock-logo">GlowySpot</span>
+      <span style="background:#C87860;color:#fff;border-radius:20px;padding:3px 10px;font-size:9px;font-weight:600;">Belépés</span>
+    </div>
+    <div class="mock-feed">
+      <div class="mock-card">
+        <div class="mock-img"></div>
+        <div class="mock-body">
+          <div class="mock-name">Kovács Réka</div>
+          <div class="mock-sub">Kozmetikus · 2 perce</div>
+          <div class="mock-text">Tavaszi megújulás kezeléssel...</div>
+        </div>
+        <div class="mock-actions">
+          <span class="mock-like">♥ 42</span>
+          <span class="mock-like">💬 8</span>
+          <span style="margin-left:auto;background:#8BBCB5;color:#fff;border-radius:20px;padding:3px 10px;font-size:9px;font-weight:600;">Foglalj · 4 500 Ft-tól</span>
+        </div>
+      </div>
+    </div>
+    <div style="padding:8px 12px 12px;font-size:10px;color:#999;line-height:1.5;">
+      A peach = közösség (like, komment), menta = foglalás (konverzió). Vizuálisan szétválik a két funkció.
+    </div>
+  </div>
+
+  <!-- Option B: Mint for active sidebar nav -->
+  <div class="option-card" data-choice="nav" onclick="toggleSelect(this)">
+    <div class="card-label">B — Aktív nav elem mentás <span class="tick">✓</span></div>
+    <div style="background:#FAF4F0;">
+      <div class="mock-topbar">
+        <span class="mock-logo">GlowySpot</span>
+        <span style="background:#C87860;color:#fff;border-radius:20px;padding:3px 10px;font-size:9px;font-weight:600;">Belépés</span>
+      </div>
+      <div class="mock-sidebar-wrap">
+        <div class="mock-sidebar">
+          <div class="sb-icon sb-active-mint" style="color:#8BBCB5;">⌂</div>
+          <div class="sb-icon" style="color:#C8A898;">🔍</div>
+          <div class="sb-icon" style="color:#C8A898;">♥</div>
+          <div class="sb-icon" style="color:#C8A898;">👤</div>
+        </div>
+        <div class="mock-content">
+          <div class="mock-card" style="margin-bottom:0;">
+            <div style="height:60px;background:linear-gradient(135deg,#E8C4B4,#D4A08A);"></div>
+            <div style="padding:7px 9px;">
+              <div class="mock-name">Kovács Réka</div>
+              <div class="mock-sub">Kozmetikus</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:8px 12px 12px;font-size:10px;color:#999;line-height:1.5;">
+      A menta jelzi hol jár a felhasználó — peach marad a fő brand szín.
+    </div>
+  </div>
+
+  <!-- Option C: Mint for badges/tags -->
+  <div class="option-card" data-choice="badges" onclick="toggleSelect(this)">
+    <div class="card-label">C — Kategória chipek, badge-ek <span class="tick">✓</span></div>
+    <div class="mock-topbar">
+      <span class="mock-logo">GlowySpot</span>
+      <span style="background:#C87860;color:#fff;border-radius:20px;padding:3px 10px;font-size:9px;font-weight:600;">Belépés</span>
+    </div>
+    <div class="mock-feed">
+      <div style="display:flex;gap:5px;margin-bottom:8px;flex-wrap:wrap;">
+        <span style="background:#8BBCB5;color:#fff;border-radius:20px;padding:3px 10px;font-size:9px;font-weight:600;">Kozmetika</span>
+        <span style="background:rgba(139,188,181,0.15);color:#5A9A94;border:1px solid #8BBCB5;border-radius:20px;padding:3px 10px;font-size:9px;font-weight:600;">Fodrászat</span>
+        <span style="background:rgba(139,188,181,0.15);color:#5A9A94;border:1px solid #8BBCB5;border-radius:20px;padding:3px 10px;font-size:9px;font-weight:600;">Műköröm</span>
+      </div>
+      <div class="mock-card">
+        <div class="mock-img">
+          <span style="position:absolute;top:7px;left:7px;background:#8BBCB5;color:#fff;border-radius:20px;padding:2px 8px;font-size:8px;font-weight:700;">Kozmetika</span>
+        </div>
+        <div class="mock-body">
+          <div class="mock-name">Kovács Réka</div>
+          <div class="mock-text">Tavaszi megújulás kezeléssel...</div>
+        </div>
+        <div class="mock-actions">
+          <span class="mock-like">♥ 42</span>
+          <span style="margin-left:auto;background:#C87860;color:#fff;border-radius:20px;padding:2px 8px;font-size:9px;font-weight:600;">Foglalj</span>
+        </div>
+      </div>
+    </div>
+    <div style="padding:8px 12px 12px;font-size:10px;color:#999;line-height:1.5;">
+      Szűrők, kategóriák, tagek mentásak — így peach = cselekvés, menta = információ.
+    </div>
+  </div>
+
+  <!-- Option D: All three combined -->
+  <div class="option-card" data-choice="all" onclick="toggleSelect(this)">
+    <div class="card-label">D — Mindhárom kombinálva <span class="tick">✓</span></div>
+    <div style="background:#FAF4F0;">
+      <div class="mock-topbar">
+        <span class="mock-logo">GlowySpot</span>
+        <span style="background:#C87860;color:#fff;border-radius:20px;padding:3px 10px;font-size:9px;font-weight:600;">Belépés</span>
+      </div>
+      <div class="mock-sidebar-wrap">
+        <div class="mock-sidebar">
+          <div class="sb-icon sb-active-mint" style="color:#8BBCB5;">⌂</div>
+          <div class="sb-icon" style="color:#C8A898;">🔍</div>
+          <div class="sb-icon" style="color:#C8A898;">♥</div>
+        </div>
+        <div class="mock-content">
+          <div style="display:flex;gap:4px;margin-bottom:6px;">
+            <span style="background:#8BBCB5;color:#fff;border-radius:20px;padding:2px 7px;font-size:8px;font-weight:600;">Kozmetika</span>
+            <span style="background:rgba(139,188,181,0.15);color:#5A9A94;border:1px solid #8BBCB5;border-radius:20px;padding:2px 7px;font-size:8px;font-weight:600;">Fodrász</span>
+          </div>
+          <div class="mock-card" style="margin-bottom:0;">
+            <div style="height:55px;background:linear-gradient(135deg,#E8C4B4,#D4A08A);"></div>
+            <div style="padding:6px 8px;">
+              <div class="mock-name" style="font-size:10px;">Kovács Réka</div>
+            </div>
+            <div style="display:flex;gap:6px;align-items:center;padding:4px 8px 7px;border-top:1px solid #F5EFEC;">
+              <span style="font-size:8px;color:#C87860;">♥ 42</span>
+              <span style="margin-left:auto;background:#8BBCB5;color:#fff;border-radius:20px;padding:2px 7px;font-size:8px;font-weight:600;">Foglalj</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:8px 12px 12px;font-size:10px;color:#999;line-height:1.5;">
+      Aktív nav + kategória chipek + foglalj gomb egyszerre mentás. Leggazdagabb menta-jelenlét.
+    </div>
+  </div>
+
+</div>
+
+<p style="font-size:11px;color:#BBB;text-align:center;margin-top:16px;">Több opciót is kijelölhetsz — majd írd meg a terminálban</p>
+
+<script>
+function toggleSelect(el) {
+  el.classList.toggle('selected');
+}
+</script>
