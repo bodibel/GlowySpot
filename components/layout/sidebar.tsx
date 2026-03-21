@@ -92,6 +92,7 @@ export function Sidebar() {
                     type="button"
                     onClick={link.onClick}
                     className={cn(commonClass, "w-full")}
+                    aria-label={link.label}
                   >
                     {content}
                   </button>
@@ -104,7 +105,7 @@ export function Sidebar() {
 
             return (
               <div key={link.href} className="relative group">
-                <Link href={link.href!} className={commonClass}>
+                <Link href={link.href!} className={commonClass} aria-label={link.label}>
                   {content}
                 </Link>
                 <span className="lg:hidden absolute left-full ml-2 z-10 hidden group-hover:block bg-surface text-foreground text-xs rounded px-2 py-1 whitespace-nowrap shadow border border-border">
