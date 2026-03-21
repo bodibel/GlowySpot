@@ -103,7 +103,7 @@ export function CategoryManager() {
                                 return (
                                     <div key={category.id} className="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors">
                                         <div className="flex items-center gap-4">
-                                            <div className={`p-2 rounded-lg ${category.isActive ? "bg-accent text-primary" : "bg-gray-100 text-gray-400"}`}>
+                                            <div className={`p-2 rounded-lg ${category.isActive ? "bg-primary/10 text-primary" : "bg-gray-100 text-gray-400"}`}>
                                                 <IconComp className="h-5 w-5" />
                                             </div>
                                             <div>

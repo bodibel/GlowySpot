@@ -66,7 +66,7 @@ export default function FavoritesPage() {
             <MainLayout>
                 <div className="min-h-[60vh] flex flex-col items-center justify-center p-4">
                     <div className="text-center max-w-md mx-auto">
-                        <div className="bg-accent w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <div className="bg-primary/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
                             <Heart className="h-10 w-10 text-primary fill-primary" />
                         </div>
                         <h2 className="text-2xl font-black mb-3 text-gray-900">Jelentkezz be!</h2>

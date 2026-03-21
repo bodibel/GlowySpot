@@ -184,7 +184,7 @@ export default function MessagesPage() {
             <MainLayout showRightSidebar={false}>
                 <div className="container mx-auto p-6 flex items-center justify-center min-h-[60vh]">
                     <Card className="max-w-md w-full text-center p-8 space-y-4">
-                        <div className="bg-accent rounded-full h-16 w-16 flex items-center justify-center mx-auto text-primary">
+                        <div className="bg-primary/10 rounded-full h-16 w-16 flex items-center justify-center mx-auto text-primary">
                             <ShieldCheck className="h-8 w-8" />
                         </div>
                         <h2 className="text-2xl font-bold">Bejelentkezés szükséges</h2>
@@ -208,7 +208,7 @@ export default function MessagesPage() {
                                 <Button
                                     variant="ghost"
                                     size="sm"
-                                    className="text-xs font-bold gap-1.5 text-primary bg-accent hover:bg-primary/10 rounded-full px-3"
+                                    className="text-xs font-bold gap-1.5 text-primary bg-primary/10 hover:bg-primary/20 rounded-full px-3"
                                     onClick={handleMessageAdmin}
                                 >
                                     <ShieldCheck className="h-3.5 w-3.5" />
@@ -242,7 +242,7 @@ export default function MessagesPage() {
                                                 onClick={() => handleSelectThread(thread.id)}
                                                 className={cn(
                                                     "w-full flex items-center gap-3 p-4 text-left transition-colors hover:bg-gray-50 group",
-                                                    activeThreadId === thread.id ? "bg-accent/50" : ""
+                                                    activeThreadId === thread.id ? "bg-primary-subtle" : ""
                                                 )}
                                             >
                                                 <div className="relative">

@@ -78,7 +78,7 @@ export default function MyProfilePage() {
                         <div className="grid sm:grid-cols-2 gap-6">
                             <Link href="/dashboard/favorites" className="group">
                                 <div className="rounded-[32px] bg-white p-8 shadow-sm ring-1 ring-gray-900/5 transition-all group-hover:shadow-xl group-hover:ring-primary/10">
-                                    <div className="h-12 w-12 rounded-2xl bg-accent flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                    <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                                         <Heart className="h-6 w-6 text-primary" />
                                     </div>
                                     <h3 className="text-lg font-bold text-gray-900 mb-1">Kedvencek</h3>

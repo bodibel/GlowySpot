@@ -61,7 +61,7 @@ export default function SalonsPage() {
                     </div>
                 ) : salons.length === 0 ? (
                     <div className="rounded-3xl bg-white p-12 text-center border-2 border-dashed border-gray-100 shadow-sm">
-                        <div className="h-16 w-16 bg-accent rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <div className="h-16 w-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
                             <Store className="h-8 w-8 text-primary" />
                         </div>
                         <h3 className="text-xl font-bold text-gray-900 mb-2">Még nincs regisztrált szalonod</h3>

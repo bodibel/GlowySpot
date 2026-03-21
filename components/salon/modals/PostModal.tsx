@@ -182,7 +182,7 @@ export function PostModal({
                                         className={cn(
                                             "flex flex-col items-center gap-2 p-3 rounded-2xl border transition-all",
                                             layout === l.id
-                                                ? "bg-accent border-primary/20 text-primary shadow-sm"
+                                                ? "bg-primary/10 border-primary/20 text-primary shadow-sm"
                                                 : "border-gray-100 hover:bg-gray-50 text-gray-500"
                                         )}
                                     >

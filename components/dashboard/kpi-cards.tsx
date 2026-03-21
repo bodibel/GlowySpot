@@ -9,7 +9,7 @@ export function KpiCards() {
             <div className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-gray-100/50 transition-all hover:shadow-md">
                 <div className="flex items-center justify-between mb-4">
                     <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Bookings Today</span>
-                    <div className="p-2 rounded-xl bg-accent text-primary">
+                    <div className="p-2 rounded-xl bg-primary/10 text-primary">
                         <Calendar className="h-5 w-5" />
                     </div>
                 </div>
@@ -29,7 +29,7 @@ export function KpiCards() {
             <div className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-gray-100/50 transition-all hover:shadow-md">
                 <div className="flex items-center justify-between mb-4">
                     <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Monthly Revenue</span>
-                    <div className="p-2 rounded-xl bg-accent text-primary">
+                    <div className="p-2 rounded-xl bg-primary/10 text-primary">
                         <DollarSign className="h-5 w-5" />
                     </div>
                 </div>
@@ -49,7 +49,7 @@ export function KpiCards() {
             <div className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-gray-100/50 transition-all hover:shadow-md">
                 <div className="flex items-center justify-between mb-4">
                     <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Profile Reach</span>
-                    <div className="p-2 rounded-xl bg-accent text-primary">
+                    <div className="p-2 rounded-xl bg-primary/10 text-primary">
                         <Eye className="h-5 w-5" />
                     </div>
                 </div>

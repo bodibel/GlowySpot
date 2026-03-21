@@ -70,7 +70,7 @@ export function MessageModal({ isOpen, onClose, receiverId, receiverName, salonI
                             </DialogTitle>
                         </DialogHeader>
                         <div className="py-8 text-center space-y-4">
-                            <div className="bg-accent rounded-full h-16 w-16 flex items-center justify-center mx-auto">
+                            <div className="bg-primary/10 rounded-full h-16 w-16 flex items-center justify-center mx-auto">
                                 <MessageCircle className="h-8 w-8 text-primary" />
                             </div>
                             <div className="space-y-2">

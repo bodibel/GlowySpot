@@ -31,7 +31,7 @@ export function WizardStep({ title, description, tips, children, isWelcome }: Wi
                 <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
                 <p className="text-gray-600 leading-relaxed">{description}</p>
                 {tips && tips.length > 0 && (
-                    <div className="bg-accent rounded-xl p-4 border border-primary/10">
+                    <div className="bg-primary/10 rounded-xl p-4 border border-primary/20">
                         <h4 className="font-semibold text-primary mb-2 text-sm">💡 Tippek</h4>
                         <ul className="text-sm text-primary space-y-1">
                             {tips.map((tip, i) => (

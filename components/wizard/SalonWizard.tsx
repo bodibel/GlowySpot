@@ -692,7 +692,7 @@ export function SalonWizard({ isOpen, onClose, onSuccess }: SalonWizardProps) {
                             >
                                 <div className="space-y-4">
                                     {/* Currency selector */}
-                                    <div className="p-4 bg-accent rounded-xl flex items-center gap-4">
+                                    <div className="p-4 bg-primary/10 rounded-xl flex items-center gap-4">
                                         <Label className="whitespace-nowrap">Pénznem:</Label>
                                         <Select value={currency} onValueChange={setCurrency}>
                                             <SelectTrigger className="w-48">
