@@ -264,7 +264,7 @@ export function FilterModal({ isOpen, onClose }: FilterModalProps) {
                                     <Badge
                                         key={cat.id}
                                         variant={isSelected ? "default" : "outline"}
-                                        className={`cursor-pointer px-3 py-2 text-sm gap-2 transition-all ${isSelected ? "bg-primary hover:bg-primary/90" : "hover:bg-accent"
+                                        className={`cursor-pointer px-3 py-2 text-sm gap-2 transition-all ${isSelected ? "bg-primary hover:bg-primary/90" : "hover:bg-primary-subtle"
                                             }`}
                                         onClick={() =>
                                             isSelected

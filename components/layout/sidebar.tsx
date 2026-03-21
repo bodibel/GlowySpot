@@ -82,7 +82,7 @@ export function Sidebar() {
               "relative flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors min-h-[44px]",
               isActive
                 ? "bg-primary/10 text-primary border-l-2 border-primary"
-                : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                : "text-muted-foreground hover:bg-primary-subtle hover:text-foreground"
             )
 
             if (link.onClick) {

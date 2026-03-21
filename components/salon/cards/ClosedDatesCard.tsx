@@ -27,7 +27,7 @@ export function ClosedDatesCard({ closedDates, onAdd, onDelete }: ClosedDatesCar
                     onClick={onAdd}
                     size="sm"
                     variant="ghost"
-                    className="h-8 w-8 p-0 rounded-full hover:bg-accent hover:text-primary transition-colors"
+                    className="h-8 w-8 p-0 rounded-full hover:bg-primary-subtle hover:text-primary transition-colors"
                 >
                     <Plus className="h-4 w-4" />
                 </Button>

@@ -161,7 +161,7 @@ export function PostModal({
                             ))}
 
                             {files.length < 10 && (
-                                <label className="flex flex-col items-center justify-center aspect-square border-2 border-dashed border-gray-200 rounded-2xl cursor-pointer hover:bg-accent hover:border-primary/20 transition-all group">
+                                <label className="flex flex-col items-center justify-center aspect-square border-2 border-dashed border-gray-200 rounded-2xl cursor-pointer hover:bg-primary-subtle hover:border-primary/20 transition-all group">
                                     <ImagePlus className="w-6 h-6 mb-2 text-gray-400 group-hover:text-primary" />
                                     <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest group-hover:text-primary">Hozzáadás</span>
                                     <input type="file" className="hidden" accept="image/*" multiple onChange={handleImageChange} />

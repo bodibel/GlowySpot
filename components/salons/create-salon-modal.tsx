@@ -174,7 +174,7 @@ export function CreateSalonModal({ isOpen, onClose }: CreateSalonModalProps) {
                                                 </button>
                                             </div>
                                         ) : (
-                                            <label className="h-32 w-32 rounded-full border-2 border-dashed border-gray-200 flex flex-col items-center justify-center cursor-pointer hover:border-primary/30 hover:bg-accent transition-all">
+                                            <label className="h-32 w-32 rounded-full border-2 border-dashed border-gray-200 flex flex-col items-center justify-center cursor-pointer hover:border-primary/30 hover:bg-primary-subtle transition-all">
                                                 <ImagePlus className="h-8 w-8 text-gray-400" />
                                                 <span className="text-[10px] font-bold text-gray-400 mt-2 uppercase">Feltöltés</span>
                                                 <input type="file" className="hidden" accept="image/*" onChange={handleProfileChange} />
@@ -198,7 +198,7 @@ export function CreateSalonModal({ isOpen, onClose }: CreateSalonModalProps) {
                                                 </button>
                                             </div>
                                         ) : (
-                                            <label className="h-24 w-full rounded-xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center cursor-pointer hover:border-primary/30 hover:bg-accent transition-all">
+                                            <label className="h-24 w-full rounded-xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center cursor-pointer hover:border-primary/30 hover:bg-primary-subtle transition-all">
                                                 <ImagePlus className="h-6 w-6 text-gray-400" />
                                                 <span className="text-[10px] font-bold text-gray-400 mt-1 uppercase">Borítókép feltöltése</span>
                                                 <input type="file" className="hidden" accept="image/*" onChange={handleCoverChange} />

@@ -16,9 +16,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       default: "bg-primary text-primary-foreground hover:bg-primary-hover shadow-sm",
       gradient: "bg-gradient-to-br from-primary to-accent-warm text-white hover:opacity-90 shadow-sm hover:scale-[1.02] transition-transform",
       destructive: "bg-red-500 text-white hover:bg-red-600 shadow-sm",
-      outline: "border border-border bg-transparent hover:bg-accent hover:text-accent-foreground",
+      outline: "border border-border bg-transparent hover:bg-primary-subtle",
       secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-      ghost: "hover:bg-accent hover:text-accent-foreground",
+      ghost: "hover:bg-primary-subtle",
       link: "text-primary underline-offset-4 hover:underline",
     }
 

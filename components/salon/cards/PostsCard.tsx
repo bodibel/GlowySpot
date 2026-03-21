@@ -36,7 +36,7 @@ export function PostsCard({ posts, onAddPost, onEditPost, onDeletePost, formatDa
                 ) : (
                     <div className="space-y-4">
                         {posts.map((post) => (
-                            <div key={post.id} className="border rounded-lg p-4 hover:bg-accent/50 transition-colors">
+                            <div key={post.id} className="border rounded-lg p-4 hover:bg-primary-subtle transition-colors">
                                 <div className="flex items-start gap-4">
                                     {/* Thumbnail - Fixed Size */}
                                     {post.images && post.images.length > 0 && (

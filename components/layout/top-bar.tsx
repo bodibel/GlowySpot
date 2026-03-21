@@ -44,7 +44,7 @@ export function TopBar() {
             {/* Search icon (mobile only) */}
             <button
               type="button"
-              className="md:hidden flex h-9 w-9 items-center justify-center rounded-xl hover:bg-accent transition-colors"
+              className="md:hidden flex h-9 w-9 items-center justify-center rounded-xl hover:bg-primary-subtle transition-colors"
               aria-label="Keresés"
             >
               <Search className="h-5 w-5" />
@@ -54,7 +54,7 @@ export function TopBar() {
               <>
                 <Link
                   href="/dashboard/messages"
-                  className="relative flex h-9 w-9 items-center justify-center rounded-xl hover:bg-accent transition-colors"
+                  className="relative flex h-9 w-9 items-center justify-center rounded-xl hover:bg-primary-subtle transition-colors"
                   aria-label="Üzenetek"
                 >
                   <MessageSquare className="h-5 w-5" />

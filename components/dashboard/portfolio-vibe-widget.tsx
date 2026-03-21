@@ -37,7 +37,7 @@ export function PortfolioVibeWidget() {
                             <Image src={src} alt="Portfolio" fill className="object-cover" />
                         </div>
                     ))}
-                    <button className="flex items-center justify-center aspect-square rounded-xl border-2 border-dashed border-gray-200 text-gray-400 hover:border-primary/30 hover:text-primary hover:bg-accent transition-colors">
+                    <button className="flex items-center justify-center aspect-square rounded-xl border-2 border-dashed border-gray-200 text-gray-400 hover:border-primary/30 hover:text-primary hover:bg-primary-subtle transition-colors">
                         <Plus className="h-6 w-6" />
                     </button>
                     <button className="flex items-center justify-center aspect-square rounded-xl border-2 border-dashed border-gray-200 text-primary/70 bg-accent/50 hover:bg-primary/10 transition-colors">
